@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+    postgres:
+        image: postgres:11.7-alpine
+        restart: always
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=${PG_USER}
+            - POSTGRES_PASSWORD=${PG_PASSWORD}
+            - POSTGRES_DB=${PG_DB}
+
+    server:
+        build: .
+        ports:
+            - "5000:5000"
+        links:
+            - "postgres:db"
+        depends_on:
+            - postgres
+        environment:
+            - FLASK_APP=app
+            - FLASK_ENV=${FLASK_ENV}
