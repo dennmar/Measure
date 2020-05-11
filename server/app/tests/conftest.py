@@ -7,7 +7,7 @@ def client():
     """Return a test client for the application."""
     app = create_app("test_config.py")
 
-    with app.test_client() as client:
+    with app.test_client() as client: 
         yield client
 
     # TODO: drop the test database table

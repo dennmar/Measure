@@ -2,6 +2,9 @@ version: '3.7'
 
 services:
     postgres:
+        build: 
+            context: ./db
+            dockerfile: Dockerfile
         image: postgres:11.7-alpine
         restart: always
         ports:
@@ -9,7 +12,8 @@ services:
         environment:
             - POSTGRES_USER=${PG_USER}
             - POSTGRES_PASSWORD=${PG_PASSWORD}
-            - POSTGRES_DB=${PG_DB}
+            - PG_DB=${PG_DB}
+            - PG_TEST_DB=${PG_TEST_DB}
 
     server:
         build: .

@@ -1,13 +1,17 @@
+import json
+
 from .conftest import client
 
 # Tests for /users/ (POST)
 
 def test_create(client):
     """Test creating the first and only user."""
-    result = client.post('/users/', data={
+    post_body = json.dumps({
         'username': '393aelkja0',
         'password': 'panda'
     })
+    result = client.post('/users/', content_type='application/json',
+            data=post_body)
 
     result_json = result.get_json()
     assert result.status_code == 200
@@ -25,8 +29,7 @@ def test_create(client):
 
 def test_non_json_body(client):
     """Test sending a non-JSON body in the request."""
-    bad_content_type = 'application/x-www-form-urlencoded'
-    result = client.post('/users/', content_type=bad_content_type, data={
+    result = client.post('/users/', data={
         'username': 'TinFoiL',
         'password': 'hat'
     })
@@ -35,14 +38,14 @@ def test_non_json_body(client):
     assert result.status_code == 415
     assert result_json == {
         'success': False,
-        'msg': 'Request must be in JSON'
+        'msg': 'Request body must be JSON'
     }
 
 def test_missing_username(client):
     """Test creating a user without a username."""
-    result = client.post('/users/', data={
-        'password': 'rinse'
-    })
+    post_body = json.dumps({'password': 'rinse'})
+    result = client.post('/users/', content_type='application/json',
+            data=post_body)
 
     result_json = result.get_json()
     assert result.status_code == 400
@@ -60,9 +63,9 @@ def test_missing_username(client):
 
 def test_missing_password(client):
     """Test creating a user without a password."""
-    result = client.post('/users/', data={
-        'username': '5100'
-    })
+    post_body = json.dumps({'username': '5100'})
+    result = client.post('/users/', content_type='application/json',
+            data=post_body)
 
     result_json = result.get_json()
     assert result.status_code == 400
@@ -80,10 +83,12 @@ def test_missing_password(client):
 
 def test_dup_username(client):
     """Test creating a user with the same username as an existing user."""
-    result = client.post('/users/', data={
+    post_body = json.dumps({
         'username': '393aelkja0',
         'password': 'iceberg'
     })
+    result = client.post('/users/', content_type='application/json',
+            data=post_body)
 
     result_json = result.get_json()
     assert result.status_code == 400
@@ -101,10 +106,12 @@ def test_dup_username(client):
 
 def test_dup_password(client):
     """Test creating a user with the same password as an existing user."""
-    result = client.post('/users/', data={
+    post_body = json.dumps({
         'username': 'Qualify',
         'password': 'panda'
     })
+    result = client.post('/users/', content_type='application/json',
+            data=post_body)
 
     result_json = result.get_json()
     assert result.status_code == 200
@@ -126,12 +133,15 @@ def test_dup_password(client):
 
 def test_create_mult(client):
     """Test creating multiple users."""
-    new_users = 100
+    new_users = 10
     for i in range(0, new_users):
-        result = client.post('/users/', data={
+        post_body = json.dumps({
             'username': f'oceanwave20{i}',
             'password': f'pqka{i}'
-        })
+        }) 
+        result = client.post('/users/', content_type='application/json',
+                data=post_body)
+
         result_json = result.get_json()
         assert result.status_code == 200
         assert result_json == {
@@ -139,6 +149,6 @@ def test_create_mult(client):
             'msg': None
         }
 
-    users_result = client.get('/users')
+    users_result = client.get('/users/')
     users_json = users_result.get_json()
-    assert len(users_json['users']) == (new_users + 1)
+    assert len(users_json['users']) == (new_users + 2)
