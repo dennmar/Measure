@@ -1,9 +1,9 @@
 import json
 
 from .conftest import client
+from .. import db
 
 # Tests for /users/ (POST)
-# NOTE: test for username over max length is hard-coded
 
 def test_create(client):
     """Test creating the first and only user."""
@@ -84,7 +84,8 @@ def test_missing_password(client):
 
 def test_over_max_username(client):
     """Test creating a user with a username that's too long to be stored."""
-    username_max_len = 50
+    user_table = db.metadata.tables['user']
+    username_max_len = user_table.columns.username.type.length
     post_body = json.dumps({
         'username': 'a' * (username_max_len + 1),
         'password': 'england'

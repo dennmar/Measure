@@ -86,6 +86,12 @@ def validate_new_user(username, password):
     Returns:
         A str detailing any error with the data or None if no error was found.
     """
+    user_table = db.metadata.tables['user']
+    username_max_len = user_table.columns.username.type.length
+
+    if len(username) > username_max_len:
+        return f'Username exceeds max length of {username_max_len}'
+
     if user.User.query.filter_by(username=username).first() is not None:
         return 'Username already exists'
 
