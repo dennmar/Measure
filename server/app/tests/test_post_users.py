@@ -3,6 +3,7 @@ import json
 from .conftest import client
 
 # Tests for /users/ (POST)
+# NOTE: test for username over max length is hard-coded
 
 def test_create(client):
     """Test creating the first and only user."""
@@ -74,6 +75,30 @@ def test_missing_password(client):
         'msg': 'Missing password'
     }
     
+    users_result = client.get('/users/')
+    users_json = users_result.get_json()
+    assert users_json['users'] == [{
+        'id': 1,
+        'username': '393aelkja0'
+    }]
+
+def test_over_max_username(client):
+    """Test creating a user with a username that's too long to be stored."""
+    username_max_len = 50
+    post_body = json.dumps({
+        'username': 'a' * (username_max_len + 1),
+        'password': 'england'
+    })
+    result = client.post('/users/', content_type='application/json',
+            data=post_body)
+
+    result_json = result.get_json()
+    assert result.status_code == 400
+    assert result_json == {
+        'success': False,
+        'msg': f'Username exceeds max length of {username_max_len}'
+    }
+
     users_result = client.get('/users/')
     users_json = users_result.get_json()
     assert users_json['users'] == [{
