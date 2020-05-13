@@ -4,7 +4,7 @@ def is_valid_access_token(token, expected_id):
     """Check whether the JWT token is a valid access token.
 
     Args:
-        token (str): The JWT token to check.
+        token: A str of the JWT token to check.
 
     Returns:
         True if it is a valid access token; false otherwise.
@@ -18,7 +18,7 @@ def is_valid_refresh_token(token, expected_id):
     """Check whether the JWT token is a valid refresh token.
 
     Args:
-        token (str): The JWT token to check.
+        token: A str of the JWT token to check.
 
     Returns:
         True if it is a valid refresh token; false otherwise.
