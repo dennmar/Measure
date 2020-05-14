@@ -34,6 +34,15 @@ def login():
         return flask.make_response({'msg': e, 'access_token': None,
                 'refresh_token': None}, 500)
 
+@bp.route('/refresh/', methods=['GET'])
+def refresh():
+    """Generate a new access token from a refresh token.
+
+    Returns:
+        A flask.Response containing the user's access and refresh tokens.
+    """
+    return flask.make_response({'msg': 'Hello'}, 200)
+
 def validate_login_req(request):
     """Check whether the request to login is valid.
 
