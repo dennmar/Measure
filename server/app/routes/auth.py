@@ -1,7 +1,8 @@
 import flask
-from flask import Blueprint, request
+from flask import Blueprint, request, after_this_request
 from flask_jwt_extended import (
-    create_access_token, create_refresh_token
+    create_access_token, create_refresh_token, get_jwt_identity,
+    jwt_refresh_token_required
 )
 
 from .. import db
@@ -26,7 +27,7 @@ def login():
         username, password = validate_login_req(request)
         access_token, refresh_token = login_user(username, password)
         return flask.make_response({'msg': None, 'access_token': access_token,
-                'refresh_token': refresh_token})
+                'refresh_token': refresh_token}, 200)
     except RequestException as re:
         return flask.make_response({'msg': re.exception, 'access_token': None,
                 'refresh_token': None}, re.status_code)
@@ -35,13 +36,20 @@ def login():
                 'refresh_token': None}, 500)
 
 @bp.route('/refresh/', methods=['GET'])
+@jwt_refresh_token_required
 def refresh():
     """Generate a new access token from a refresh token.
 
     Returns:
-        A flask.Response containing the user's access and refresh tokens.
+        A flask.Response containing the user's new access token.
     """
-    return flask.make_response({'msg': 'Hello'}, 200)
+    try:
+        username = get_jwt_identity()
+        access_token = create_access_token(identity=username)
+        return flask.make_response({'msg': None, 'access_token': access_token},
+                200)
+    except Exception as e:
+        return flask.make_response({'msg': e, 'access_token': None}, 500)
 
 def validate_login_req(request):
     """Check whether the request to login is valid.

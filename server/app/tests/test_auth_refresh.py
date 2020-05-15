@@ -3,7 +3,7 @@ import time
 import datetime
 
 from .conftest import client
-from .validators.tokens import is_valid_refresh_token
+from .validators.tokens import is_valid_access_token
 
 def test_success(client):
     """Test normal refresh."""
