@@ -27,8 +27,10 @@ def create_app(config_file='config.py'):
     # register routes
     from .routes import users as user_routes
     from .routes import auth as auth_routes
+    from .routes import tasks as task_routes
     app.register_blueprint(user_routes.bp)
     app.register_blueprint(auth_routes.bp)
+    app.register_blueprint(task_routes.bp)
 
     # reset database and create tables
     from .models import user as user_model

@@ -1,5 +1,5 @@
 import flask
-from flask import Blueprint, request, after_this_request
+from flask import Blueprint, request
 from flask_jwt_extended import (
     create_access_token, create_refresh_token, get_jwt_identity,
     jwt_refresh_token_required
