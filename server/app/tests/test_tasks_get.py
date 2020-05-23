@@ -43,12 +43,16 @@ def test_single(client):
         'seconds_worked': 0,
         'completion_date': None 
     }
-    create_result = client.post('/tasks/', content_type='application/json',
-            data=json.dumps(new_task))
+    create_result = client.post(
+        '/tasks/',
+        content_type='application/json',
+        data=json.dumps(new_task),
+        headers={'Authorization': 'Bearer ' + access_token})
     result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + access_token})
 
     result_json = result.get_json()
+    new_task['id'] = 1
     assert result.status_code == 200
     assert result_json['tasks'] == [new_task]
     assert result_json['msg'] == None
@@ -114,34 +118,48 @@ def test_multi(client):
     access_token = login_result.get_json()['access_token']
     new_task_amt = 10
 
-    now_utc = datetime.datetime.utcnow()
-    comp_date = calendar.timegm(now_utc.timetuple())
+    today_utc = datetime.datetime.utcnow().date()
     for i in range(new_task_amt):
         new_task = {
-            'name': f'Finish PA{i}',
+            'name': f'Finish PA{i + 1}',
             'note': 'That was easy',
             'is_completed': True,
             'seconds_worked': 50921,
-            'completion_date': comp_date
+            'completion_date': today_utc.isoformat()
         }
-        create_result = client.post('/tasks/', content_type='application/json',
-                data=json.dumps(new_task))
+        create_result = client.post(
+            '/tasks/',
+            content_type='application/json',
+            data=json.dumps(new_task),
+            headers={'Authorization': 'Bearer ' + access_token}
+        )
     
     result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + access_token})
-
     result_json = result.get_json()
+    first_task = {
+        'id': 1,
+        'name': 'Complete essay',
+        'note': None,
+        'is_completed': False,
+        'seconds_worked': 0,
+        'completion_date': None 
+    }
+    prev_created_tasks = 1
+
     assert result.status_code == 200
     assert result_json['msg'] == None
     assert len(result_json['tasks']) == new_task_amt + 1
     for task in result_json['tasks']:
         task_id = task['id']
-        assert task_id > 1 and task_id <= new_task_amt + 1
-        assert task == {
-            'id': task_id,
-            'name': f'Finish PA{task_id}',
-            'note': 'That was easy',
-            'is_completed': True,
-            'seconds_worked': 50921,
-            'completion_date': comp_date
-        }
+        assert task_id >= 1 and task_id <= new_task_amt + prev_created_tasks
+
+        if task_id == 1:
+            assert task == first_task
+        else:
+            task_comp_date = datetime.date.fromisoformat(task['completion_date'])
+            assert task['name'] == f'Finish PA{task_id - prev_created_tasks}'
+            assert task['note'] == 'That was easy'
+            assert task['is_completed'] == True
+            assert task['seconds_worked'] == 50921
+            assert task_comp_date == today_utc

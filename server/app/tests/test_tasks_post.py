@@ -2,6 +2,7 @@ import json
 import datetime
 import time
 import calendar
+import copy
 
 from .conftest import client
 
@@ -39,8 +40,10 @@ def test_single(client):
 
     tasks_result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + access_token})
-    assert len(tasks_result['tasks']) == 1
-    assert tasks_results == [new_task]
+    tasks_result_json = tasks_result.get_json()
+    new_task['id'] = 1
+    assert len(tasks_result_json['tasks']) == 1
+    assert tasks_result_json['tasks'] == [new_task]
 
 def test_create_dup(client):
     """Test creating a duplicate of an existing task for a user."""
@@ -74,8 +77,39 @@ def test_create_dup(client):
 
     tasks_result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + access_token})
-    assert len(tasks_result['tasks']) == 2
-    assert tasks_results == [new_task, new_task]
+    tasks_result_json = tasks_result.get_json()
+    new_task1 = copy.deepcopy(new_task)
+    new_task2 = copy.deepcopy(new_task)
+    new_task1['id'] = 1
+    new_task2['id'] = 2
+    assert len(tasks_result_json['tasks']) == 2
+    assert tasks_result_json['tasks'] == [new_task1, new_task2]
+
+def test_non_json_body(client):
+    """Test sending a non-JSON body in the request."""
+    user_info = json.dumps({
+        'username': 'fair',
+        'password': 'essential'
+    })
+    login_result = client.get('/auth/login/', content_type='application/json',
+            data=user_info)
+    login_json = login_result.get_json()
+    access_token = login_result.get_json()['access_token']
+
+    result = client.post('/tasks/',
+        headers={'Authorization' : 'Bearer ' + access_token},
+        data={
+            'name': 'Blend smoothies',
+            'note': 'Out of blueberries',
+            'is_completed': False,
+            'seconds_worked': 0,
+            'completion_date': None 
+    })
+
+    result_json = result.get_json()
+    assert result.status_code == 415
+    assert result_json['success'] == False
+    assert result_json['msg'] == 'Request body must be JSON'
 
 def test_pass_refresh(client):
     """Test sending a request with a refresh token."""
@@ -178,14 +212,13 @@ def test_crossover(client):
     login_json = login_result.get_json()
     access_token = login_result.get_json()['access_token']
 
-    now_utc = datetime.datetime.utcnow()
-    comp_date = calendar.timegm(now_utc.timetuple())
+    today_utc = datetime.datetime.utcnow().date()
     new_task = {
         'name': 'Walk the dog',
         'note': None,
         'is_completed': True,
         'seconds_worked': 2000,
-        'completion_date': comp_date 
+        'completion_date': today_utc.isoformat()
     }
     result = client.post(
         '/tasks/',
@@ -201,17 +234,27 @@ def test_crossover(client):
 
     tasks_result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + access_token})
-    assert len(tasks_result['tasks']) == 1
-    assert tasks_results == [new_task]
+    tasks_result_json = tasks_result.get_json()
+    new_task['id'] = 3
+    added_task = tasks_result_json['tasks'][0]
+    task_comp_date = datetime.date.fromisoformat(added_task['completion_date'])
+
+    assert len(tasks_result_json['tasks']) == 1
+    assert added_task['id'] == new_task['id']
+    assert added_task['name'] == new_task['name']
+    assert added_task['note'] == new_task['note']
+    assert added_task['is_completed'] == new_task['is_completed']
+    assert added_task['seconds_worked'] == new_task['seconds_worked']
+    assert task_comp_date == today_utc
 
     other_user_info = json.dumps({
         'username': 'fair',
         'password': 'essential'
     })
-    login_result = client.get('/auth/login/', content_type='application/json',
-            data=user_info)
-    login_json = login_result.get_json()
-    other_access_token = login_result.get_json()['access_token']
+    other_login_result = client.get('/auth/login/',
+            content_type='application/json', data=other_user_info)
+    other_login_json = other_login_result.get_json()
+    other_access_token = other_login_result.get_json()['access_token']
 
     other_user_task = {
         'name': 'Book flights and hotels',
@@ -220,10 +263,16 @@ def test_crossover(client):
         'seconds_worked': 2090,
         'completion_date': None 
     }
-    tasks_result = client.get('/tasks/', content_type='application/json',
+    other_tasks_result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + other_access_token})
-    assert len(tasks_result['tasks']) == 2
-    assert tasks_results == [other_user_task, other_user_task]
+    other_tasks_result_json = other_tasks_result.get_json()
+
+    other_user_task1 = copy.deepcopy(other_user_task)
+    other_user_task2 = copy.deepcopy(other_user_task)
+    other_user_task1['id'] = 1
+    other_user_task2['id'] = 2
+    assert len(other_tasks_result_json['tasks']) == 2
+    assert other_tasks_result_json['tasks'] == [other_user_task1, other_user_task2]
 
 def test_multi(client):
     """Test creating multiple tasks for a user."""
@@ -239,15 +288,14 @@ def test_multi(client):
     access_token = login_result.get_json()['access_token']
 
     new_task_amt = 5
-    now_utc = datetime.datetime.utcnow()
-    comp_date = calendar.timegm(now_utc.timetuple())
+    today_utc = datetime.datetime.utcnow().date()
     for i in range(new_task_amt):
         new_task = {
             'name': 'Empty the bins',
             'note': None,
             'is_completed': True,
-            'seconds_worked': i,
-            'completion_date': comp_date 
+            'seconds_worked': i + 1,
+            'completion_date': today_utc.isoformat() 
         }
         result = client.post(
             '/tasks/',
@@ -260,17 +308,19 @@ def test_multi(client):
         assert result.status_code == 200
         assert result_json['success'] == True
         assert result_json['msg'] == None
+    prev_created_tasks = 3
 
     tasks_result = client.get('/tasks/', content_type='application/json',
             headers={'Authorization': 'Bearer ' + access_token})
-    assert len(tasks_result['tasks']) == new_task_amt
-    for task in tasks_result.get_json['tasks']:
+    tasks_result_json = tasks_result.get_json()
+    assert len(tasks_result_json['tasks']) == new_task_amt
+    for task in tasks_result_json['tasks']:
         task_id = task['id']
-        assert task == {
-            'id': task_id,
-            'name': 'Empty the bins',
-            'note': None,
-            'is_completed': True,
-            'seconds_worked': task_id,
-            'completion_date': comp_date           
-        }
+        task_comp_date = datetime.date.fromisoformat(task['completion_date'])
+        assert task_id > prev_created_tasks and \
+                task_id <= new_task_amt + prev_created_tasks
+        assert task['name'] == 'Empty the bins'
+        assert task['note'] == None
+        assert task['is_completed'] == True
+        assert task['seconds_worked'] == task_id - prev_created_tasks
+        assert task_comp_date == today_utc

@@ -34,6 +34,7 @@ def create_app(config_file='config.py'):
 
     # reset database and create tables
     from .models import user as user_model
+    from .models import task as task_model
     with app.app_context():
         db.drop_all()
         db.create_all()

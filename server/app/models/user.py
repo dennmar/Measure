@@ -6,14 +6,15 @@ class User(db.Model):
     """The account for a user of the application.
 
     Attributes:
-        id (db.Column): the user id.
-        username (db.Column): the username of the account.
-        password (db.Column): the password for the account.
-
+        id: A db.Column for the user id.
+        username: A db.Column for the username of the account.
+        password: A db.Column for the password for the account.
+        tasks: A db.relationship for all tasks belonging to the user.
     """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    tasks = db.relationship('Task', backref='user')
 
     @staticmethod
     def genr_password_hash(password):
