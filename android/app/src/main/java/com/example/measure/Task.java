@@ -14,6 +14,15 @@ public class Task {
     public Date localDueDate;
     public boolean isCompleted;
 
+    public Task() {
+        id = -1;
+        userId = -1;
+        name = null;
+        timeWorked = null;
+        localDueDate = null;
+        isCompleted = false;
+    }
+
     public Task(int id, int userId, String name, Duration timeWorked,
             Date localDueDate, boolean isCompleted) {
         this.id = id;

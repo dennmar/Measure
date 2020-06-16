@@ -18,7 +18,7 @@ public class AgendaViewModel {
     private final TaskRepository taskRepo;
     private final LoginRepository loginRepo;
     private final Bundle savedInstanceState;
-    private int userId;
+    private User currUser;
 
     /**
      * Initialize all repositories for data access and the saved instance
@@ -52,13 +52,13 @@ public class AgendaViewModel {
     }
 
     /**
-     * Retrieve tasks for the user within a date range.
+     * Retrieve tasks for the user within a date range in ascending order.
      *
      * @param startDate starting date of the agenda (inclusive)
      * @param endDate   ending date of the agenda (exclusive)
-     * @return observable list of tasks for the agenda
+     * @return observable list of tasks for the user sorted by date
      */
-    public LiveData<List<Task>> getTasks(Date startDate, Date endDate) {
+    public LiveData<List<Task>> getSortedTasks(Date startDate, Date endDate) {
         return null;
     }
 
