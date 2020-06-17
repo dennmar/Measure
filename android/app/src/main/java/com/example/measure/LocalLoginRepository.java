@@ -8,4 +8,9 @@ public class LocalLoginRepository implements LoginRepository {
     public User getCurrentUser() {
         return null;
     }
+
+    @Override
+    public boolean setCurrentUser(User user) {
+        return false;
+    }
 }

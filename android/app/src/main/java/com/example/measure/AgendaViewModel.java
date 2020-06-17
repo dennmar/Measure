@@ -52,7 +52,8 @@ public class AgendaViewModel {
     }
 
     /**
-     * Retrieve tasks for the user within a date range in ascending order.
+     * Retrieve tasks for the user within a date range in ascending order by
+     * date.
      *
      * @param startDate starting date of the agenda (inclusive)
      * @param endDate   ending date of the agenda (exclusive)

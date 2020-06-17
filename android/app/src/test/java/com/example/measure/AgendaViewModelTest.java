@@ -101,31 +101,6 @@ public class AgendaViewModelTest {
     }
 
     /**
-     * Test adding multiple duplicates of the same task for a user.
-     */
-    @Test
-    public void testAddDuplicateTasks() {
-        Date startDate = new Date(100);
-        Date endDate = new Date(150021);
-
-        List<Task> expectedGetResult = new ArrayList<>();
-        int dupAmt = 10;
-        for (int i = 0; i < dupAmt; i++) {
-            Task task = new Task();
-            task.localDueDate = new Date(startDate.getTime() + 1);
-            task.id = i;
-            expectedGetResult.add(task);
-
-            boolean addResult = avm.addTask(task);
-            assertThat(addResult, equalTo(true));
-        }
-
-        List<Task> getResult = avm.getSortedTasks(startDate, endDate)
-                .getValue();
-        assertThat(getResult, equalTo(expectedGetResult));
-    }
-
-    /**
      * Test adding multiple different tasks and retrieving them.
      */
     @Test
