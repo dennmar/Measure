@@ -4,7 +4,7 @@ package com.example.measure;
  * A fake repository for accessing the login session data.
  */
 public class MockLoginRepository implements LoginRepository {
-    public static final User DEFAULT_USER = new User(1, "Hello");
+    public static final User DEFAULT_USER = new User(-1, "Hello");
     private User currUser;
 
     /**

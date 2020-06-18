@@ -48,7 +48,7 @@ public class MockTaskRepository implements TaskRepository {
         for (int i = 0; i < tasks.size(); i++) {
             Task currTask = tasks.get(i);
             long currTaskTime = currTask.localDueDate.getTime();
-            if (currTask.id == user.id && currTaskTime >= startDate.getTime()
+            if (currTask.userId == user.id && currTaskTime >= startDate.getTime()
                     && currTaskTime < endDate.getTime()) {
                 sortedTasks.add(currTask);
             }
@@ -91,8 +91,14 @@ public class MockTaskRepository implements TaskRepository {
             return false;
         }
         else {
-            tasks.set(task.id, task);
-            return true;
+            for (int i = 0; i < tasks.size(); i++) {
+                if (tasks.get(i).id == task.id) {
+                    tasks.set(i, task);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
@@ -109,8 +115,14 @@ public class MockTaskRepository implements TaskRepository {
             return false;
         }
         else {
-            tasks.remove(task.id);
-            return true;
+            for (int i = 0; i < tasks.size(); i++) {
+                if (tasks.get(i).id == task.id) {
+                    tasks.remove(i);
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

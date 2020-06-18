@@ -3,6 +3,7 @@ package com.example.measure;
 import android.os.Bundle;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
@@ -19,6 +20,7 @@ public class AgendaViewModel {
     private final LoginRepository loginRepo;
     private final Bundle savedInstanceState;
     private User currUser;
+    private MutableLiveData<List<Task>> sortedTasks;
 
     /**
      * Initialize all repositories for data access and the saved instance
@@ -34,6 +36,9 @@ public class AgendaViewModel {
         this.taskRepo = taskRepo;
         this.savedInstanceState = savedInstanceState;
         this.loginRepo = loginRepo;
+
+        currUser = this.loginRepo.getCurrentUser();
+        sortedTasks = new MutableLiveData<>();
     }
 
     /**
@@ -60,7 +65,10 @@ public class AgendaViewModel {
      * @return observable list of tasks for the user sorted by date
      */
     public LiveData<List<Task>> getSortedTasks(Date startDate, Date endDate) {
-        return null;
+        List<Task> sortedTasksList = taskRepo.getSortedTasks(currUser,
+                startDate, endDate);
+        sortedTasks.setValue(sortedTasksList);
+        return sortedTasks;
     }
 
     /**
@@ -70,7 +78,8 @@ public class AgendaViewModel {
      * @return true if the operation was successful; false otherwise
      */
     public boolean addTask(Task newTask) {
-        return false;
+        boolean success = taskRepo.addTask(currUser, newTask);
+        return success;
     }
 
     /**
@@ -80,7 +89,8 @@ public class AgendaViewModel {
      * @return true if the operation was successful; false otherwise
      */
     public boolean updateTask(Task updatedTask) {
-        return false;
+        boolean success = taskRepo.updateTask(currUser, updatedTask);
+        return success;
     }
 
     /**
@@ -90,7 +100,8 @@ public class AgendaViewModel {
      * @return true if the operation was successful; false otherwise
      */
     public boolean deleteTask(Task task) {
-        return false;
+        boolean success = taskRepo.deleteTask(currUser, task);
+        return success;
     }
 
     /**

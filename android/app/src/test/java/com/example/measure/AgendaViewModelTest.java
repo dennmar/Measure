@@ -2,12 +2,15 @@ package com.example.measure;
 
 import android.os.Bundle;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import com.example.measure.di.DaggerTestAgendaViewModelComponent;
 import com.example.measure.di.TestAgendaViewModelComponent;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -27,6 +30,9 @@ public class AgendaViewModelTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule()
             .strictness(Strictness.STRICT_STUBS);
+    // Execute background tasks synchronously (to allow LiveData to work).
+    @Rule
+    public TestWatcher rule = new InstantTaskExecutorRule();
     @Mock
     private Bundle mockSavedInstanceState;
 
@@ -50,19 +56,6 @@ public class AgendaViewModelTest {
         public int compare(Task o1, Task o2) {
             return o1.localDueDate.compareTo(o2.localDueDate);
         }
-    }
-
-    /**
-     * Assert that the two task lists are equal after sorting.
-     *
-     * @param actual actual result in assertion
-     * @param expected expected value in assertion
-     */
-    public void sortAndCompareTaskLists(List<Task> actual,
-                                        List<Task> expected) {
-        Collections.sort(actual, new SortByDate());
-        Collections.sort(expected, new SortByDate());
-        assertThat(actual, equalTo(expected));
     }
 
     /**
@@ -110,7 +103,7 @@ public class AgendaViewModelTest {
         Date startDate = new Date(100);
         Date endDate = new Date(startDate.getTime() + taskAmt);
 
-        for (int i = taskAmt; i >= 0; i--) {
+        for (int i = taskAmt - 1; i >= 0; i--) {
             Task task = new Task();
             task.id = i;
             task.localDueDate = new Date(startDate.getTime() + i);
@@ -133,15 +126,18 @@ public class AgendaViewModelTest {
     public void testGetSubset() {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
-        Date startDate = new Date(100 + (taskAmt / 2));
-        Date endDate = new Date(100 + taskAmt - 1);
+        int timeOffset = 100;
+        Date startDate = new Date(timeOffset + (taskAmt / 2));
+        Date endDate = new Date(timeOffset + taskAmt - 1);
 
-        for (int i = taskAmt; i >= 0; i--) {
+        for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
-            task.id = taskAmt - i + 1;
-            task.localDueDate = new Date(startDate.getTime() + i);
+            task.id = i + 1;
+            task.localDueDate = new Date(timeOffset + taskAmt - i - 1);
 
-            if (i < taskAmt - 1 && i >= taskAmt / 2) {
+            if (task.localDueDate.equals(startDate)
+                    || (task.localDueDate.after(startDate)
+                    && task.localDueDate.before(endDate))) {
                 expectedGetResult.add(task);
             }
 
