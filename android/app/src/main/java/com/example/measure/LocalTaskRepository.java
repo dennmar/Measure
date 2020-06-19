@@ -1,5 +1,7 @@
 package com.example.measure;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,8 @@ import java.util.List;
  */
 public class LocalTaskRepository implements TaskRepository {
     @Override
-    public List<Task> getSortedTasks(User user, Date startDate, Date endDate) {
+    public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
+                                               Date endDate) {
         return null;
     }
 

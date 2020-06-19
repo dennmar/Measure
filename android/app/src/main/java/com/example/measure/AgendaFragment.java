@@ -48,4 +48,10 @@ public class AgendaFragment extends Fragment {
     public void onPause() {
         super.onPause();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        agendaViewModel.onDestroy();
+    }
 }

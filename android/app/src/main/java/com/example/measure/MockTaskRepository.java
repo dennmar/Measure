@@ -1,5 +1,8 @@
 package com.example.measure;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +14,7 @@ import java.util.List;
  */
 public class MockTaskRepository implements TaskRepository {
     private List<Task> tasks;
+    private MutableLiveData<List<Task>> sortedTasks;
     private Comparator<Task> sortByDate;
 
     /**
@@ -18,6 +22,7 @@ public class MockTaskRepository implements TaskRepository {
      */
     public MockTaskRepository() {
         tasks = new ArrayList<>();
+        sortedTasks = new MutableLiveData<>();
         sortByDate = new SortByDate();
     }
 
@@ -38,11 +43,12 @@ public class MockTaskRepository implements TaskRepository {
      * @param user      user to retrieve tasks for
      * @param startDate starting date of tasks to fetch (inclusive)
      * @param endDate   ending date of tasks to fetch (exclusive)
-     * @return a list of tasks belonging to the user sorted by date
+     * @return observable list of tasks belonging to the user sorted by date
      */
     @Override
-    public List<Task> getSortedTasks(User user, Date startDate, Date endDate) {
-        List<Task> sortedTasks = new ArrayList<>();
+    public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
+                                               Date endDate) {
+        List<Task> sortedTaskList = new ArrayList<>();
         Collections.sort(tasks, sortByDate);
 
         for (int i = 0; i < tasks.size(); i++) {
@@ -50,13 +56,14 @@ public class MockTaskRepository implements TaskRepository {
             long currTaskTime = currTask.localDueDate.getTime();
             if (currTask.userId == user.id && currTaskTime >= startDate.getTime()
                     && currTaskTime < endDate.getTime()) {
-                sortedTasks.add(currTask);
+                sortedTaskList.add(currTask);
             }
             else if (currTaskTime >= endDate.getTime()) {
                 break;
             }
         }
 
+        sortedTasks.setValue(sortedTaskList);
         return sortedTasks;
     }
 

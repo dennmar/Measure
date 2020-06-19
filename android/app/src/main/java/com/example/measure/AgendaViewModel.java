@@ -2,6 +2,10 @@ package com.example.measure;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -15,12 +19,13 @@ import java.util.List;
  * A view model that handles the interaction between the agenda view (fragment)
  * and the model.
  */
-public class AgendaViewModel {
-    private final TaskRepository taskRepo;
-    private final LoginRepository loginRepo;
-    private final Bundle savedInstanceState;
+public class AgendaViewModel implements LifecycleOwner {
+    private TaskRepository taskRepo;
+    private LoginRepository loginRepo;
+    private Bundle savedInstanceState;
     private User currUser;
     private MutableLiveData<List<Task>> sortedTasks;
+    private LifecycleRegistry lifecycleRegistry;
 
     /**
      * Initialize all repositories for data access and the saved instance
@@ -39,6 +44,19 @@ public class AgendaViewModel {
 
         currUser = this.loginRepo.getCurrentUser();
         sortedTasks = new MutableLiveData<>();
+        lifecycleRegistry = new LifecycleRegistry(this);
+        lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
+    }
+
+    /**
+     * Return the lifecycle of this instance.
+     *
+     * @return the lifecycle of this instance
+     */
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
     }
 
     /**
@@ -65,9 +83,14 @@ public class AgendaViewModel {
      * @return observable list of tasks for the user sorted by date
      */
     public LiveData<List<Task>> getSortedTasks(Date startDate, Date endDate) {
-        List<Task> sortedTasksList = taskRepo.getSortedTasks(currUser,
-                startDate, endDate);
-        sortedTasks.setValue(sortedTasksList);
+        // Start lifecycle to allow observers set by view model to observe.
+        lifecycleRegistry.setCurrentState(Lifecycle.State.STARTED);
+
+        taskRepo.getSortedTasks(currUser, startDate, endDate).observe(this,
+                modelSortedTasks -> {
+                    sortedTasks.setValue(modelSortedTasks);
+                });
+
         return sortedTasks;
     }
 
@@ -112,5 +135,13 @@ public class AgendaViewModel {
      */
     public boolean setActiveTask(Task activeTask) {
         return false;
+    }
+
+    /**
+     * Perform clean-up for this instance.
+     */
+    public void onDestroy() {
+        // Remove all observers the view model has set by ending lifecycle.
+        lifecycleRegistry.setCurrentState(Lifecycle.State.DESTROYED);
     }
 }

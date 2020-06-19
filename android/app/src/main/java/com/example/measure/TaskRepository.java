@@ -1,5 +1,7 @@
 package com.example.measure;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +16,10 @@ public interface TaskRepository {
      * @param user      user to retrieve tasks for
      * @param startDate starting date of tasks to fetch (inclusive)
      * @param endDate   ending date of tasks to fetch (exclusive)
-     * @return a list of tasks belonging to the user sorted by date
+     * @return observable list of tasks belonging to the user sorted by date
      */
-    List<Task> getSortedTasks(User user, Date startDate, Date endDate);
+    LiveData<List<Task>> getSortedTasks(User user, Date startDate,
+                                        Date endDate);
 
     /**
      * Store a task for the user in the database.
