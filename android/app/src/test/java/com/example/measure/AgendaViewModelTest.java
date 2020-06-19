@@ -306,7 +306,7 @@ public class AgendaViewModelTest {
     public void testInitialSetActiveTask() {
         Task task = new Task();
         task.localDueDate = new Date(500);
-        boolean setResult = avm.setActiveTask(task);
+        boolean setResult = avm.updateActiveTask(task);
         assertThat(setResult, equalTo(true));
 
         Task getResult = avm.getActiveTask();
@@ -320,7 +320,7 @@ public class AgendaViewModelTest {
     public void testSwapActiveTask() {
         Task t1 = new Task();
         t1.localDueDate = new Date(1500);
-        boolean setResult1 = avm.setActiveTask(t1);
+        boolean setResult1 = avm.updateActiveTask(t1);
         assertThat(setResult1, equalTo(true));
 
         Task getResult1 = avm.getActiveTask();
@@ -328,7 +328,7 @@ public class AgendaViewModelTest {
 
         Task t2 = new Task();
         t2.localDueDate = new Date(2000);
-        boolean setResult2 = avm.setActiveTask(t2);
+        boolean setResult2 = avm.updateActiveTask(t2);
         assertThat(setResult2, equalTo(true));
 
         Task getResult2 = avm.getActiveTask();

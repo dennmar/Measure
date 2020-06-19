@@ -13,6 +13,7 @@ import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.models.task.TaskRepository;
+import com.example.measure.models.user.UserRepository;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 
@@ -26,6 +27,7 @@ import java.util.List;
 public class AgendaViewModel implements LifecycleOwner {
     private TaskRepository taskRepo;
     private LoginRepository loginRepo;
+    private UserRepository userRepo;
     private Bundle savedInstanceState;
     private User currUser;
     private MutableLiveData<List<Task>> sortedTasks;
@@ -37,14 +39,17 @@ public class AgendaViewModel implements LifecycleOwner {
      *
      * @param taskRepo           repository for accessing task data
      * @param loginRepo          repository for accessing login data
+     * @param userRepo           repository for accessing user data
      * @param savedInstanceState previously saved state of the view model
      */
     @AssistedInject
     public AgendaViewModel(TaskRepository taskRepo, LoginRepository loginRepo,
+                           UserRepository userRepo,
                            @Assisted Bundle savedInstanceState) {
         this.taskRepo = taskRepo;
         this.savedInstanceState = savedInstanceState;
         this.loginRepo = loginRepo;
+        this.userRepo = userRepo;
 
         currUser = this.loginRepo.getCurrentUser();
         sortedTasks = new MutableLiveData<>();
@@ -132,12 +137,12 @@ public class AgendaViewModel implements LifecycleOwner {
     }
 
     /**
-     * Set the active task for the user.
+     * Update the active task for the user.
      *
      * @param  activeTask the task to be active
      * @return true if the operation was successful; false otherwise
      */
-    public boolean setActiveTask(Task activeTask) {
+    public boolean updateActiveTask(Task activeTask) {
         return false;
     }
 

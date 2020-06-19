@@ -3,6 +3,7 @@ package com.example.measure.di.components;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.LoginRepositoryModule;
 import com.example.measure.di.modules.TaskRepositoryModule;
+import com.example.measure.di.modules.UserRepositoryModule;
 import com.example.measure.features.agenda.AgendaViewModel;
 
 import dagger.Component;
@@ -14,7 +15,8 @@ import dagger.Component;
 @Component(modules = {
         AssistedInjectModule.class,
         TaskRepositoryModule.class,
-        LoginRepositoryModule.class
+        LoginRepositoryModule.class,
+        UserRepositoryModule.class
 })
 public interface ApplicationComponent {
     AgendaViewModel.Factory avmFactory();
