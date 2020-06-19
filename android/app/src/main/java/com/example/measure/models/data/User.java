@@ -1,4 +1,4 @@
-package com.example.measure;
+package com.example.measure.models.data;
 
 public class User {
     public int id;

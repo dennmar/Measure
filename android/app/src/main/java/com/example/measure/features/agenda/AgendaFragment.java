@@ -1,4 +1,4 @@
-package com.example.measure;
+package com.example.measure.features.agenda;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
 
 /**

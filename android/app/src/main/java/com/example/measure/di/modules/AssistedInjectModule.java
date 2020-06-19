@@ -1,4 +1,4 @@
-package com.example.measure.di;
+package com.example.measure.di.modules;
 
 import com.squareup.inject.assisted.dagger2.AssistedModule;
 

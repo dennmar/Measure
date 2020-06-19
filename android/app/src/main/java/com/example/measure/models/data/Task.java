@@ -1,4 +1,4 @@
-package com.example.measure;
+package com.example.measure.models.data;
 
 import java.time.Duration;
 import java.util.Date;

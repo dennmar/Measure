@@ -1,7 +1,7 @@
-package com.example.measure.di;
+package com.example.measure.di.modules;
 
-import com.example.measure.LocalTaskRepository;
-import com.example.measure.TaskRepository;
+import com.example.measure.models.task.LocalTaskRepository;
+import com.example.measure.models.task.TaskRepository;
 
 import dagger.Module;
 import dagger.Provides;

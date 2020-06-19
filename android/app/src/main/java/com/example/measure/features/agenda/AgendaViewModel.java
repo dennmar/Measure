@@ -1,4 +1,4 @@
-package com.example.measure;
+package com.example.measure.features.agenda;
 
 import android.os.Bundle;
 
@@ -9,6 +9,10 @@ import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.measure.models.data.Task;
+import com.example.measure.models.data.User;
+import com.example.measure.models.login.LoginRepository;
+import com.example.measure.models.task.TaskRepository;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 

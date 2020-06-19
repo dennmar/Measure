@@ -4,8 +4,10 @@ import android.os.Bundle;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import com.example.measure.di.DaggerTestAgendaViewModelComponent;
-import com.example.measure.di.TestAgendaViewModelComponent;
+import com.example.measure.di.components.DaggerTestAgendaViewModelComponent;
+import com.example.measure.di.components.TestAgendaViewModelComponent;
+import com.example.measure.features.agenda.AgendaViewModel;
+import com.example.measure.models.data.Task;
 
 import org.junit.Before;
 import org.junit.Rule;

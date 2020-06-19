@@ -1,16 +1,16 @@
-package com.example.measure.di;
+package com.example.measure.di.modules;
 
-import com.example.measure.LocalLoginRepository;
-import com.example.measure.LoginRepository;
+import com.example.measure.models.login.LoginRepository;
+import com.example.measure.models.login.MockLoginRepository;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * A Dagger module that specifies how to provide the login repository.
+ * A Dagger module that specifies how to provide a fake login repository.
  */
 @Module
-public class LoginRepositoryModule {
+public class MockLoginRepositoryModule {
     /**
      * Return the login repository to be provided for all dependents.
      *
@@ -18,6 +18,6 @@ public class LoginRepositoryModule {
      */
     @Provides
     public LoginRepository provideLoginRepository() {
-        return new LocalLoginRepository();
+        return new MockLoginRepository();
     }
 }

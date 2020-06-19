@@ -1,10 +1,14 @@
-package com.example.measure;
+package com.example.measure.features;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.measure.R;
+import com.example.measure.features.agenda.AgendaFragment;
+
 
 /**
  * Main activity for the measure application.

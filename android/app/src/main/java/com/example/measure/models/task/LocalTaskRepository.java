@@ -1,6 +1,9 @@
-package com.example.measure;
+package com.example.measure.models.task;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.measure.models.data.Task;
+import com.example.measure.models.data.User;
 
 import java.util.Date;
 import java.util.List;

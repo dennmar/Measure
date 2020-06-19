@@ -1,4 +1,6 @@
-package com.example.measure;
+package com.example.measure.models.login;
+
+import com.example.measure.models.data.User;
 
 /**
  * A repository using a local database for accessing the login session data.
