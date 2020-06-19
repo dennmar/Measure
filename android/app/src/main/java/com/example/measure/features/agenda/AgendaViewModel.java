@@ -29,9 +29,11 @@ public class AgendaViewModel implements LifecycleOwner {
     private LoginRepository loginRepo;
     private UserRepository userRepo;
     private Bundle savedInstanceState;
+    private LifecycleRegistry lifecycleRegistry;
+
     private User currUser;
     private MutableLiveData<List<Task>> sortedTasks;
-    private LifecycleRegistry lifecycleRegistry;
+    private MutableLiveData<Task> activeTask;
 
     /**
      * Initialize all repositories for data access and the saved instance
@@ -53,6 +55,7 @@ public class AgendaViewModel implements LifecycleOwner {
 
         currUser = this.loginRepo.getCurrentUser();
         sortedTasks = new MutableLiveData<>();
+        activeTask = new MutableLiveData<>();
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
     }
@@ -137,22 +140,30 @@ public class AgendaViewModel implements LifecycleOwner {
     }
 
     /**
-     * Update the active task for the user.
-     *
-     * @param  activeTask the task to be active
-     * @return true if the operation was successful; false otherwise
-     */
-    public boolean updateActiveTask(Task activeTask) {
-        return false;
-    }
-
-    /**
      * Retrieve the active task for the user.
      *
      * @return current active task for the user
      */
-    public Task getActiveTask() {
-        return null;
+    public LiveData<Task> getActiveTask() {
+        // Start lifecycle to allow observers set by view model to observe.
+        lifecycleRegistry.setCurrentState(Lifecycle.State.STARTED);
+
+        userRepo.getActiveTask().observe(this, activeTask -> {
+            this.activeTask.setValue(activeTask);
+        });
+
+        return activeTask;
+    }
+
+    /**
+     * Update the active task for the user.
+     *
+     * @param  task the task to be active
+     * @return true if the operation was successful; false otherwise
+     */
+    public boolean updateActiveTask(Task task) {
+        boolean success = userRepo.updateActiveTask(task);
+        return success;
     }
 
     /**

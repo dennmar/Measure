@@ -309,7 +309,7 @@ public class AgendaViewModelTest {
         boolean setResult = avm.updateActiveTask(task);
         assertThat(setResult, equalTo(true));
 
-        Task getResult = avm.getActiveTask();
+        Task getResult = avm.getActiveTask().getValue();
         assertThat(getResult, equalTo(task));
     }
 
@@ -323,7 +323,7 @@ public class AgendaViewModelTest {
         boolean setResult1 = avm.updateActiveTask(t1);
         assertThat(setResult1, equalTo(true));
 
-        Task getResult1 = avm.getActiveTask();
+        Task getResult1 = avm.getActiveTask().getValue();
         assertThat(getResult1, equalTo(t1));
 
         Task t2 = new Task();
@@ -331,7 +331,7 @@ public class AgendaViewModelTest {
         boolean setResult2 = avm.updateActiveTask(t2);
         assertThat(setResult2, equalTo(true));
 
-        Task getResult2 = avm.getActiveTask();
+        Task getResult2 = avm.getActiveTask().getValue();
         assertThat(getResult2, equalTo(t2));
     }
 
@@ -340,7 +340,7 @@ public class AgendaViewModelTest {
      */
     @Test
     public void testMissingActiveTask() {
-        Task getResult = avm.getActiveTask();
+        Task getResult = avm.getActiveTask().getValue();
         assertThat(getResult, equalTo(null));
     }
 }
