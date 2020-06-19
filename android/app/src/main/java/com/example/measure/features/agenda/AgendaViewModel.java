@@ -142,6 +142,15 @@ public class AgendaViewModel implements LifecycleOwner {
     }
 
     /**
+     * Retrieve the active task for the user.
+     *
+     * @return current active task for the user
+     */
+    public Task getActiveTask() {
+        return null;
+    }
+
+    /**
      * Perform clean-up for this instance.
      */
     public void onDestroy() {

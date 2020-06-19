@@ -298,4 +298,49 @@ public class AgendaViewModelTest {
         boolean deleteResult2 = avm.deleteTask(task);
         assertThat(deleteResult2, equalTo(false));
     }
+
+    /**
+     * Test setting the initial active task.
+     */
+    @Test
+    public void testInitialSetActiveTask() {
+        Task task = new Task();
+        task.localDueDate = new Date(500);
+        boolean setResult = avm.setActiveTask(task);
+        assertThat(setResult, equalTo(true));
+
+        Task getResult = avm.getActiveTask();
+        assertThat(getResult, equalTo(task));
+    }
+
+    /**
+     * Test switching the active task.
+     */
+    @Test
+    public void testSwapActiveTask() {
+        Task t1 = new Task();
+        t1.localDueDate = new Date(1500);
+        boolean setResult1 = avm.setActiveTask(t1);
+        assertThat(setResult1, equalTo(true));
+
+        Task getResult1 = avm.getActiveTask();
+        assertThat(getResult1, equalTo(t1));
+
+        Task t2 = new Task();
+        t2.localDueDate = new Date(2000);
+        boolean setResult2 = avm.setActiveTask(t2);
+        assertThat(setResult2, equalTo(true));
+
+        Task getResult2 = avm.getActiveTask();
+        assertThat(getResult2, equalTo(t2));
+    }
+
+    /**
+     * Test getting the active task for the user when none is set.
+     */
+    @Test
+    public void testMissingActiveTask() {
+        Task getResult = avm.getActiveTask();
+        assertThat(getResult, equalTo(null));
+    }
 }
