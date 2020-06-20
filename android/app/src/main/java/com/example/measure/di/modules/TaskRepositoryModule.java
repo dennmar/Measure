@@ -14,10 +14,12 @@ public class TaskRepositoryModule {
     /**
      * Return the task repository to be provided for all dependents.
      *
+     * @param localTaskRepo task repository using local database
      * @return task repository to be used for task data access
      */
     @Provides
-    public TaskRepository provideTaskRepository() {
-        return new LocalTaskRepository();
+    public TaskRepository provideTaskRepository(
+            LocalTaskRepository localTaskRepo) {
+        return localTaskRepo;
     }
 }

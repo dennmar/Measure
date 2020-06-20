@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * A fake repository for accessing task data.
  */
@@ -23,6 +25,7 @@ public class MockTaskRepository implements TaskRepository {
     /**
      * Initialize the list of tasks.
      */
+    @Inject
     public MockTaskRepository() {
         tasks = new ArrayList<>();
         sortedTasks = new MutableLiveData<>();

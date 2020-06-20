@@ -14,10 +14,12 @@ public class MockTaskRepositoryModule {
     /**
      * Return the task repository to be provided for all dependents.
      *
+     * @param mockTaskRepo fake task repository
      * @return task repository to be used for task data access
      */
     @Provides
-    public TaskRepository provideTaskRepository() {
-        return new MockTaskRepository();
+    public TaskRepository provideTaskRepository(
+            MockTaskRepository mockTaskRepo) {
+        return mockTaskRepo;
     }
 }

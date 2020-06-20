@@ -27,6 +27,9 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * Unit test the agenda view model.
+ */
 public class AgendaViewModelTest {
     // Initialize mocks annotated with @Mock before each test method.
     @Rule
