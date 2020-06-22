@@ -85,6 +85,8 @@ public class AgendaViewModelTest {
         Date startDate = new Date(12938902);
         Date endDate = new Date(13000000);
         Task task = new Task();
+        task.id = 1;
+        task.userId = 1;
         task.localDueDate = startDate;
 
         List<Task> expectedGetResult = new ArrayList<Task>();
@@ -110,7 +112,8 @@ public class AgendaViewModelTest {
 
         for (int i = taskAmt - 1; i >= 0; i--) {
             Task task = new Task();
-            task.id = i;
+            task.id = taskAmt - i;
+            task.userId = 1;
             task.localDueDate = new Date(startDate.getTime() + i);
             expectedGetResult.add(task);
 
@@ -138,6 +141,7 @@ public class AgendaViewModelTest {
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
             task.id = i + 1;
+            task.userId = 1;
             task.localDueDate = new Date(timeOffset + taskAmt - i - 1);
 
             if (task.localDueDate.equals(startDate)
@@ -166,9 +170,10 @@ public class AgendaViewModelTest {
         Date startDate = new Date(1000);
         Date endDate = new Date(2000);
 
-        for (int i = taskAmt; i >= 0; i--) {
+        for (int i = taskAmt; i > 0; i--) {
             Task task = new Task();
             task.id = taskAmt - i + 1;
+            task.userId = 1;
             task.localDueDate = new Date(i);
 
             boolean addResult = avm.addTask(task);
@@ -189,6 +194,7 @@ public class AgendaViewModelTest {
         Date endDate = new Date(112390);
         Task task = new Task();
         task.id = 1;
+        task.userId = 1;
         task.localDueDate = new Date(endDate.getTime() - 1);
         task.name = "Why";
 
@@ -203,6 +209,7 @@ public class AgendaViewModelTest {
 
         Task editedTask = new Task();
         editedTask.id = 1;
+        editedTask.userId = 1;
         editedTask.localDueDate = new Date(endDate.getTime() - 1);
         editedTask.name = "What";
 
@@ -228,7 +235,8 @@ public class AgendaViewModelTest {
 
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
-            task.id = i;
+            task.id = i + 1;
+            task.userId = 1;
             task.localDueDate = new Date(startDate.getTime());
             expectedGetResult.add(task);
 
@@ -266,6 +274,7 @@ public class AgendaViewModelTest {
     public void testEditMissingTask() {
         Task task = new Task();
         task.id = 1;
+        task.userId = 1;
         task.name = "Edited";
         boolean editResult = avm.updateTask(task);
         assertThat(editResult, equalTo(false));
@@ -274,7 +283,8 @@ public class AgendaViewModelTest {
         assertThat(addResult, equalTo(true));
 
         Task task2 = new Task();
-        task2.id = 500;
+        task2.id = 2;
+        task2.userId = 1;
         task2.name = "None";
         boolean editResult2 = avm.updateTask(task2);
         assertThat(editResult2, equalTo(false));
@@ -292,7 +302,8 @@ public class AgendaViewModelTest {
         int taskAmt = 5;
         for (int i = 0; i < taskAmt; i++) {
             Task t = new Task();
-            t.id = i;
+            t.id = i + 1;
+            t.userId = 1;
 
             boolean addResult = avm.addTask(t);
             assertThat(addResult, equalTo(true));
