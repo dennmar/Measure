@@ -8,6 +8,7 @@ import com.example.measure.di.components.DaggerTestAgendaViewModelComponent;
 import com.example.measure.di.components.TestAgendaViewModelComponent;
 import com.example.measure.features.agenda.AgendaViewModel;
 import com.example.measure.models.data.Task;
+import com.example.measure.models.task.SortByDate;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -51,16 +52,6 @@ public class AgendaViewModelTest {
         TestAgendaViewModelComponent testComponent =
                 DaggerTestAgendaViewModelComponent.create();
         avm = testComponent.avmFactory().create(mockSavedInstanceState);
-    }
-
-    /**
-     * Sort the tasks by date in ascending order.
-     */
-    public class SortByDate implements Comparator<Task> {
-        @Override
-        public int compare(Task o1, Task o2) {
-            return o1.localDueDate.compareTo(o2.localDueDate);
-        }
     }
 
     /**

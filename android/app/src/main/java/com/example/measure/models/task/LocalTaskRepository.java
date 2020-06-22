@@ -1,9 +1,11 @@
 package com.example.measure.models.task;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,7 @@ import javax.inject.Inject;
  */
 public class LocalTaskRepository implements TaskRepository {
     private TaskDao taskDao;
+    private MutableLiveData<List<Task>> sortedTasks;
 
     /**
      * Initialize member variables.
@@ -24,6 +27,7 @@ public class LocalTaskRepository implements TaskRepository {
     @Inject
     public LocalTaskRepository(TaskDao taskDao) {
         this.taskDao = taskDao;
+        sortedTasks = new MutableLiveData<>();
     }
 
     /**
@@ -37,7 +41,17 @@ public class LocalTaskRepository implements TaskRepository {
      */
     public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
                                                Date endDate) {
-        return null;
+        try {
+            taskDao.getSortedTasks(user, startDate, endDate).observeForever(sortedTasks -> {
+                this.sortedTasks.setValue(sortedTasks);
+            });
+        }
+        catch (DBOperationException e) {
+            // TODO
+        }
+        finally {
+            return this.sortedTasks;
+        }
     }
 
     /**
@@ -48,7 +62,14 @@ public class LocalTaskRepository implements TaskRepository {
      * @return true if the operation was successful; false otherwise
      */
     public boolean addTask(User user, Task task) {
-        return false;
+        try {
+            taskDao.addTask(user, task);
+            return true;
+        }
+        catch (DBOperationException e) {
+            // TODO
+            return false;
+        }
     }
 
     /**
@@ -59,7 +80,14 @@ public class LocalTaskRepository implements TaskRepository {
      * @return true if the operation was successful; false otherwise
      */
     public boolean updateTask(User user, Task task) {
-        return false;
+        try {
+            taskDao.updateTask(user, task);
+            return true;
+        }
+        catch (DBOperationException e) {
+            // TODO
+            return false;
+        }
     }
 
     /**
@@ -70,6 +98,13 @@ public class LocalTaskRepository implements TaskRepository {
      * @return true if the operation was successful; false otherwise
      */
     public boolean deleteTask(User user, Task task) {
-        return false;
+        try {
+            taskDao.deleteTask(user, task);
+            return true;
+        }
+        catch (DBOperationException e) {
+            // TODO
+            return false;
+        }
     }
 }

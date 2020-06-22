@@ -33,16 +33,6 @@ public class MockTaskRepository implements TaskRepository {
     }
 
     /**
-     * Sort tasks by date in ascending order.
-     */
-    private class SortByDate implements Comparator<Task> {
-        @Override
-        public int compare(Task o1, Task o2) {
-            return o1.localDueDate.compareTo(o2.localDueDate);
-        }
-    }
-
-    /**
      * Retrieve all tasks for the user from the database within a date range in
      * ascending order by date.
      *
