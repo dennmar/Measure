@@ -6,6 +6,7 @@ import com.example.measure.di.components.DaggerTestTaskRepositoryComponent;
 import com.example.measure.di.components.TestTaskRepositoryComponent;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
+import com.example.measure.models.task.SortByDate;
 import com.example.measure.models.task.TaskRepository;
 
 import org.junit.Before;
@@ -40,16 +41,6 @@ public class TaskRepositoryTest {
         TestTaskRepositoryComponent taskRepositoryComponent =
                 DaggerTestTaskRepositoryComponent.create();
          taskRepo = taskRepositoryComponent.taskRepository();
-    }
-
-    /**
-     * Sort the tasks by date in ascending order.
-     */
-    public class SortByDate implements Comparator<Task> {
-        @Override
-        public int compare(Task o1, Task o2) {
-            return o1.localDueDate.compareTo(o2.localDueDate);
-        }
     }
 
     /**
@@ -114,7 +105,7 @@ public class TaskRepositoryTest {
 
         List<Task> getResult = taskRepo.getSortedTasks(testUser, startDate,
                 endDate).getValue();
-        Collections.sort(expectedGetResult, new TaskRepositoryTest.SortByDate());
+        Collections.sort(expectedGetResult, new SortByDate());
         assertThat(getResult, equalTo(expectedGetResult));
     }
 
@@ -148,7 +139,7 @@ public class TaskRepositoryTest {
 
         List<Task> getResult = taskRepo.getSortedTasks(testUser, startDate,
                 endDate).getValue();
-        Collections.sort(expectedGetResult, new TaskRepositoryTest.SortByDate());
+        Collections.sort(expectedGetResult, new SortByDate());
         assertThat(getResult, equalTo(expectedGetResult));
     }
 
@@ -245,7 +236,7 @@ public class TaskRepositoryTest {
         assertThat(deleteResult1, equalTo(true));
 
         expectedGetResult.remove(1);
-        Collections.sort(expectedGetResult, new TaskRepositoryTest.SortByDate());
+        Collections.sort(expectedGetResult, new SortByDate());
         List<Task> getResult1 = taskRepo.getSortedTasks(testUser, startDate,
                 endDate).getValue();
         assertThat(getResult1, equalTo(expectedGetResult));
