@@ -13,8 +13,12 @@ import com.example.measure.models.task.SortByDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.MethodRule;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.quality.Strictness;
@@ -32,10 +36,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Unit test the agenda view model.
  */
 public class AgendaViewModelTest {
-    // Initialize mocks annotated with @Mock before each test method.
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule()
-            .strictness(Strictness.STRICT_STUBS);
     // Execute background tasks synchronously (to allow LiveData to work).
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
@@ -49,6 +49,9 @@ public class AgendaViewModelTest {
      */
     @Before
     public void initAgendaViewModel() {
+        // Initialize mocks annotated with @Mock before each test method.
+        MockitoAnnotations.initMocks(this);
+        
         TestAgendaViewModelComponent testComponent =
                 DaggerTestAgendaViewModelComponent.create();
         avm = testComponent.avmFactory().create(mockSavedInstanceState);
