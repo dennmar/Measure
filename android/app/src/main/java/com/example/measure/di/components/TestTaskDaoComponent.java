@@ -1,9 +1,12 @@
 package com.example.measure.di.components;
 
+import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
+import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.TaskDaoModule;
 import com.example.measure.models.task.TaskDao;
 
+import dagger.BindsInstance;
 import dagger.Component;
 
 /**
@@ -12,8 +15,18 @@ import dagger.Component;
  */
 @Component(modules = {
         AssistedInjectModule.class,
-        TaskDaoModule.class
+        TaskDaoModule.class,
+        ContextModule.class
 })
 public interface TestTaskDaoComponent {
     TaskDao taskDao();
+
+    /**
+     * Creates a new TestTaskDaoComponent instance each time it is called.
+     */
+    @Component.Factory
+    interface Factory {
+        TestTaskDaoComponent newAppComponent(
+                @BindsInstance MeasureApplication app);
+    }
 }

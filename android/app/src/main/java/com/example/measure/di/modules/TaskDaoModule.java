@@ -1,8 +1,13 @@
 package com.example.measure.di.modules;
 
+import android.app.Application;
+import android.content.Context;
+
+import com.example.measure.di.MeasureApplication;
 import com.example.measure.models.task.SQLiteTaskDao;
 import com.example.measure.models.task.TaskDao;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 

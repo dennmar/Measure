@@ -11,5 +11,5 @@ import com.example.measure.di.components.DaggerApplicationComponent;
  */
 public class MeasureApplication extends Application {
     public ApplicationComponent appComponent =
-            DaggerApplicationComponent.create();
+            DaggerApplicationComponent.factory().newAppComponent(this);
 }

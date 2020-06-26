@@ -2,6 +2,7 @@ package com.example.measure;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.components.DaggerTestTaskDaoComponent;
 import com.example.measure.di.components.TestTaskDaoComponent;
 import com.example.measure.models.data.Task;
@@ -31,6 +32,7 @@ public class TaskDaoTest {
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
 
+    MeasureApplication mockApp;
     TaskDao taskDao;
 
     /**
@@ -38,8 +40,9 @@ public class TaskDaoTest {
      */
     @Before
     public void initTaskDao() {
+        mockApp = new MeasureApplication();
         TestTaskDaoComponent taskDaoComponent =
-                DaggerTestTaskDaoComponent.create();
+                DaggerTestTaskDaoComponent.factory().newAppComponent(mockApp);
         taskDao = taskDaoComponent.taskDao();
     }
 
