@@ -1,7 +1,7 @@
 package com.example.measure.models.data;
 
-import java.time.Duration;
-import java.util.Date;
+import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 
 /**
  * A task for a user to be completed on a due date.
@@ -11,7 +11,7 @@ public class Task {
     public int userId;
     public String name;
     public Duration timeWorked;
-    public Date localDueDate;
+    public LocalDate localDueDate;
     public boolean isCompleted;
 
     /**
@@ -33,11 +33,11 @@ public class Task {
      * @param userId       database id of the owner
      * @param name         task name
      * @param timeWorked   amount of time worked on the task
-     * @param localDueDate due date in local time
+     * @param localDueDate local due date without a time zone
      * @param isCompleted  whether the task has been completed
      */
     public Task(int id, int userId, String name, Duration timeWorked,
-            Date localDueDate, boolean isCompleted) {
+            LocalDate localDueDate, boolean isCompleted) {
         this.id = id;
         this.userId = userId;
         this.name = name;

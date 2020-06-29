@@ -3,6 +3,7 @@ package com.example.measure.di.components;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
+import com.example.measure.di.modules.MeasureRoomDatabaseModule;
 import com.example.measure.di.modules.TaskDaoModule;
 import com.example.measure.models.task.TaskDao;
 
@@ -16,7 +17,8 @@ import dagger.Component;
 @Component(modules = {
         AssistedInjectModule.class,
         TaskDaoModule.class,
-        ContextModule.class
+        ContextModule.class,
+        MeasureRoomDatabaseModule.class
 })
 public interface TestTaskDaoComponent {
     TaskDao taskDao();

@@ -9,6 +9,7 @@ import com.example.measure.models.data.User;
 import com.example.measure.models.task.SortByDate;
 import com.example.measure.models.task.TaskRepository;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,8 +17,6 @@ import org.junit.rules.TestWatcher;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -49,8 +48,8 @@ public class TaskRepositoryTest {
     @Test
     public void testGetEmptyTasks() {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(0);
-        Date endDate = new Date(1000000);
+        LocalDate startDate = new LocalDate(1999, 1, 1);
+        LocalDate endDate = new LocalDate(2000, 1, 11);
 
         List<Task> expectedTasks = new ArrayList<>();
         List<Task> getResult = taskRepo.getSortedTasks(testUser, startDate,
@@ -64,12 +63,12 @@ public class TaskRepositoryTest {
     @Test
     public void testAddTask() {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(278);
-        Date endDate = new Date(3090);
+        LocalDate startDate = new LocalDate(2001, 5, 5);
+        LocalDate endDate = startDate.plusMonths(6);
         Task task = new Task();
         task.id = 1;
         task.userId = testUser.id;
-        task.localDueDate = new Date(startDate.getTime());
+        task.localDueDate = new LocalDate(startDate);
 
         boolean addResult = taskRepo.addTask(testUser, task);
         assertThat(addResult, equalTo(true));
@@ -89,14 +88,14 @@ public class TaskRepositoryTest {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(100);
-        Date endDate = new Date(startDate.getTime() + taskAmt);
+        LocalDate startDate = new LocalDate(2007, 12, 23);
+        LocalDate endDate = startDate.plusMonths(10);
 
         for (int i = taskAmt - 1; i >= 0; i--) {
             Task task = new Task();
             task.id = taskAmt - i;
             task.userId = testUser.id;
-            task.localDueDate = new Date(startDate.getTime() + i);
+            task.localDueDate = startDate.plusDays(i);
             expectedGetResult.add(task);
 
             boolean addResult = taskRepo.addTask(testUser, task);
@@ -116,20 +115,19 @@ public class TaskRepositoryTest {
     public void testGetSubset() {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
-        int timeOffset = 100;
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(timeOffset + (taskAmt / 2));
-        Date endDate = new Date(timeOffset + taskAmt - 1);
+        LocalDate dateOffset = new LocalDate(2014, 2, 2);
+        LocalDate startDate = dateOffset.plusDays(taskAmt / 2);
+        LocalDate endDate = dateOffset.plusDays(taskAmt - 1);
 
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
             task.id = i + 1;
             task.userId = testUser.id;
-            task.localDueDate = new Date(timeOffset + taskAmt - i - 1);
+            task.localDueDate = dateOffset.plusDays(taskAmt - i - 1);
 
-            if (task.localDueDate.equals(startDate)
-                    || (task.localDueDate.after(startDate)
-                    && task.localDueDate.before(endDate))) {
+            if (task.localDueDate.compareTo(startDate) >= 0
+                    && task.localDueDate.compareTo(endDate) < 0) {
                 expectedGetResult.add(task);
             }
 
@@ -151,14 +149,19 @@ public class TaskRepositoryTest {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(1000);
-        Date endDate = new Date(2000);
+        LocalDate startDate = new LocalDate(2019, 12, 3);
+        LocalDate endDate = startDate.plusYears(2);
 
         for (int i = taskAmt; i > 0; i--) {
             Task task = new Task();
             task.id = taskAmt - i + 1;
             task.userId = testUser.id;
-            task.localDueDate = new Date(i);
+            if (i % 2 == 0) {
+                task.localDueDate = startDate.minusDays(i + 1);
+            }
+            else {
+                task.localDueDate = endDate.plusDays(i + 1);
+            }
 
             boolean addResult = taskRepo.addTask(testUser, task);
             assertThat(addResult, equalTo(true));
@@ -175,13 +178,13 @@ public class TaskRepositoryTest {
     @Test
     public void testEditTask() {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(12353);
-        Date endDate = new Date(112390);
+        LocalDate startDate = new LocalDate(2014, 4, 2);
+        LocalDate endDate = startDate.plusMonths(4);
 
         Task task = new Task();
         task.id = 1;
         task.userId = testUser.id;
-        task.localDueDate = new Date(endDate.getTime() - 1);
+        task.localDueDate = endDate.minusDays(1);
         task.name = "Why";
 
         boolean addSuccess = taskRepo.addTask(testUser, task);
@@ -196,7 +199,7 @@ public class TaskRepositoryTest {
         Task editedTask = new Task();
         editedTask.id = 1;
         editedTask.userId = testUser.id;
-        editedTask.localDueDate = new Date(endDate.getTime() - 1);
+        editedTask.localDueDate = endDate.minusDays(2);
         editedTask.name = "What";
 
         boolean editSuccess = taskRepo.updateTask(testUser, editedTask);
@@ -217,14 +220,14 @@ public class TaskRepositoryTest {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 3;
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(1000);
-        Date endDate = new Date(2000);
+        LocalDate startDate = new LocalDate(1990, 4, 2);
+        LocalDate endDate = startDate.plusDays(1);
 
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
             task.id = i;
             task.userId = testUser.id;
-            task.localDueDate = new Date(startDate.getTime());
+            task.localDueDate = startDate;
             expectedGetResult.add(task);
 
             boolean addResult = taskRepo.addTask(testUser, task);
@@ -313,14 +316,14 @@ public class TaskRepositoryTest {
      */
     @Test
     public void testAddForDiffUsers() {
-        Date startDate = new Date(200);
-        Date endDate = new Date(300);
+        LocalDate startDate = new LocalDate(2006, 5, 6);
+        LocalDate endDate = startDate.plusWeeks(1);
 
         User testUser1 = new User(1, "test", null);
         Task task1 = new Task();
         task1.id = 1;
-        task1.userId = 1;
-        task1.localDueDate = new Date(startDate.getTime());
+        task1.userId = testUser1.id;
+        task1.localDueDate = startDate;
 
         boolean addResult = taskRepo.addTask(testUser1, task1);
         assertThat(addResult, equalTo(true));
@@ -328,8 +331,8 @@ public class TaskRepositoryTest {
         User testUser2 = new User(2, "tester", null);
         Task task2 = new Task();
         task2.id = 2;
-        task2.userId = 2;
-        task2.localDueDate = new Date(startDate.getTime());
+        task2.userId = testUser2.id;
+        task2.localDueDate = startDate;
 
         boolean addResult2 = taskRepo.addTask(testUser2, task2);
         assertThat(addResult2, equalTo(true));

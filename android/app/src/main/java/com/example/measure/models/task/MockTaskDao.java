@@ -7,6 +7,8 @@ import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,23 +38,23 @@ public class MockTaskDao implements TaskDao {
      * ascending order by date.
      *
      * @param user      user to retrieve tasks for
-     * @param startDate starting date of tasks to fetch (inclusive)
-     * @param endDate   ending date of tasks to fetch (exclusive)
+     * @param startDate starting date of tasks (inclusive. no time zone)
+     * @param endDate   ending date of tasks (exclusive, no time zone)
+     * @throws DBOperationException if the tasks could not be fetched
      */
-    public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
-                                        Date endDate) {
+    public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
+                                        LocalDate endDate) {
         List<Task> sortedTaskList = new ArrayList<>();
 
         if (userTaskMap.containsKey(user.id)) {
             List<Task> tasks = userTaskMap.get(user.id);
             Collections.sort(tasks, sortByDate);
             for (Task task : tasks) {
-                long taskTime = task.localDueDate.getTime();
-                if (taskTime >= startDate.getTime()
-                        && taskTime < endDate.getTime()) {
+                if (task.localDueDate.compareTo(startDate) >= 0
+                        && task.localDueDate.compareTo(endDate) < 0) {
                     sortedTaskList.add(task);
                 }
-                else if (taskTime >= endDate.getTime()) {
+                else if (task.localDueDate.compareTo(endDate) >= 0) {
                     break;
                 }
             }

@@ -6,7 +6,7 @@ import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,12 +18,12 @@ public interface TaskDao {
      * ascending order by date.
      *
      * @param user      user to retrieve tasks for
-     * @param startDate starting date of tasks to fetch (inclusive)
-     * @param endDate   ending date of tasks to fetch (exclusive)
+     * @param startDate starting date of tasks (inclusive. no time zone)
+     * @param endDate   ending date of tasks (exclusive, no time zone)
      * @throws DBOperationException if the tasks could not be fetched
      */
-    LiveData<List<Task>> getSortedTasks(User user, Date startDate,
-            Date endDate) throws DBOperationException;
+    LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
+            LocalDate endDate) throws DBOperationException;
 
     /**
      * Store a task for the user in the database.

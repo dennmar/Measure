@@ -1,6 +1,8 @@
 package com.example.measure;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.components.DaggerTestTaskDaoComponent;
@@ -11,23 +13,28 @@ import com.example.measure.models.task.SortByDate;
 import com.example.measure.models.task.TaskDao;
 import com.example.measure.utils.DBOperationException;
 
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Unit test the task DAO.
+ * Test the task DAO.
+ *
+ * Note: Unit testing resulted in java.lang.RuntimeException: Method
+ * getMainLooper in android.os.Looper not mocked.
  */
-public class TaskDaoTest {
+@RunWith(AndroidJUnit4.class)
+public class InstrumentedTaskDaoTest {
     // Execute background tasks synchronously (to allow LiveData to work).
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
@@ -40,7 +47,10 @@ public class TaskDaoTest {
      */
     @Before
     public void initTaskDao() {
-        mockApp = new MeasureApplication();
+        mockApp = (MeasureApplication) InstrumentationRegistry
+                .getInstrumentation()
+                .getTargetContext()
+                .getApplicationContext();
         TestTaskDaoComponent taskDaoComponent =
                 DaggerTestTaskDaoComponent.factory().newAppComponent(mockApp);
         taskDao = taskDaoComponent.taskDao();
@@ -57,7 +67,8 @@ public class TaskDaoTest {
      * @return list of tasks that were added
      */
     private List<Task> addMultiple(int addAmt, int startingId, User taskOwner,
-                             Date startingDate) throws DBOperationException {
+                                   LocalDate startingDate)
+                                   throws DBOperationException {
         List<Task> addedTasks = new ArrayList<>();
 
         for (int i = 0; i < addAmt; i++) {
@@ -65,7 +76,7 @@ public class TaskDaoTest {
             task.id = startingId + i;
             task.userId = taskOwner.id;
             task.name = Integer.toString(task.id);
-            task.localDueDate = new Date(startingDate.getTime() + i);
+            task.localDueDate = startingDate.plusDays(i);
 
             taskDao.addTask(taskOwner, task);
             addedTasks.add(task);
@@ -80,8 +91,8 @@ public class TaskDaoTest {
     @Test
     public void testGetEmptyTasks() {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(200);
-        Date endDate = new Date(10000);
+        LocalDate startDate = new LocalDate(2001, 11, 27);
+        LocalDate endDate = startDate.plusYears(3);
 
         List<Task> expectedTasks = new ArrayList<>();
         try {
@@ -105,18 +116,18 @@ public class TaskDaoTest {
         int taskAmt = 10;
         int timeOffset = 100;
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(timeOffset + (taskAmt / 2));
-        Date endDate = new Date(timeOffset + taskAmt - 1);
+        LocalDate dateOffset = new LocalDate(1995, 5, 22);
+        LocalDate startDate = dateOffset.plusDays(taskAmt / 2);
+        LocalDate endDate = dateOffset.plusDays(taskAmt - 1);
 
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
             task.id = i + 1;
             task.userId = testUser.id;
-            task.localDueDate = new Date(timeOffset + taskAmt - i - 1);
+            task.localDueDate = dateOffset.plusDays(taskAmt - i - 1);
 
-            if (task.localDueDate.equals(startDate)
-                    || (task.localDueDate.after(startDate)
-                    && task.localDueDate.before(endDate))) {
+            if (task.localDueDate.compareTo(startDate) >= 0
+                    && task.localDueDate.compareTo(endDate) < 0) {
                 expectedGetResult.add(task);
             }
 
@@ -137,17 +148,19 @@ public class TaskDaoTest {
     @Test
     public void testGetNoMatchingTasks() throws DBOperationException {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(1000);
-        Date endDate = new Date(2000);
+        LocalDate addStartDate = new LocalDate(1960, 7, 1);
+        LocalDate addEndDate = addStartDate.plusWeeks(2);
+        LocalDate queryStartDate = addEndDate;
+        LocalDate queryEndDate = queryStartDate.plusMonths(2);
         List<Task> expectedGetResult = new ArrayList<>();
 
-        List<Task> addedTasks = addMultiple(10, 1, testUser, endDate);
-        List<Task> getResultMatch = taskDao.getSortedTasks(testUser, endDate,
-                new Date(endDate.getTime() + 1000)).getValue();
+        List<Task> addedTasks = addMultiple(10, 1, testUser, addStartDate);
+        List<Task> getResultMatch = taskDao.getSortedTasks(testUser,
+                addStartDate, addEndDate).getValue();
         assertThat(getResultMatch, equalTo(addedTasks));
 
-        List<Task> getResultNoMatch = taskDao.getSortedTasks(testUser, startDate,
-                endDate).getValue();
+        List<Task> getResultNoMatch = taskDao.getSortedTasks(testUser,
+                queryStartDate, queryEndDate).getValue();
         assertThat(getResultNoMatch, equalTo(expectedGetResult));
     }
 
@@ -159,10 +172,10 @@ public class TaskDaoTest {
     @Test
     public void testEditTask() throws DBOperationException {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(12353);
-        Date endDate = new Date(112390);
+        LocalDate startDate = new LocalDate(1982, 8, 2);
+        LocalDate endDate = startDate.plusDays(5);
 
-        Date taskDate = new Date(endDate.getTime() - 1);
+        LocalDate taskDate = endDate.minusDays(1);
         Task task = new Task(1, testUser.id, "Why", null, taskDate, false);
         List<Task> expectedGetResult1 = new ArrayList<>();
         expectedGetResult1.add(task);
@@ -191,8 +204,8 @@ public class TaskDaoTest {
     @Test
     public void testDeleteTask() throws DBOperationException {
         User testUser = new User(1, "test", null);
-        Date startDate = new Date(1000);
-        Date endDate = new Date(2000);
+        LocalDate startDate = new LocalDate(2054, 1, 5);
+        LocalDate endDate = startDate.plusMonths(20);
 
         List<Task> expectedGetResult = new ArrayList<>();
         int[] removeOrder = {1, 0, 0};
@@ -298,8 +311,8 @@ public class TaskDaoTest {
         User testUser2 = new User(2, "Goose", null);
         int taskAmt1 = 3;
         int taskAmt2 = taskAmt1;
-        Date startDate = new Date(231123);
-        Date endDate = new Date(startDate.getTime() + taskAmt1);
+        LocalDate startDate = new LocalDate(2031, 4, 26);
+        LocalDate endDate = startDate.plusDays(taskAmt1);
 
         List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
                 startDate);
@@ -341,8 +354,8 @@ public class TaskDaoTest {
         User testUser2 = new User(2, "Goose", null);
         int taskAmt1 = 3;
         int taskAmt2 = taskAmt1;
-        Date startDate = new Date(231123);
-        Date endDate = new Date(startDate.getTime() + taskAmt1);
+        LocalDate startDate = new LocalDate(2031, 4, 26);
+        LocalDate endDate = startDate.plusDays(taskAmt1);
 
         List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
                 startDate);

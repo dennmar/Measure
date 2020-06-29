@@ -1,15 +1,18 @@
 package com.example.measure.models.task;
 
-import android.app.Application;
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
+import com.example.measure.db.MeasureRoomDatabase;
+import com.example.measure.db.RoomTask;
+import com.example.measure.db.RoomTaskDao;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,16 +21,18 @@ import javax.inject.Inject;
  * A SQLite task database object.
  */
 public class SQLiteTaskDao implements TaskDao {
-    private Context appContext;
+    private RoomTaskDao roomTaskDao;
+    private MutableLiveData<List<Task>> sortedTasks;
 
     /**
      * Initialize member variables.
      *
-     * @param appContext application context
+     * @param db SQLite database where tasks are stored
      */
     @Inject
-    public SQLiteTaskDao(Context appContext) {
-        this.appContext = appContext;
+    public SQLiteTaskDao(MeasureRoomDatabase db) {
+        roomTaskDao = db.taskDao();
+        sortedTasks = new MutableLiveData<>();
     }
 
     /**
@@ -39,8 +44,8 @@ public class SQLiteTaskDao implements TaskDao {
      * @param endDate   ending date of tasks to fetch (exclusive)
      * @throws DBOperationException if the tasks could not be fetched
      */
-    public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
-            Date endDate) throws DBOperationException {
+    public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
+            LocalDate endDate) throws DBOperationException {
         return null;
     }
 
@@ -52,7 +57,6 @@ public class SQLiteTaskDao implements TaskDao {
      * @throws DBOperationException if the task could not be added
      */
     public void addTask(User user, Task task) throws DBOperationException {
-
     }
 
     /**
@@ -63,7 +67,6 @@ public class SQLiteTaskDao implements TaskDao {
      * @throws DBOperationException if the task does not exist
      */
     public void updateTask(User user, Task task) throws DBOperationException {
-
     }
 
     /**
@@ -74,6 +77,5 @@ public class SQLiteTaskDao implements TaskDao {
      * @throws DBOperationException if the task does not exist
      */
     public void deleteTask(User user, Task task) throws DBOperationException {
-
     }
 }

@@ -27,17 +27,32 @@ android {
 }
 
 dependencies {
+    def room_version = "2.2.5"
+    def dagger_version = "2.27"
+    def assisted_inject_version = "0.5.2"
+    def mockito_version = "3.3.0"
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'com.google.dagger:dagger:2.27'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
-    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2'
-    annotationProcessor 'com.squareup.inject:assisted-inject-processor-dagger2:0.5.2'
+
+    implementation "com.google.dagger:dagger:$dagger_version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assisted_inject_version"
+    annotationProcessor "com.squareup.inject:assisted-inject-processor-dagger2:$assisted_inject_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    implementation "joda-time:joda-time:2.10.6"
+
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:3.3.0'
+    testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation 'android.arch.core:core-testing:2.1.0'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'android.arch.core:core-testing:2.1.0'
 }

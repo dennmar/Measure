@@ -6,10 +6,11 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,24 +38,24 @@ public class MockTaskRepository implements TaskRepository {
      * ascending order by date.
      *
      * @param user      user to retrieve tasks for
-     * @param startDate starting date of tasks to fetch (inclusive)
-     * @param endDate   ending date of tasks to fetch (exclusive)
+     * @param startDate starting date of tasks (inclusive. no time zone)
+     * @param endDate   ending date of tasks (exclusive, no time zone)
      * @return observable list of tasks belonging to the user sorted by date
      */
     @Override
-    public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
-                                               Date endDate) {
+    public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
+                                               LocalDate endDate) {
         List<Task> sortedTaskList = new ArrayList<>();
         Collections.sort(tasks, sortByDate);
 
         for (int i = 0; i < tasks.size(); i++) {
             Task currTask = tasks.get(i);
-            long currTaskTime = currTask.localDueDate.getTime();
-            if (currTask.userId == user.id && currTaskTime >= startDate.getTime()
-                    && currTaskTime < endDate.getTime()) {
+            if (currTask.userId == user.id
+                    && currTask.localDueDate.compareTo(startDate) >= 0
+                    && currTask.localDueDate.compareTo(endDate) < 0) {
                 sortedTaskList.add(currTask);
             }
-            else if (currTaskTime >= endDate.getTime()) {
+            else if (currTask.localDueDate.compareTo(endDate) >= 0) {
                 break;
             }
         }

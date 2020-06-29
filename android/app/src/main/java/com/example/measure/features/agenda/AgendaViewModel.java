@@ -14,6 +14,8 @@ import com.example.measure.models.user.UserRepository;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 
+import org.joda.time.LocalDate;
+
 import java.util.Date;
 import java.util.List;
 
@@ -77,7 +79,8 @@ public class AgendaViewModel extends ViewModel {
      * @param endDate   ending date of the agenda (exclusive)
      * @return observable list of tasks for the user sorted by date
      */
-    public LiveData<List<Task>> getSortedTasks(Date startDate, Date endDate) {
+    public LiveData<List<Task>> getSortedTasks(LocalDate startDate,
+                                               LocalDate endDate) {
         enableObservers();
 
         taskRepo.getSortedTasks(currUser, startDate, endDate).observe(this,

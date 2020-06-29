@@ -7,7 +7,8 @@ import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
-import java.util.Date;
+import org.joda.time.LocalDate;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,15 +36,16 @@ public class LocalTaskRepository implements TaskRepository {
      * ascending order by date.
      *
      * @param user      user to retrieve tasks for
-     * @param startDate starting date of tasks to fetch (inclusive)
-     * @param endDate   ending date of tasks to fetch (exclusive)
+     * @param startDate starting date of tasks (inclusive. no time zone)
+     * @param endDate   ending date of tasks (exclusive, no time zone)
      * @return observable list of tasks belonging to the user sorted by date
      */
-    public LiveData<List<Task>> getSortedTasks(User user, Date startDate,
-                                               Date endDate) {
+    public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
+                                               LocalDate endDate) {
         try {
-            taskDao.getSortedTasks(user, startDate, endDate).observeForever(sortedTasks -> {
-                this.sortedTasks.setValue(sortedTasks);
+            taskDao.getSortedTasks(user, startDate, endDate)
+                    .observeForever(sortedTasks -> {
+                        this.sortedTasks.setValue(sortedTasks);
             });
         }
         catch (DBOperationException e) {
