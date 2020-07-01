@@ -14,6 +14,7 @@ import com.example.measure.models.task.SortByDate;
 import com.example.measure.models.task.TaskDao;
 import com.example.measure.utils.DBOperationException;
 
+import org.hamcrest.core.Every;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
@@ -322,74 +323,29 @@ public class InstrumentedTaskDaoTest {
     }
 
     /**
-     * Test editing a task belonging to another user.
-     *
-     * @throws DBOperationException if a task could not be added
+     * Test adding duplicate tasks.
      */
     @Test
-    public void testEditOtherTask() throws DBOperationException {
-        User testUser1 = new User(1, "test", null);
-        User testUser2 = new User(2, "Goose", null);
-        int taskAmt1 = 3;
-        int taskAmt2 = taskAmt1;
-        LocalDate startDate = new LocalDate(2031, 4, 26);
-        LocalDate endDate = startDate.plusDays(taskAmt1);
+    public void testAddDuplicates() throws DBOperationException {
+        int dupAmt = 5;
+        User testUser = new User(1, "test", null);
+        LocalDate startDate = new LocalDate(1999, 9, 9);
+        LocalDate endDate = startDate.plusDays(dupAmt);
+        List<Task> expectedGetResult = new ArrayList<>();
 
-        List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
-                startDate);
-        List<Task> addedTasks2 = addMultiple(taskAmt2, taskAmt1 + 1, testUser2,
-                startDate);
+        for (int i = 0; i < dupAmt; i++) {
+            Task task = new Task();
+            task.id = i + 1;
+            task.userId = testUser.id;
+            task.name = "Same name";
+            task.localDueDate = startDate;
 
-        try {
-            taskDao.updateTask(testUser1, addedTasks2.get(0));
-            assertThat(false, equalTo(true));
-        }
-        catch (DBOperationException e) {
-            // Expected behavior.
+            taskDao.addTask(testUser, task);
+            expectedGetResult.add(task);
         }
 
-        try {
-            taskDao.updateTask(testUser2, addedTasks1.get(taskAmt1 - 1));
-            assertThat(false, equalTo(true));
-        }
-        catch (DBOperationException e) {
-            // Expected behavior.
-        }
-    }
-
-    /**
-     * Test deleting a task belonging to another user.
-     *
-     * @throws DBOperationException if a task could not be added
-     */
-    @Test
-    public void testDeleteOtherTask() throws DBOperationException {
-        User testUser1 = new User(1, "test", null);
-        User testUser2 = new User(2, "Goose", null);
-        int taskAmt1 = 3;
-        int taskAmt2 = taskAmt1;
-        LocalDate startDate = new LocalDate(2031, 4, 26);
-        LocalDate endDate = startDate.plusDays(taskAmt1);
-
-        List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
-                startDate);
-        List<Task> addedTasks2 = addMultiple(taskAmt2, taskAmt1 + 1, testUser2,
-                startDate);
-
-        try {
-            taskDao.deleteTask(testUser1, addedTasks2.get(taskAmt2 - 1));
-            assertThat(false, equalTo(true));
-        }
-        catch (DBOperationException e) {
-            // Expected behavior.
-        }
-
-        try {
-            taskDao.deleteTask(testUser2, addedTasks1.get(0));
-            assertThat(false, equalTo(true));
-        }
-        catch (DBOperationException e) {
-            // Expected behavior.
-        }
+        List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
+                endDate).getValue();
+        assertThat(getResult, looseMatch(expectedGetResult));
     }
 }

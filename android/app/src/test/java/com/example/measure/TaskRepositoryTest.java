@@ -8,6 +8,8 @@ import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.models.task.SortByDate;
 import com.example.measure.models.task.TaskRepository;
+import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -43,10 +45,45 @@ public class TaskRepositoryTest {
     }
 
     /**
+     * Add multiple tasks to the database.
+     *
+     * @param addAmt       amount of tasks to add
+     * @param startingId   id of the first task to add (will be incremented)
+     * @param taskOwner    user who will own the tasks
+     * @param startingDate date of the first task to add (will be incremented)
+     * @throws DBOperationException if a task could not be added
+     * @return list of tasks that were added
+     */
+    private List<Task> addMultiple(int addAmt, int startingId, User taskOwner,
+            LocalDate startingDate) throws DBOperationException,
+            InvalidQueryException {
+        List<Task> addedTasks = new ArrayList<>();
+
+        for (int i = 0; i < addAmt; i++) {
+            Task task = new Task();
+            task.id = startingId + i;
+            task.userId = taskOwner.id;
+            task.name = Integer.toString(task.id);
+            task.localDueDate = startingDate.plusDays(i);
+
+            addedTasks.add(task);
+            boolean addSuccess = taskRepo.addTask(taskOwner, task);
+            assertThat(addSuccess, equalTo(true));
+        }
+
+        List<Task> getResult = taskRepo.getSortedTasks(taskOwner, startingDate,
+                startingDate.plusDays(addAmt)).getValue();
+        assertThat(getResult, equalTo(addedTasks));
+
+        return getResult;
+    }
+
+    /**
      * Test getting tasks when none exists for the user.
      */
     @Test
-    public void testGetEmptyTasks() {
+    public void testGetEmptyTasks() throws DBOperationException,
+            InvalidQueryException {
         User testUser = new User(1, "test", null);
         LocalDate startDate = new LocalDate(1999, 1, 1);
         LocalDate endDate = new LocalDate(2000, 1, 11);
@@ -61,7 +98,8 @@ public class TaskRepositoryTest {
      * Test adding a single task for a user.
      */
     @Test
-    public void testAddTask() {
+    public void testAddTask() throws DBOperationException,
+            InvalidQueryException {
         User testUser = new User(1, "test", null);
         LocalDate startDate = new LocalDate(2001, 5, 5);
         LocalDate endDate = startDate.plusMonths(6);
@@ -81,10 +119,12 @@ public class TaskRepositoryTest {
     }
 
     /**
-     * Test adding multiple different tasks for a user and retrieving them.
+     * Test adding multiple different tasks for a user and check if they are
+     * retrieved in sorted order.
      */
     @Test
-    public void testGetMultipleDiffTasks() {
+    public void testGetIsSorted() throws DBOperationException,
+            InvalidQueryException {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
         User testUser = new User(1, "test", null);
@@ -112,7 +152,8 @@ public class TaskRepositoryTest {
      * Test getting a subset of a user's task within a date range.
      */
     @Test
-    public void testGetSubset() {
+    public void testGetSubset() throws DBOperationException,
+            InvalidQueryException {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
         User testUser = new User(1, "test", null);
@@ -145,28 +186,17 @@ public class TaskRepositoryTest {
      * Test getting a date range with no tasks.
      */
     @Test
-    public void testGetNoMatchingTasks() {
+    public void testGetNoMatchingTasks() throws DBOperationException,
+            InvalidQueryException {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
         User testUser = new User(1, "test", null);
         LocalDate startDate = new LocalDate(2019, 12, 3);
         LocalDate endDate = startDate.plusYears(2);
 
-        for (int i = taskAmt; i > 0; i--) {
-            Task task = new Task();
-            task.id = taskAmt - i + 1;
-            task.userId = testUser.id;
-            if (i % 2 == 0) {
-                task.localDueDate = startDate.minusDays(i + 1);
-            }
-            else {
-                task.localDueDate = endDate.plusDays(i + 1);
-            }
-
-            boolean addResult = taskRepo.addTask(testUser, task);
-            assertThat(addResult, equalTo(true));
-        }
-
+        addMultiple(taskAmt / 2, 1, testUser, endDate);
+        addMultiple(taskAmt / 2, 1 + taskAmt / 2, testUser,
+                startDate.minusYears(1));
         List<Task> getResult = taskRepo.getSortedTasks(testUser, startDate,
                 endDate).getValue();
         assertThat(getResult, equalTo(expectedGetResult));
@@ -176,7 +206,8 @@ public class TaskRepositoryTest {
      * Test editing a task for a user.
      */
     @Test
-    public void testEditTask() {
+    public void testEditTask() throws DBOperationException,
+            InvalidQueryException {
         User testUser = new User(1, "test", null);
         LocalDate startDate = new LocalDate(2014, 4, 2);
         LocalDate endDate = startDate.plusMonths(4);
@@ -216,30 +247,21 @@ public class TaskRepositoryTest {
      * Test deleting a task for a user.
      */
     @Test
-    public void testDeleteTask() {
-        List<Task> expectedGetResult = new ArrayList<>();
+    public void testDeleteTask() throws DBOperationException,
+            InvalidQueryException {
         int taskAmt = 3;
         User testUser = new User(1, "test", null);
         LocalDate startDate = new LocalDate(1990, 4, 2);
-        LocalDate endDate = startDate.plusDays(1);
+        LocalDate endDate = startDate.plusDays(taskAmt);
 
-        for (int i = 0; i < taskAmt; i++) {
-            Task task = new Task();
-            task.id = i;
-            task.userId = testUser.id;
-            task.localDueDate = startDate;
-            expectedGetResult.add(task);
-
-            boolean addResult = taskRepo.addTask(testUser, task);
-            assertThat(addResult, equalTo(true));
-        }
+        List<Task> addedTasks = addMultiple(taskAmt, 1, testUser, startDate);
+        List<Task> expectedGetResult = addedTasks;
 
         boolean deleteResult1 = taskRepo.deleteTask(testUser,
                 expectedGetResult.get(1));
         assertThat(deleteResult1, equalTo(true));
 
         expectedGetResult.remove(1);
-        Collections.sort(expectedGetResult, new SortByDate());
         List<Task> getResult1 = taskRepo.getSortedTasks(testUser, startDate,
                 endDate).getValue();
         assertThat(getResult1, equalTo(expectedGetResult));
@@ -267,7 +289,8 @@ public class TaskRepositoryTest {
      * Test editing a nonexistent task for a user.
      */
     @Test
-    public void testEditMissingTask() {
+    public void testEditMissingTask() throws DBOperationException,
+            InvalidQueryException {
         User testUser = new User(1, "test", null);
         Task task = new Task();
         task.id = 1;
@@ -291,21 +314,19 @@ public class TaskRepositoryTest {
      * Test deleting a missing task for a user.
      */
     @Test
-    public void testDeleteMissingTask() {
+    public void testDeleteMissingTask() throws DBOperationException,
+            InvalidQueryException {
         User testUser = new User(1, "test", null);
         Task task = new Task();
+        task.id = 0;
+        task.userId = testUser.id;
+
         boolean deleteResult = taskRepo.deleteTask(testUser, task);
         assertThat(deleteResult, equalTo(false));
 
         int taskAmt = 5;
-        for (int i = 0; i < taskAmt; i++) {
-            Task t = new Task();
-            t.id = i + 1;
-            t.userId = testUser.id;
-
-            boolean addResult = taskRepo.addTask(testUser, t);
-            assertThat(addResult, equalTo(true));
-        }
+        LocalDate startDate = new LocalDate(2003, 3, 1);
+        List<Task> addedTasks = addMultiple(taskAmt, 1, testUser, startDate);
 
         boolean deleteResult2 = taskRepo.deleteTask(testUser, task);
         assertThat(deleteResult2, equalTo(false));
@@ -315,7 +336,8 @@ public class TaskRepositoryTest {
      * Test adding tasks for different users.
      */
     @Test
-    public void testAddForDiffUsers() {
+    public void testAddForDiffUsers() throws DBOperationException,
+            InvalidQueryException {
         LocalDate startDate = new LocalDate(2006, 5, 6);
         LocalDate endDate = startDate.plusWeeks(1);
 
@@ -348,5 +370,98 @@ public class TaskRepositoryTest {
         List<Task> getResult2 = taskRepo.getSortedTasks(testUser2, startDate,
                 endDate).getValue();
         assertThat(getResult2, equalTo(expectedGetResult2));
+    }
+
+    /**
+     * Test editing a task belonging to another user.
+     *
+     * @throws DBOperationException if a task could not be added
+     */
+    @Test
+    public void testEditOtherTask() throws DBOperationException,
+            InvalidQueryException {
+        User testUser1 = new User(1, "test", null);
+        User testUser2 = new User(2, "Goose", null);
+        int taskAmt1 = 3;
+        int taskAmt2 = taskAmt1;
+        LocalDate startDate = new LocalDate(2031, 4, 26);
+        LocalDate endDate = startDate.plusDays(taskAmt1);
+
+        List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
+                startDate);
+        List<Task> addedTasks2 = addMultiple(taskAmt2, taskAmt1 + 1, testUser2,
+                startDate);
+
+        try {
+            taskRepo.updateTask(testUser1, addedTasks2.get(0));
+            assertThat(false, equalTo(true));
+        }
+        catch (DBOperationException e) {
+            // Expected behavior.
+        }
+
+        try {
+            taskRepo.updateTask(testUser2, addedTasks1.get(taskAmt1 - 1));
+            assertThat(false, equalTo(true));
+        }
+        catch (DBOperationException e) {
+            // Expected behavior.
+        }
+    }
+
+    /**
+     * Test deleting a task belonging to another user.
+     *
+     * @throws DBOperationException if a task could not be added
+     */
+    @Test
+    public void testDeleteOtherTask() throws DBOperationException,
+            InvalidQueryException {
+        User testUser1 = new User(1, "test", null);
+        User testUser2 = new User(2, "Goose", null);
+        int taskAmt1 = 3;
+        int taskAmt2 = taskAmt1;
+        LocalDate startDate = new LocalDate(2031, 4, 26);
+        LocalDate endDate = startDate.plusDays(taskAmt1);
+
+        List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
+                startDate);
+        List<Task> addedTasks2 = addMultiple(taskAmt2, taskAmt1 + 1, testUser2,
+                startDate);
+
+        try {
+            taskRepo.deleteTask(testUser1, addedTasks2.get(taskAmt2 - 1));
+            assertThat(false, equalTo(true));
+        }
+        catch (DBOperationException e) {
+            // Expected behavior.
+        }
+
+        try {
+            taskRepo.deleteTask(testUser2, addedTasks1.get(0));
+            assertThat(false, equalTo(true));
+        }
+        catch (DBOperationException e) {
+            // Expected behavior.
+        }
+    }
+
+    /**
+     * Test getting tasks with invalid search dates.
+     */
+    @Test
+    public void testInvalidDates() throws DBOperationException {
+        User testUser = new User(1, "test", null);
+        LocalDate startDate = new LocalDate(1830, 3, 2);
+        LocalDate endDate = startDate.minusDays(1);
+
+        try {
+            List<Task> getResult = taskRepo.getSortedTasks(testUser, startDate,
+                    endDate).getValue();
+            assertThat(false, equalTo(true));
+        }
+        catch (InvalidQueryException e) {
+            // Expected behavior.
+        }
     }
 }

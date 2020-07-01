@@ -11,6 +11,8 @@ import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.models.task.TaskRepository;
 import com.example.measure.models.user.UserRepository;
+import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 
@@ -83,10 +85,18 @@ public class AgendaViewModel extends ViewModel {
                                                LocalDate endDate) {
         enableObservers();
 
-        taskRepo.getSortedTasks(currUser, startDate, endDate).observe(this,
-                modelSortedTasks -> {
-                    sortedTasks.setValue(modelSortedTasks);
-                });
+        try {
+            taskRepo.getSortedTasks(currUser, startDate, endDate).observe(this,
+                    modelSortedTasks -> {
+                        sortedTasks.setValue(modelSortedTasks);
+                    });
+        }
+        catch (DBOperationException dboe) {
+            // TODO: handle exception
+        }
+        catch (InvalidQueryException iqe) {
+
+        }
 
         return sortedTasks;
     }
@@ -98,8 +108,14 @@ public class AgendaViewModel extends ViewModel {
      * @return true if the operation was successful; false otherwise
      */
     public boolean addTask(Task newTask) {
-        boolean success = taskRepo.addTask(currUser, newTask);
-        return success;
+        try {
+            boolean success = taskRepo.addTask(currUser, newTask);
+            return success;
+        }
+        catch (DBOperationException e) {
+            // TODO: handle exception
+            return false;
+        }
     }
 
     /**
@@ -109,8 +125,14 @@ public class AgendaViewModel extends ViewModel {
      * @return true if the operation was successful; false otherwise
      */
     public boolean updateTask(Task updatedTask) {
-        boolean success = taskRepo.updateTask(currUser, updatedTask);
-        return success;
+        try {
+            boolean success = taskRepo.updateTask(currUser, updatedTask);
+            return success;
+        }
+        catch (DBOperationException e) {
+            // TODO: handle exception
+            return false;
+        }
     }
 
     /**
@@ -120,8 +142,13 @@ public class AgendaViewModel extends ViewModel {
      * @return true if the operation was successful; false otherwise
      */
     public boolean deleteTask(Task task) {
-        boolean success = taskRepo.deleteTask(currUser, task);
-        return success;
+        try {
+            boolean success = taskRepo.deleteTask(currUser, task);
+            return success;
+        }
+        catch (DBOperationException e) {
+            return false;
+        }
     }
 
     /**

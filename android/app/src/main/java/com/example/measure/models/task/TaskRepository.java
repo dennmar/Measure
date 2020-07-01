@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 
 import org.joda.time.LocalDate;
 import java.util.List;
@@ -20,9 +22,12 @@ public interface TaskRepository {
      * @param startDate starting date of tasks (inclusive. no time zone)
      * @param endDate   ending date of tasks (exclusive, no time zone)
      * @return observable list of tasks belonging to the user sorted by date
+     * @throws DBOperationException  if the tasks could not be fetched
+     * @throws InvalidQueryException if end date comes before the start date
      */
     LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
-                                        LocalDate endDate);
+            LocalDate endDate) throws DBOperationException,
+            InvalidQueryException;
 
     /**
      * Store a task for the user in the database.
@@ -30,8 +35,9 @@ public interface TaskRepository {
      * @param user user who will own the task
      * @param task task to store for the user
      * @return true if the operation was successful; false otherwise
+     * @throws DBOperationException if the task could not be added
      */
-    boolean addTask(User user, Task task);
+    boolean addTask(User user, Task task) throws DBOperationException;
 
     /**
      * Update a task for the user in the database.
@@ -39,8 +45,9 @@ public interface TaskRepository {
      * @param user user who owns the task to update
      * @param task updated task to set for the user
      * @return true if the operation was successful; false otherwise
+     * @throws DBOperationException if the task could not be updated
      */
-    boolean updateTask(User user, Task task);
+    boolean updateTask(User user, Task task) throws DBOperationException;
 
     /**
      * Delete a task for the user in the database.
@@ -48,6 +55,7 @@ public interface TaskRepository {
      * @param user user who owns the task to delete
      * @param task task to delete
      * @return true if the operation was successful; false otherwise
+     * @throws DBOperationException if the task could not be deleted
      */
-    boolean deleteTask(User user, Task task);
+    boolean deleteTask(User user, Task task) throws DBOperationException;
 }
