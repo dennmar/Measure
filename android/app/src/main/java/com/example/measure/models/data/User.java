@@ -20,4 +20,11 @@ public class User {
         this.username = username;
         this.activeTask = activeTask;
     }
+
+    @Override
+    public String toString() {
+        return "id: " + id  + ", "
+                + "username: " + username + ", "
+                + "activeTask: " + activeTask;
+    }
 }

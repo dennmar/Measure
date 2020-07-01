@@ -116,6 +116,10 @@ public class AgendaViewModel extends ViewModel {
             // TODO: handle exception
             return false;
         }
+        catch (InvalidQueryException iqe) {
+            // TODO: handle exception
+            return false;
+        }
     }
 
     /**
@@ -133,6 +137,10 @@ public class AgendaViewModel extends ViewModel {
             // TODO: handle exception
             return false;
         }
+        catch (InvalidQueryException iqe) {
+            // TODO: handle exception
+            return false;
+        }
     }
 
     /**
@@ -147,6 +155,10 @@ public class AgendaViewModel extends ViewModel {
             return success;
         }
         catch (DBOperationException e) {
+            return false;
+        }
+        catch (InvalidQueryException iqe) {
+            // TODO: handle exception
             return false;
         }
     }

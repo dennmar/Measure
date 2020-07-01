@@ -35,9 +35,12 @@ public interface TaskRepository {
      * @param user user who will own the task
      * @param task task to store for the user
      * @return true if the operation was successful; false otherwise
-     * @throws DBOperationException if the task could not be added
+     * @throws DBOperationException  if the task could not be added
+     * @throws InvalidQueryException if the task to add does not belong to
+     *                               the user
      */
-    boolean addTask(User user, Task task) throws DBOperationException;
+    boolean addTask(User user, Task task) throws DBOperationException,
+            InvalidQueryException;
 
     /**
      * Update a task for the user in the database.
@@ -45,9 +48,12 @@ public interface TaskRepository {
      * @param user user who owns the task to update
      * @param task updated task to set for the user
      * @return true if the operation was successful; false otherwise
-     * @throws DBOperationException if the task could not be updated
+     * @throws DBOperationException  if the task could not be updated
+     * @throws InvalidQueryException if the task to update does not belong to
+     *                               the user
      */
-    boolean updateTask(User user, Task task) throws DBOperationException;
+    boolean updateTask(User user, Task task) throws DBOperationException,
+            InvalidQueryException;
 
     /**
      * Delete a task for the user in the database.
@@ -55,7 +61,10 @@ public interface TaskRepository {
      * @param user user who owns the task to delete
      * @param task task to delete
      * @return true if the operation was successful; false otherwise
-     * @throws DBOperationException if the task could not be deleted
+     * @throws DBOperationException  if the task could not be deleted
+     * @throws InvalidQueryException if the task to delete does not belong to
+     *                               the user
      */
-    boolean deleteTask(User user, Task task) throws DBOperationException;
+    boolean deleteTask(User user, Task task) throws DBOperationException,
+            InvalidQueryException;
 }

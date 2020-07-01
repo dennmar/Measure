@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 
 import org.joda.time.LocalDate;
 
@@ -39,9 +40,20 @@ public class LocalTaskRepository implements TaskRepository {
      * @param startDate starting date of tasks (inclusive. no time zone)
      * @param endDate   ending date of tasks (exclusive, no time zone)
      * @return observable list of tasks belonging to the user sorted by date
+     * @throws DBOperationException  if the tasks could not be fetched
+     * @throws InvalidQueryException if end date comes before the start date
      */
     public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
-                                               LocalDate endDate) {
+            LocalDate endDate) throws DBOperationException,
+            InvalidQueryException {
+        if (startDate.equals(endDate)) {
+            return this.sortedTasks;
+        }
+        else if (endDate.compareTo(startDate) < 0) {
+            throw new InvalidQueryException("End date (" + endDate + ") is " +
+                    "earlier than start date (" + startDate + ")");
+        }
+
         try {
             taskDao.getSortedTasks(user, startDate, endDate)
                     .observeForever(sortedTasks -> {
@@ -49,7 +61,7 @@ public class LocalTaskRepository implements TaskRepository {
             });
         }
         catch (DBOperationException e) {
-            // TODO
+            throw(e);
         }
         finally {
             return this.sortedTasks;
@@ -62,16 +74,19 @@ public class LocalTaskRepository implements TaskRepository {
      * @param user user who will own the task
      * @param task task to store for the user
      * @return true if the operation was successful; false otherwise
+     * @throws DBOperationException  if the task could not be added
+     * @throws InvalidQueryException if the task to add does not belong to
+     *                               the user
      */
-    public boolean addTask(User user, Task task) {
-        try {
-            taskDao.addTask(user, task);
-            return true;
+    public boolean addTask(User user, Task task) throws DBOperationException,
+            InvalidQueryException {
+        if (user.id != task.userId) {
+            throw new InvalidQueryException("Task to be added (" + task +
+                    ") does not match user ID of user (" + user + ")");
         }
-        catch (DBOperationException e) {
-            // TODO
-            return false;
-        }
+
+        taskDao.addTask(user, task);
+        return true;
     }
 
     /**
@@ -80,16 +95,19 @@ public class LocalTaskRepository implements TaskRepository {
      * @param user user who owns the task to update
      * @param task updated task to set for the user
      * @return true if the operation was successful; false otherwise
+     * @throws DBOperationException  if the task could not be updated
+     * @throws InvalidQueryException if the task to update does not belong to
+     *                               the user
      */
-    public boolean updateTask(User user, Task task) {
-        try {
-            taskDao.updateTask(user, task);
-            return true;
+    public boolean updateTask(User user, Task task)
+            throws DBOperationException, InvalidQueryException {
+        if (user.id != task.userId) {
+            throw new InvalidQueryException("Task to be updated (" + task +
+                    ") does not match user ID of user (" + user + ")");
         }
-        catch (DBOperationException e) {
-            // TODO
-            return false;
-        }
+
+        taskDao.updateTask(user, task);
+        return true;
     }
 
     /**
@@ -98,15 +116,18 @@ public class LocalTaskRepository implements TaskRepository {
      * @param user user who owns the task to delete
      * @param task task to delete
      * @return true if the operation was successful; false otherwise
+     * @throws DBOperationException  if the task could not be deleted
+     * @throws InvalidQueryException if the task to delete does not belong to
+     *                               the user
      */
-    public boolean deleteTask(User user, Task task) {
-        try {
-            taskDao.deleteTask(user, task);
-            return true;
+    public boolean deleteTask(User user, Task task)
+            throws DBOperationException, InvalidQueryException {
+        if (user.id != task.userId) {
+            throw new InvalidQueryException("Task to be deleted (" + task +
+                    ") does not match user ID of user (" + user + ")");
         }
-        catch (DBOperationException e) {
-            // TODO
-            return false;
-        }
+
+        taskDao.deleteTask(user, task);
+        return true;
     }
 }

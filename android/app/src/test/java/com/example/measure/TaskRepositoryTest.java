@@ -303,7 +303,7 @@ public class TaskRepositoryTest {
         assertThat(addResult, equalTo(true));
 
         Task task2 = new Task();
-        task2.id = 500;
+        task2.id = 0;
         task.userId = testUser.id;
         task2.name = "None";
         boolean editResult2 = taskRepo.updateTask(testUser, task2);
@@ -396,7 +396,7 @@ public class TaskRepositoryTest {
             taskRepo.updateTask(testUser1, addedTasks2.get(0));
             assertThat(false, equalTo(true));
         }
-        catch (DBOperationException e) {
+        catch (InvalidQueryException e) {
             // Expected behavior.
         }
 
@@ -404,7 +404,7 @@ public class TaskRepositoryTest {
             taskRepo.updateTask(testUser2, addedTasks1.get(taskAmt1 - 1));
             assertThat(false, equalTo(true));
         }
-        catch (DBOperationException e) {
+        catch (InvalidQueryException e) {
             // Expected behavior.
         }
     }
@@ -433,7 +433,7 @@ public class TaskRepositoryTest {
             taskRepo.deleteTask(testUser1, addedTasks2.get(taskAmt2 - 1));
             assertThat(false, equalTo(true));
         }
-        catch (DBOperationException e) {
+        catch (InvalidQueryException e) {
             // Expected behavior.
         }
 
@@ -441,7 +441,7 @@ public class TaskRepositoryTest {
             taskRepo.deleteTask(testUser2, addedTasks1.get(0));
             assertThat(false, equalTo(true));
         }
-        catch (DBOperationException e) {
+        catch (InvalidQueryException e) {
             // Expected behavior.
         }
     }
