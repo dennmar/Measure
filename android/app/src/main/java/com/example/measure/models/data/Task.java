@@ -41,8 +41,24 @@ public class Task {
         this.id = id;
         this.userId = userId;
         this.name = name;
-        this.timeWorked = timeWorked;
         this.localDueDate = localDueDate;
         this.isCompleted = isCompleted;
+
+        if (timeWorked != null && timeWorked.getStandardSeconds() < 0) {
+            this.timeWorked = null;
+        }
+        else {
+            this.timeWorked = timeWorked;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + this.id
+                + ", userId: " + this.userId
+                + ", name: " + this.name
+                + ", timeWorked: " + this.timeWorked
+                + ", localDueDate: " + this.localDueDate
+                + ", isCompleted: " + this.isCompleted;
     }
 }

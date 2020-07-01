@@ -46,7 +46,21 @@ public class SQLiteTaskDao implements TaskDao {
      */
     public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
             LocalDate endDate) throws DBOperationException {
-        return null;
+        try {
+            roomTaskDao.getSortedTasks(user.id, startDate, endDate)
+                    .observeForever(sortedRoomTasks -> {
+                        List<Task> convertedTasks = new ArrayList<>();
+                        for (RoomTask rtask : sortedRoomTasks) {
+                            convertedTasks.add(rtask.toTask());
+                        }
+                        this.sortedTasks.setValue(convertedTasks);
+            });
+        }
+        catch (Exception e) {
+            throw new DBOperationException(e.getMessage());
+        }
+
+        return sortedTasks;
     }
 
     /**
@@ -57,6 +71,12 @@ public class SQLiteTaskDao implements TaskDao {
      * @throws DBOperationException if the task could not be added
      */
     public void addTask(User user, Task task) throws DBOperationException {
+        RoomTask rtask = new RoomTask(task);
+        long rtaskId = roomTaskDao.insert(rtask);
+
+        if (rtaskId < 0) {
+            throw new DBOperationException("Insert failed: <" + rtask + ">");
+        }
     }
 
     /**
@@ -64,9 +84,20 @@ public class SQLiteTaskDao implements TaskDao {
      *
      * @param user user who owns the task to update
      * @param task updated task to set for the user
-     * @throws DBOperationException if the task does not exist
+     * @throws DBOperationException if the task could not be updated or the
+     *         operation resulted in changing more than one row
      */
     public void updateTask(User user, Task task) throws DBOperationException {
+        RoomTask rtask = new RoomTask(task);
+        int rowsUpdated = roomTaskDao.update(rtask);
+
+        if (rowsUpdated < 1) {
+            throw new DBOperationException("Update failed: <" + rtask + ">");
+        }
+        else if (rowsUpdated > 1) {
+            throw new DBOperationException("Single update resulted in "
+                    + rowsUpdated + " updates: <" + rtask + ">");
+        }
     }
 
     /**
@@ -74,8 +105,19 @@ public class SQLiteTaskDao implements TaskDao {
      *
      * @param user user who owns the task to delete
      * @param task task to delete
-     * @throws DBOperationException if the task does not exist
+     * @throws DBOperationException if the task could not be deleted or the
+     *         operation resulted in deleting more than one row
      */
     public void deleteTask(User user, Task task) throws DBOperationException {
+        RoomTask rtask = new RoomTask(task);
+        int rowsDeleted = roomTaskDao.delete(rtask);
+
+        if (rowsDeleted < 1) {
+            throw new DBOperationException("Delete failed: <" + rtask + ">");
+        }
+        else if (rowsDeleted > 1) {
+            throw new DBOperationException("Single delete resulted in "
+                    + rowsDeleted + " updates: <" + rtask + ">");
+        }
     }
 }

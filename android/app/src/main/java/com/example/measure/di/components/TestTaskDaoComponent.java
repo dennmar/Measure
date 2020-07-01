@@ -1,10 +1,11 @@
 package com.example.measure.di.components;
 
+import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
-import com.example.measure.di.modules.MeasureRoomDatabaseModule;
 import com.example.measure.di.modules.TaskDaoModule;
+import com.example.measure.di.modules.TestMeasureRoomDatabaseModule;
 import com.example.measure.models.task.TaskDao;
 
 import dagger.BindsInstance;
@@ -18,10 +19,11 @@ import dagger.Component;
         AssistedInjectModule.class,
         TaskDaoModule.class,
         ContextModule.class,
-        MeasureRoomDatabaseModule.class
+        TestMeasureRoomDatabaseModule.class
 })
 public interface TestTaskDaoComponent {
     TaskDao taskDao();
+    MeasureRoomDatabase measureRoomDatabase();
 
     /**
      * Creates a new TestTaskDaoComponent instance each time it is called.

@@ -35,6 +35,9 @@ public class RoomTask {
     @ColumnInfo(name="is_completed")
     public boolean isCompleted;
 
+    /**
+     * Initialize member variables to default values.
+     */
     public RoomTask() {
         userId = -1;
         name = null;
@@ -49,10 +52,21 @@ public class RoomTask {
      * @param task task holding data to initialize the Room task
      */
     public RoomTask(Task task) {
+        this.id = task.id;
         this.userId = task.userId;
         this.name = task.name;
         this.timeWorked = task.timeWorked;
         this.localDueDate = task.localDueDate;
         this.isCompleted = task.isCompleted;
+    }
+
+    /**
+     * Return the Task representation of this RoomTask.
+     *
+     * @return the RoomTask converted to a Task
+     */
+    public Task toTask() {
+        return new Task(this.id, this.userId, this.name, this.timeWorked,
+                this.localDueDate, this.isCompleted);
     }
 }

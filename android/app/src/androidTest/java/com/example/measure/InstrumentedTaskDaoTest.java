@@ -1,6 +1,7 @@
 package com.example.measure;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.room.RoomDatabase;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -14,6 +15,7 @@ import com.example.measure.models.task.TaskDao;
 import com.example.measure.utils.DBOperationException;
 
 import org.joda.time.LocalDate;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,11 +26,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.example.measure.LooseMatch.looseMatch;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Test the task DAO.
+ * Run integration tests on the task DAO (and the Room database).
  *
  * Note: Unit testing resulted in java.lang.RuntimeException: Method
  * getMainLooper in android.os.Looper not mocked.
@@ -41,6 +44,7 @@ public class InstrumentedTaskDaoTest {
 
     MeasureApplication mockApp;
     TaskDao taskDao;
+    RoomDatabase testRoomDb;
 
     /**
      * Create a new task DAO.
@@ -54,6 +58,15 @@ public class InstrumentedTaskDaoTest {
         TestTaskDaoComponent taskDaoComponent =
                 DaggerTestTaskDaoComponent.factory().newAppComponent(mockApp);
         taskDao = taskDaoComponent.taskDao();
+
+        // Clear all data before each test.
+        testRoomDb = taskDaoComponent.measureRoomDatabase();
+        testRoomDb.clearAllTables();
+    }
+
+    @After
+    public void closeConnections() {
+        testRoomDb.close();
     }
 
     /**
@@ -82,7 +95,11 @@ public class InstrumentedTaskDaoTest {
             addedTasks.add(task);
         }
 
-        return addedTasks;
+        List<Task> getResult = taskDao.getSortedTasks(taskOwner, startingDate,
+                startingDate.plusDays(addAmt)).getValue();
+        assertThat(getResult, looseMatch(addedTasks));
+
+        return getResult;
     }
 
     /**
@@ -91,14 +108,14 @@ public class InstrumentedTaskDaoTest {
     @Test
     public void testGetEmptyTasks() {
         User testUser = new User(1, "test", null);
-        LocalDate startDate = new LocalDate(2001, 11, 27);
-        LocalDate endDate = startDate.plusYears(3);
+        LocalDate startDate = new LocalDate(1990, 11, 27);
+        LocalDate endDate = startDate.plusYears(30);
 
         List<Task> expectedTasks = new ArrayList<>();
         try {
             List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                     endDate).getValue();
-            assertThat(getResult, equalTo(expectedTasks));
+            assertThat(getResult, looseMatch(expectedTasks));
         }
         catch (DBOperationException e){
             assertThat(false, equalTo(true));
@@ -114,7 +131,6 @@ public class InstrumentedTaskDaoTest {
     public void testGetSubset() throws DBOperationException {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
-        int timeOffset = 100;
         User testUser = new User(1, "test", null);
         LocalDate dateOffset = new LocalDate(1995, 5, 22);
         LocalDate startDate = dateOffset.plusDays(taskAmt / 2);
@@ -137,7 +153,7 @@ public class InstrumentedTaskDaoTest {
         List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                 endDate).getValue();
         Collections.sort(expectedGetResult, new SortByDate());
-        assertThat(getResult, equalTo(expectedGetResult));
+        assertThat(getResult, looseMatch(expectedGetResult));
     }
 
     /**
@@ -154,14 +170,10 @@ public class InstrumentedTaskDaoTest {
         LocalDate queryEndDate = queryStartDate.plusMonths(2);
         List<Task> expectedGetResult = new ArrayList<>();
 
-        List<Task> addedTasks = addMultiple(10, 1, testUser, addStartDate);
-        List<Task> getResultMatch = taskDao.getSortedTasks(testUser,
-                addStartDate, addEndDate).getValue();
-        assertThat(getResultMatch, equalTo(addedTasks));
-
+        addMultiple(10, 1, testUser, addStartDate);
         List<Task> getResultNoMatch = taskDao.getSortedTasks(testUser,
                 queryStartDate, queryEndDate).getValue();
-        assertThat(getResultNoMatch, equalTo(expectedGetResult));
+        assertThat(getResultNoMatch, looseMatch(expectedGetResult));
     }
 
     /**
@@ -183,9 +195,10 @@ public class InstrumentedTaskDaoTest {
         taskDao.addTask(testUser, task);
         List<Task> actualGetResult1 = taskDao.getSortedTasks(testUser,
                 startDate, endDate).getValue();
-        assertThat(actualGetResult1, equalTo(expectedGetResult1));
+        assertThat(actualGetResult1, looseMatch(expectedGetResult1));
 
-        Task editedTask = new Task(1, testUser.id, "What", null, taskDate,
+        int actualTaskId = actualGetResult1.get(0).id;
+        Task editedTask = new Task(actualTaskId, testUser.id, "What", null, taskDate,
                 true);
         List<Task> expectedGetResult2 = new ArrayList<Task>();
         expectedGetResult2.add(editedTask);
@@ -193,7 +206,7 @@ public class InstrumentedTaskDaoTest {
         taskDao.updateTask(testUser, editedTask);
         List<Task> actualGetResult2 = taskDao.getSortedTasks(testUser,
                 startDate, endDate).getValue();
-        assertThat(actualGetResult2, equalTo(expectedGetResult2));
+        assertThat(actualGetResult2, looseMatch(expectedGetResult2));
     }
 
     /**
@@ -207,16 +220,11 @@ public class InstrumentedTaskDaoTest {
         LocalDate startDate = new LocalDate(2054, 1, 5);
         LocalDate endDate = startDate.plusMonths(20);
 
-        List<Task> expectedGetResult = new ArrayList<>();
         int[] removeOrder = {1, 0, 0};
         int taskAmt = 3;
 
         List<Task> addedTasks = addMultiple(taskAmt, 1, testUser, startDate);
-        List<Task> getAll = taskDao.getSortedTasks(testUser, startDate,
-                endDate).getValue();
-        assertThat(getAll, equalTo(addedTasks));
-
-        Collections.sort(expectedGetResult, new SortByDate());
+        List<Task> expectedGetResult = addedTasks;
 
         for (int i = 0; i < taskAmt; i++) {
             taskDao.deleteTask(testUser,
@@ -224,7 +232,7 @@ public class InstrumentedTaskDaoTest {
             expectedGetResult.remove(removeOrder[i]);
             List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                     endDate).getValue();
-            assertThat(getResult, equalTo(expectedGetResult));
+            assertThat(getResult, looseMatch(expectedGetResult));
         }
     }
 
@@ -272,8 +280,16 @@ public class InstrumentedTaskDaoTest {
      */
     @Test
     public void testDeleteMissingTask() throws DBOperationException {
+        List<Task> expectedGetResult = new ArrayList<>();
+        int taskAmt = 5;
         User testUser = new User(1, "test", null);
+        LocalDate startDate = new LocalDate(2030, 2, 1);
+        LocalDate endDate = startDate.plusDays(taskAmt);
+
         Task task = new Task();
+        task.id = 0;
+        task.userId = testUser.id;
+        task.localDueDate = startDate;
 
         try {
             taskDao.deleteTask(testUser, task);
@@ -283,13 +299,18 @@ public class InstrumentedTaskDaoTest {
             // Expected behavior.
         }
 
-        int taskAmt = 5;
         for (int i = 0; i < taskAmt; i++) {
             Task t = new Task();
             t.id = i + 1;
             t.userId = testUser.id;
+            t.localDueDate = startDate;
             taskDao.addTask(testUser, t);
+            expectedGetResult.add(t);
         }
+
+        List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
+                endDate).getValue();
+        assertThat(getResult, looseMatch(expectedGetResult));
 
         try {
             taskDao.deleteTask(testUser, task);
@@ -316,15 +337,8 @@ public class InstrumentedTaskDaoTest {
 
         List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
                 startDate);
-        List<Task> getResult1 = taskDao.getSortedTasks(testUser1, startDate,
-                endDate).getValue();
-        assertThat(getResult1, equalTo(addedTasks1));
-
         List<Task> addedTasks2 = addMultiple(taskAmt2, taskAmt1 + 1, testUser2,
                 startDate);
-        List<Task> getResult2 = taskDao.getSortedTasks(testUser2, startDate,
-                endDate).getValue();
-        assertThat(getResult2, equalTo(addedTasks2));
 
         try {
             taskDao.updateTask(testUser1, addedTasks2.get(0));
@@ -359,15 +373,8 @@ public class InstrumentedTaskDaoTest {
 
         List<Task> addedTasks1 = addMultiple(taskAmt1, 1, testUser1,
                 startDate);
-        List<Task> getResult1 = taskDao.getSortedTasks(testUser1, startDate,
-                endDate).getValue();
-        assertThat(getResult1, equalTo(addedTasks1));
-
         List<Task> addedTasks2 = addMultiple(taskAmt2, taskAmt1 + 1, testUser2,
                 startDate);
-        List<Task> getResult2 = taskDao.getSortedTasks(testUser2, startDate,
-                endDate).getValue();
-        assertThat(getResult2, equalTo(addedTasks2));
 
         try {
             taskDao.deleteTask(testUser1, addedTasks2.get(taskAmt2 - 1));
