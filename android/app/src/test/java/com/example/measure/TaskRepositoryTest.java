@@ -51,7 +51,6 @@ public class TaskRepositoryTest {
      * @param startingId   id of the first task to add (will be incremented)
      * @param taskOwner    user who will own the tasks
      * @param startingDate date of the first task to add (will be incremented)
-     * @throws DBOperationException if a task could not be added
      * @return list of tasks that were added
      */
     private List<Task> addMultiple(int addAmt, int startingId, User taskOwner,
@@ -286,53 +285,6 @@ public class TaskRepositoryTest {
     }
 
     /**
-     * Test editing a nonexistent task for a user.
-     */
-    @Test
-    public void testEditMissingTask() throws DBOperationException,
-            InvalidQueryException {
-        User testUser = new User(1, "test", null);
-        Task task = new Task();
-        task.id = 1;
-        task.userId = testUser.id;
-        task.name = "Edited";
-        boolean editResult = taskRepo.updateTask(testUser, task);
-        assertThat(editResult, equalTo(false));
-
-        boolean addResult = taskRepo.addTask(testUser, task);
-        assertThat(addResult, equalTo(true));
-
-        Task task2 = new Task();
-        task2.id = 0;
-        task.userId = testUser.id;
-        task2.name = "None";
-        boolean editResult2 = taskRepo.updateTask(testUser, task2);
-        assertThat(editResult2, equalTo(false));
-    }
-
-    /**
-     * Test deleting a missing task for a user.
-     */
-    @Test
-    public void testDeleteMissingTask() throws DBOperationException,
-            InvalidQueryException {
-        User testUser = new User(1, "test", null);
-        Task task = new Task();
-        task.id = 0;
-        task.userId = testUser.id;
-
-        boolean deleteResult = taskRepo.deleteTask(testUser, task);
-        assertThat(deleteResult, equalTo(false));
-
-        int taskAmt = 5;
-        LocalDate startDate = new LocalDate(2003, 3, 1);
-        List<Task> addedTasks = addMultiple(taskAmt, 1, testUser, startDate);
-
-        boolean deleteResult2 = taskRepo.deleteTask(testUser, task);
-        assertThat(deleteResult2, equalTo(false));
-    }
-
-    /**
      * Test adding tasks for different users.
      */
     @Test
@@ -373,9 +325,44 @@ public class TaskRepositoryTest {
     }
 
     /**
+     * Test adding a task for another user.
+     */
+    @Test
+    public void testAddOtherTask() throws DBOperationException,
+            InvalidQueryException {
+        User testUser1 = new User(1, "test", null);
+        User testUser2 = new User(2, "Goose", null);
+        LocalDate startDate = new LocalDate(2031, 4, 26);
+
+        Task t1 = new Task();
+        t1.id = 1;
+        t1.userId = testUser1.id;
+        t1.localDueDate = startDate;
+
+        Task t2 = new Task();
+        t2.id = 2;
+        t2.userId = testUser2.id;
+        t2.localDueDate = startDate;
+
+        try {
+            taskRepo.addTask(testUser2, t1);
+            assertThat(false, equalTo(true));
+        }
+        catch (InvalidQueryException e) {
+            // Expected behavior.
+        }
+
+        try {
+            taskRepo.addTask(testUser1, t2);
+            assertThat(false, equalTo(true));
+        }
+        catch (InvalidQueryException e) {
+            // Expected behavior.
+        }
+    }
+
+    /**
      * Test editing a task belonging to another user.
-     *
-     * @throws DBOperationException if a task could not be added
      */
     @Test
     public void testEditOtherTask() throws DBOperationException,
@@ -411,8 +398,6 @@ public class TaskRepositoryTest {
 
     /**
      * Test deleting a task belonging to another user.
-     *
-     * @throws DBOperationException if a task could not be added
      */
     @Test
     public void testDeleteOtherTask() throws DBOperationException,
