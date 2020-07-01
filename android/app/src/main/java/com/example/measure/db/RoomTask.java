@@ -52,12 +52,12 @@ public class RoomTask {
      * @param task task holding data to initialize the Room task
      */
     public RoomTask(Task task) {
-        this.id = task.id;
-        this.userId = task.userId;
-        this.name = task.name;
-        this.timeWorked = task.timeWorked;
-        this.localDueDate = task.localDueDate;
-        this.isCompleted = task.isCompleted;
+        this.id = task.getId();
+        this.userId = task.getUserId();
+        this.name = task.getName();
+        this.timeWorked = task.getTimeWorked();
+        this.localDueDate = task.getLocalDueDate();
+        this.isCompleted = task.isCompleted();
     }
 
     /**

@@ -28,6 +28,8 @@ public class User {
                 + "activeTask: " + activeTask;
     }
 
+    /* Getters and setters */
+
     public int getId() {
         return id;
     }

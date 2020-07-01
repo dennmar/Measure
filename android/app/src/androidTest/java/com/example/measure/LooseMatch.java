@@ -67,31 +67,32 @@ public class LooseMatch extends TypeSafeMatcher<List<Task>> {
             return true;
         }
         else if (t1 != null && t2 != null) {
-            if (t1.name == null && t2.name != null) {
+            if (t1.getName() == null && t2.getName() != null) {
                 return false;
             }
-            else if (t1.name != null && !t1.name.equals(t2.name)) {
-                return false;
-            }
-
-            if (t1.timeWorked == null && t2.timeWorked != null) {
-                return false;
-            }
-            else if (t1.timeWorked != null
-                    && !t1.timeWorked.equals(t2.timeWorked)) {
+            else if (t1.getName() != null
+                    && !t1.getName().equals(t2.getName())) {
                 return false;
             }
 
-            if (t1.localDueDate == null && t2.localDueDate != null) {
+            if (t1.getTimeWorked() == null && t2.getTimeWorked() != null) {
                 return false;
             }
-            else if (t1.localDueDate != null
-                    && !t1.localDueDate.equals(t2.localDueDate)) {
+            else if (t1.getTimeWorked() != null
+                    && !t1.getTimeWorked().equals(t2.getTimeWorked())) {
                 return false;
             }
 
-            return t1.userId == t2.userId
-                    && t1.isCompleted == t2.isCompleted;
+            if (t1.getLocalDueDate() == null && t2.getLocalDueDate() != null) {
+                return false;
+            }
+            else if (t1.getLocalDueDate() != null
+                    && !t1.getLocalDueDate().equals(t2.getLocalDueDate())) {
+                return false;
+            }
+
+            return t1.getUserId() == t2.getUserId()
+                    && t1.isCompleted() == t2.isCompleted();
         }
         else {
             return false;

@@ -50,11 +50,11 @@ public class MockTaskDao implements TaskDao {
             List<Task> tasks = userTaskMap.get(user.getId());
             Collections.sort(tasks, sortByDate);
             for (Task task : tasks) {
-                if (task.localDueDate.compareTo(startDate) >= 0
-                        && task.localDueDate.compareTo(endDate) < 0) {
+                if (task.getLocalDueDate().compareTo(startDate) >= 0
+                        && task.getLocalDueDate().compareTo(endDate) < 0) {
                     sortedTaskList.add(task);
                 }
-                else if (task.localDueDate.compareTo(endDate) >= 0) {
+                else if (task.getLocalDueDate().compareTo(endDate) >= 0) {
                     break;
                 }
             }
@@ -95,7 +95,7 @@ public class MockTaskDao implements TaskDao {
             int i = 0;
 
             for (Task storedTask : userTaskMap.get(user.getId())) {
-                if (storedTask.id == task.id) {
+                if (storedTask.getId() == task.getId()) {
                     userTasks.set(i, task);
                     foundTask = true;
                     break;
@@ -126,7 +126,7 @@ public class MockTaskDao implements TaskDao {
             int i = 0;
 
             for (Task storedTask : userTaskMap.get(user.getId())) {
-                if (storedTask.id == task.id) {
+                if (storedTask.getId() == task.getId()) {
                     userTasks.remove(i);
                     foundTask = true;
                     break;

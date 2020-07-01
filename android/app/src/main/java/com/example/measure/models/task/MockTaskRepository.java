@@ -50,12 +50,12 @@ public class MockTaskRepository implements TaskRepository {
 
         for (int i = 0; i < tasks.size(); i++) {
             Task currTask = tasks.get(i);
-            if (currTask.userId == user.getId()
-                    && currTask.localDueDate.compareTo(startDate) >= 0
-                    && currTask.localDueDate.compareTo(endDate) < 0) {
+            if (currTask.getUserId() == user.getId()
+                    && currTask.getLocalDueDate().compareTo(startDate) >= 0
+                    && currTask.getLocalDueDate().compareTo(endDate) < 0) {
                 sortedTaskList.add(currTask);
             }
-            else if (currTask.localDueDate.compareTo(endDate) >= 0) {
+            else if (currTask.getLocalDueDate().compareTo(endDate) >= 0) {
                 break;
             }
         }
@@ -73,7 +73,7 @@ public class MockTaskRepository implements TaskRepository {
      */
     @Override
     public boolean addTask(User user, Task task) {
-        if (user.getId() != task.userId) {
+        if (user.getId() != task.getUserId()) {
             return false;
         }
         else {
@@ -91,12 +91,12 @@ public class MockTaskRepository implements TaskRepository {
      */
     @Override
     public boolean updateTask(User user, Task task) {
-        if (user.getId() != task.userId) {
+        if (user.getId() != task.getUserId()) {
             return false;
         }
         else {
             for (int i = 0; i < tasks.size(); i++) {
-                if (tasks.get(i).id == task.id) {
+                if (tasks.get(i).getId() == task.getId()) {
                     tasks.set(i, task);
                     return true;
                 }
@@ -115,12 +115,12 @@ public class MockTaskRepository implements TaskRepository {
      */
     @Override
     public boolean deleteTask(User user, Task task) {
-        if (user.getId() != task.userId) {
+        if (user.getId() != task.getUserId()) {
             return false;
         }
         else {
             for (int i = 0; i < tasks.size(); i++) {
-                if (tasks.get(i).id == task.id) {
+                if (tasks.get(i).getId() == task.getId()) {
                     tasks.remove(i);
                     return true;
                 }

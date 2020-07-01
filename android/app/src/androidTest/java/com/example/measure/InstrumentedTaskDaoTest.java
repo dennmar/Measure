@@ -87,10 +87,10 @@ public class InstrumentedTaskDaoTest {
 
         for (int i = 0; i < addAmt; i++) {
             Task task = new Task();
-            task.id = startingId + i;
-            task.userId = taskOwner.getId();
-            task.name = Integer.toString(task.id);
-            task.localDueDate = startingDate.plusDays(i);
+            task.setId(startingId + i);
+            task.setUserId(taskOwner.getId());
+            task.setName(Integer.toString(task.getId()));
+            task.setLocalDueDate(startingDate.plusDays(i));
 
             taskDao.addTask(taskOwner, task);
             addedTasks.add(task);
@@ -139,12 +139,12 @@ public class InstrumentedTaskDaoTest {
 
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
-            task.id = i + 1;
-            task.userId = testUser.getId();
-            task.localDueDate = dateOffset.plusDays(taskAmt - i - 1);
+            task.setId(i + 1);
+            task.setUserId(testUser.getId());
+            task.setLocalDueDate(dateOffset.plusDays(taskAmt - i - 1));
 
-            if (task.localDueDate.compareTo(startDate) >= 0
-                    && task.localDueDate.compareTo(endDate) < 0) {
+            if (task.getLocalDueDate().compareTo(startDate) >= 0
+                    && task.getLocalDueDate().compareTo(endDate) < 0) {
                 expectedGetResult.add(task);
             }
 
@@ -199,7 +199,7 @@ public class InstrumentedTaskDaoTest {
                 startDate, endDate).getValue();
         assertThat(actualGetResult1, looseMatch(expectedGetResult1));
 
-        int actualTaskId = actualGetResult1.get(0).id;
+        int actualTaskId = actualGetResult1.get(0).getId();
         Task editedTask = new Task(actualTaskId, testUser.getId(), "What",
                 null, taskDate, true);
         List<Task> expectedGetResult2 = new ArrayList<Task>();
@@ -247,9 +247,9 @@ public class InstrumentedTaskDaoTest {
     public void testEditMissingTask() throws DBOperationException {
         User testUser = new User(1, "test", null);
         Task task = new Task();
-        task.id = 1;
-        task.userId = testUser.getId();
-        task.name = "Edited";
+        task.setId(1);
+        task.setUserId(testUser.getId());
+        task.setName("Edited");
 
         try {
             taskDao.updateTask(testUser, task);
@@ -262,9 +262,9 @@ public class InstrumentedTaskDaoTest {
         taskDao.addTask(testUser, task);
 
         Task task2 = new Task();
-        task2.id = 500;
-        task.userId = testUser.getId();
-        task2.name = "None";
+        task2.setId(500);
+        task2.setUserId(testUser.getId());
+        task2.setName("None");
 
         try {
             taskDao.updateTask(testUser, task2);
@@ -289,9 +289,9 @@ public class InstrumentedTaskDaoTest {
         LocalDate endDate = startDate.plusDays(taskAmt);
 
         Task task = new Task();
-        task.id = 0;
-        task.userId = testUser.getId();
-        task.localDueDate = startDate;
+        task.setId(0);
+        task.setUserId(testUser.getId());
+        task.setLocalDueDate(startDate);
 
         try {
             taskDao.deleteTask(testUser, task);
@@ -303,9 +303,10 @@ public class InstrumentedTaskDaoTest {
 
         for (int i = 0; i < taskAmt; i++) {
             Task t = new Task();
-            t.id = i + 1;
-            t.userId = testUser.getId();
-            t.localDueDate = startDate;
+            t.setId(i + 1);
+            t.setUserId(testUser.getId());
+            t.setLocalDueDate(startDate);
+
             taskDao.addTask(testUser, t);
             expectedGetResult.add(t);
         }
@@ -336,10 +337,10 @@ public class InstrumentedTaskDaoTest {
 
         for (int i = 0; i < dupAmt; i++) {
             Task task = new Task();
-            task.id = i + 1;
-            task.userId = testUser.getId();
-            task.name = "Same name";
-            task.localDueDate = startDate;
+            task.setId(i + 1);
+            task.setUserId(testUser.getId());
+            task.setName("Same name");
+            task.setLocalDueDate(startDate);
 
             taskDao.addTask(testUser, task);
             expectedGetResult.add(task);

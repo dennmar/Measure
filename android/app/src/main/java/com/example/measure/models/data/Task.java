@@ -7,12 +7,12 @@ import org.joda.time.LocalDate;
  * A task for a user to be completed on a due date.
  */
 public class Task {
-    public int id;
-    public int userId;
-    public String name;
-    public Duration timeWorked;
-    public LocalDate localDueDate;
-    public boolean isCompleted;
+    private int id;
+    private int userId;
+    private String name;
+    private Duration timeWorked;
+    private LocalDate localDueDate;
+    private boolean isCompleted;
 
     /**
      * Initialize member variables to defaults.
@@ -54,11 +54,61 @@ public class Task {
 
     @Override
     public String toString() {
-        return "id: " + this.id
-                + ", userId: " + this.userId
-                + ", name: " + this.name
-                + ", timeWorked: " + this.timeWorked
-                + ", localDueDate: " + this.localDueDate
-                + ", isCompleted: " + this.isCompleted;
+        return "id: " + id
+                + ", userId: " + userId
+                + ", name: " + name
+                + ", timeWorked: " + timeWorked
+                + ", localDueDate: " + localDueDate
+                + ", isCompleted: " + isCompleted;
+    }
+
+    /* Getters and setters */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Duration getTimeWorked() {
+        return timeWorked;
+    }
+
+    public void setTimeWorked(Duration timeWorked) {
+        this.timeWorked = timeWorked;
+    }
+
+    public LocalDate getLocalDueDate() {
+        return localDueDate;
+    }
+
+    public void setLocalDueDate(LocalDate localDueDate) {
+        this.localDueDate = localDueDate;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }

@@ -10,6 +10,6 @@ import java.util.Comparator;
 public class SortByDate implements Comparator<Task> {
     @Override
     public int compare(Task o1, Task o2) {
-        return o1.localDueDate.compareTo(o2.localDueDate);
+        return o1.getLocalDueDate().compareTo(o2.getLocalDueDate());
     }
 }
