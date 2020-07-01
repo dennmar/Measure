@@ -18,22 +18,22 @@ import org.joda.time.LocalDate;
 @TypeConverters({RoomTaskConverters.class})
 public class RoomTask {
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
     @ColumnInfo(name="user_id")
     @NonNull
-    public int userId;
+    private int userId;
 
-    public String name;
+    private String name;
 
     @ColumnInfo(name="time_worked")
-    public Duration timeWorked;
+    private Duration timeWorked;
 
     @ColumnInfo(name="local_due_date")
-    public LocalDate localDueDate;
+    private LocalDate localDueDate;
 
     @ColumnInfo(name="is_completed")
-    public boolean isCompleted;
+    private boolean isCompleted;
 
     /**
      * Initialize member variables to default values.
@@ -68,5 +68,55 @@ public class RoomTask {
     public Task toTask() {
         return new Task(this.id, this.userId, this.name, this.timeWorked,
                 this.localDueDate, this.isCompleted);
+    }
+
+    /* Getters and setters */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Duration getTimeWorked() {
+        return timeWorked;
+    }
+
+    public void setTimeWorked(Duration timeWorked) {
+        this.timeWorked = timeWorked;
+    }
+
+    public LocalDate getLocalDueDate() {
+        return localDueDate;
+    }
+
+    public void setLocalDueDate(LocalDate localDueDate) {
+        this.localDueDate = localDueDate;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }
