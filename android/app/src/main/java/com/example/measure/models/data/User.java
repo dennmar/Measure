@@ -4,9 +4,9 @@ package com.example.measure.models.data;
  * A user of the measure application.
  */
 public class User {
-    public int id;
-    public String username;
-    public Task activeTask;
+    private int id;
+    private String username;
+    private Task activeTask;
 
     /**
      * Initialize member variables.
@@ -26,5 +26,29 @@ public class User {
         return "id: " + id  + ", "
                 + "username: " + username + ", "
                 + "activeTask: " + activeTask;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Task getActiveTask() {
+        return activeTask;
+    }
+
+    public void setActiveTask(Task activeTask) {
+        this.activeTask = activeTask;
     }
 }

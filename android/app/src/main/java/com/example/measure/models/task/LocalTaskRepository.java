@@ -80,7 +80,7 @@ public class LocalTaskRepository implements TaskRepository {
      */
     public boolean addTask(User user, Task task) throws DBOperationException,
             InvalidQueryException {
-        if (user.id != task.userId) {
+        if (user.getId() != task.userId) {
             throw new InvalidQueryException("Task to be added (" + task +
                     ") does not match user ID of user (" + user + ")");
         }
@@ -101,7 +101,7 @@ public class LocalTaskRepository implements TaskRepository {
      */
     public boolean updateTask(User user, Task task)
             throws DBOperationException, InvalidQueryException {
-        if (user.id != task.userId) {
+        if (user.getId() != task.userId) {
             throw new InvalidQueryException("Task to be updated (" + task +
                     ") does not match user ID of user (" + user + ")");
         }
@@ -122,7 +122,7 @@ public class LocalTaskRepository implements TaskRepository {
      */
     public boolean deleteTask(User user, Task task)
             throws DBOperationException, InvalidQueryException {
-        if (user.id != task.userId) {
+        if (user.getId() != task.userId) {
             throw new InvalidQueryException("Task to be deleted (" + task +
                     ") does not match user ID of user (" + user + ")");
         }

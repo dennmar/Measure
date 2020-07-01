@@ -46,8 +46,8 @@ public class MockTaskDao implements TaskDao {
                                         LocalDate endDate) {
         List<Task> sortedTaskList = new ArrayList<>();
 
-        if (userTaskMap.containsKey(user.id)) {
-            List<Task> tasks = userTaskMap.get(user.id);
+        if (userTaskMap.containsKey(user.getId())) {
+            List<Task> tasks = userTaskMap.get(user.getId());
             Collections.sort(tasks, sortByDate);
             for (Task task : tasks) {
                 if (task.localDueDate.compareTo(startDate) >= 0
@@ -71,13 +71,13 @@ public class MockTaskDao implements TaskDao {
      * @param task task to store for the user
      */
     public void addTask(User user, Task task) {
-        if (userTaskMap.containsKey(user.id)) {
-            userTaskMap.get(user.id).add(task);
+        if (userTaskMap.containsKey(user.getId())) {
+            userTaskMap.get(user.getId()).add(task);
         }
         else {
             List<Task> newUserTasks = new ArrayList<>();
             newUserTasks.add(task);
-            userTaskMap.put(user.id, newUserTasks);
+            userTaskMap.put(user.getId(), newUserTasks);
         }
     }
 
@@ -89,12 +89,12 @@ public class MockTaskDao implements TaskDao {
      * @throws DBOperationException if the user or task does not exist
      */
     public void updateTask(User user, Task task) throws DBOperationException {
-        if (userTaskMap.containsKey(user.id)) {
-            List<Task> userTasks = userTaskMap.get(user.id);
+        if (userTaskMap.containsKey(user.getId())) {
+            List<Task> userTasks = userTaskMap.get(user.getId());
             boolean foundTask = false;
             int i = 0;
 
-            for (Task storedTask : userTaskMap.get(user.id)) {
+            for (Task storedTask : userTaskMap.get(user.getId())) {
                 if (storedTask.id == task.id) {
                     userTasks.set(i, task);
                     foundTask = true;
@@ -120,12 +120,12 @@ public class MockTaskDao implements TaskDao {
      * @throws DBOperationException if the user or task does not exist
      */
     public void deleteTask(User user, Task task) throws DBOperationException {
-        if (userTaskMap.containsKey(user.id)) {
-            List<Task> userTasks = userTaskMap.get(user.id);
+        if (userTaskMap.containsKey(user.getId())) {
+            List<Task> userTasks = userTaskMap.get(user.getId());
             boolean foundTask = false;
             int i = 0;
 
-            for (Task storedTask : userTaskMap.get(user.id)) {
+            for (Task storedTask : userTaskMap.get(user.getId())) {
                 if (storedTask.id == task.id) {
                     userTasks.remove(i);
                     foundTask = true;

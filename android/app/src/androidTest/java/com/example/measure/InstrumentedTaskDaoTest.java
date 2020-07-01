@@ -88,7 +88,7 @@ public class InstrumentedTaskDaoTest {
         for (int i = 0; i < addAmt; i++) {
             Task task = new Task();
             task.id = startingId + i;
-            task.userId = taskOwner.id;
+            task.userId = taskOwner.getId();
             task.name = Integer.toString(task.id);
             task.localDueDate = startingDate.plusDays(i);
 
@@ -140,7 +140,7 @@ public class InstrumentedTaskDaoTest {
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
             task.id = i + 1;
-            task.userId = testUser.id;
+            task.userId = testUser.getId();
             task.localDueDate = dateOffset.plusDays(taskAmt - i - 1);
 
             if (task.localDueDate.compareTo(startDate) >= 0
@@ -189,7 +189,8 @@ public class InstrumentedTaskDaoTest {
         LocalDate endDate = startDate.plusDays(5);
 
         LocalDate taskDate = endDate.minusDays(1);
-        Task task = new Task(1, testUser.id, "Why", null, taskDate, false);
+        Task task = new Task(1, testUser.getId(), "Why", null, taskDate,
+                false);
         List<Task> expectedGetResult1 = new ArrayList<>();
         expectedGetResult1.add(task);
 
@@ -199,8 +200,8 @@ public class InstrumentedTaskDaoTest {
         assertThat(actualGetResult1, looseMatch(expectedGetResult1));
 
         int actualTaskId = actualGetResult1.get(0).id;
-        Task editedTask = new Task(actualTaskId, testUser.id, "What", null, taskDate,
-                true);
+        Task editedTask = new Task(actualTaskId, testUser.getId(), "What",
+                null, taskDate, true);
         List<Task> expectedGetResult2 = new ArrayList<Task>();
         expectedGetResult2.add(editedTask);
 
@@ -247,7 +248,7 @@ public class InstrumentedTaskDaoTest {
         User testUser = new User(1, "test", null);
         Task task = new Task();
         task.id = 1;
-        task.userId = testUser.id;
+        task.userId = testUser.getId();
         task.name = "Edited";
 
         try {
@@ -262,7 +263,7 @@ public class InstrumentedTaskDaoTest {
 
         Task task2 = new Task();
         task2.id = 500;
-        task.userId = testUser.id;
+        task.userId = testUser.getId();
         task2.name = "None";
 
         try {
@@ -289,7 +290,7 @@ public class InstrumentedTaskDaoTest {
 
         Task task = new Task();
         task.id = 0;
-        task.userId = testUser.id;
+        task.userId = testUser.getId();
         task.localDueDate = startDate;
 
         try {
@@ -303,7 +304,7 @@ public class InstrumentedTaskDaoTest {
         for (int i = 0; i < taskAmt; i++) {
             Task t = new Task();
             t.id = i + 1;
-            t.userId = testUser.id;
+            t.userId = testUser.getId();
             t.localDueDate = startDate;
             taskDao.addTask(testUser, t);
             expectedGetResult.add(t);
@@ -336,7 +337,7 @@ public class InstrumentedTaskDaoTest {
         for (int i = 0; i < dupAmt; i++) {
             Task task = new Task();
             task.id = i + 1;
-            task.userId = testUser.id;
+            task.userId = testUser.getId();
             task.name = "Same name";
             task.localDueDate = startDate;
 

@@ -50,7 +50,7 @@ public class MockTaskRepository implements TaskRepository {
 
         for (int i = 0; i < tasks.size(); i++) {
             Task currTask = tasks.get(i);
-            if (currTask.userId == user.id
+            if (currTask.userId == user.getId()
                     && currTask.localDueDate.compareTo(startDate) >= 0
                     && currTask.localDueDate.compareTo(endDate) < 0) {
                 sortedTaskList.add(currTask);
@@ -73,7 +73,7 @@ public class MockTaskRepository implements TaskRepository {
      */
     @Override
     public boolean addTask(User user, Task task) {
-        if (user.id != task.userId) {
+        if (user.getId() != task.userId) {
             return false;
         }
         else {
@@ -91,7 +91,7 @@ public class MockTaskRepository implements TaskRepository {
      */
     @Override
     public boolean updateTask(User user, Task task) {
-        if (user.id != task.userId) {
+        if (user.getId() != task.userId) {
             return false;
         }
         else {
@@ -115,7 +115,7 @@ public class MockTaskRepository implements TaskRepository {
      */
     @Override
     public boolean deleteTask(User user, Task task) {
-        if (user.id != task.userId) {
+        if (user.getId() != task.userId) {
             return false;
         }
         else {

@@ -47,7 +47,7 @@ public class SQLiteTaskDao implements TaskDao {
     public LiveData<List<Task>> getSortedTasks(User user, LocalDate startDate,
             LocalDate endDate) throws DBOperationException {
         try {
-            roomTaskDao.getSortedTasks(user.id, startDate, endDate)
+            roomTaskDao.getSortedTasks(user.getId(), startDate, endDate)
                     .observeForever(sortedRoomTasks -> {
                         List<Task> convertedTasks = new ArrayList<>();
                         for (RoomTask rtask : sortedRoomTasks) {

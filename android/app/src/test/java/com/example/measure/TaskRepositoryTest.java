@@ -61,7 +61,7 @@ public class TaskRepositoryTest {
         for (int i = 0; i < addAmt; i++) {
             Task task = new Task();
             task.id = startingId + i;
-            task.userId = taskOwner.id;
+            task.userId = taskOwner.getId();
             task.name = Integer.toString(task.id);
             task.localDueDate = startingDate.plusDays(i);
 
@@ -104,7 +104,7 @@ public class TaskRepositoryTest {
         LocalDate endDate = startDate.plusMonths(6);
         Task task = new Task();
         task.id = 1;
-        task.userId = testUser.id;
+        task.userId = testUser.getId();
         task.localDueDate = new LocalDate(startDate);
 
         boolean addResult = taskRepo.addTask(testUser, task);
@@ -133,7 +133,7 @@ public class TaskRepositoryTest {
         for (int i = taskAmt - 1; i >= 0; i--) {
             Task task = new Task();
             task.id = taskAmt - i;
-            task.userId = testUser.id;
+            task.userId = testUser.getId();
             task.localDueDate = startDate.plusDays(i);
             expectedGetResult.add(task);
 
@@ -163,7 +163,7 @@ public class TaskRepositoryTest {
         for (int i = 0; i < taskAmt; i++) {
             Task task = new Task();
             task.id = i + 1;
-            task.userId = testUser.id;
+            task.userId = testUser.getId();
             task.localDueDate = dateOffset.plusDays(taskAmt - i - 1);
 
             if (task.localDueDate.compareTo(startDate) >= 0
@@ -213,7 +213,7 @@ public class TaskRepositoryTest {
 
         Task task = new Task();
         task.id = 1;
-        task.userId = testUser.id;
+        task.userId = testUser.getId();
         task.localDueDate = endDate.minusDays(1);
         task.name = "Why";
 
@@ -228,7 +228,7 @@ public class TaskRepositoryTest {
 
         Task editedTask = new Task();
         editedTask.id = 1;
-        editedTask.userId = testUser.id;
+        editedTask.userId = testUser.getId();
         editedTask.localDueDate = endDate.minusDays(2);
         editedTask.name = "What";
 
@@ -296,7 +296,7 @@ public class TaskRepositoryTest {
         User testUser1 = new User(1, "test", null);
         Task task1 = new Task();
         task1.id = 1;
-        task1.userId = testUser1.id;
+        task1.userId = testUser1.getId();
         task1.localDueDate = startDate;
 
         boolean addResult = taskRepo.addTask(testUser1, task1);
@@ -305,7 +305,7 @@ public class TaskRepositoryTest {
         User testUser2 = new User(2, "tester", null);
         Task task2 = new Task();
         task2.id = 2;
-        task2.userId = testUser2.id;
+        task2.userId = testUser2.getId();
         task2.localDueDate = startDate;
 
         boolean addResult2 = taskRepo.addTask(testUser2, task2);
@@ -336,12 +336,12 @@ public class TaskRepositoryTest {
 
         Task t1 = new Task();
         t1.id = 1;
-        t1.userId = testUser1.id;
+        t1.userId = testUser1.getId();
         t1.localDueDate = startDate;
 
         Task t2 = new Task();
         t2.id = 2;
-        t2.userId = testUser2.id;
+        t2.userId = testUser2.getId();
         t2.localDueDate = startDate;
 
         try {
