@@ -51,6 +51,36 @@ public class AgendaViewModelTest {
     }
 
     /**
+     * Add multiple tasks.
+     *
+     * @param addAmt       amount of tasks to add
+     * @param startingId   id of the first task to add (will be incremented)
+     * @param startingDate date of the first task to add (will be incremented)
+     * @return list of tasks that were added
+     */
+    private List<Task> addMultiple(int addAmt, int startingId, LocalDate startingDate) {
+        List<Task> addedTasks = new ArrayList<>();
+
+        for (int i = 0; i < addAmt; i++) {
+            Task task = new Task();
+            task.setId(startingId + i);
+            task.setUserId(1);
+            task.setName(Integer.toString(task.getId()));
+            task.setLocalDueDate(startingDate.plusDays(i));
+
+            addedTasks.add(task);
+            boolean addSuccess = avm.addTask(task);
+            assertThat(addSuccess, equalTo(true));
+        }
+
+        List<Task> getResult = avm.getSortedTasks(startingDate,
+                startingDate.plusDays(addAmt)).getValue();
+        assertThat(getResult, equalTo(addedTasks));
+
+        return getResult;
+    }
+
+    /**
      * Test getting tasks when none exists for the user.
      */
     @Test
@@ -87,10 +117,11 @@ public class AgendaViewModelTest {
     }
 
     /**
-     * Test adding multiple different tasks for the user and retrieving them.
+     * Test adding multiple different tasks for a user and check if they are
+     * retrieved in sorted order.
      */
     @Test
-    public void testGetMultipleDiffTasks() {
+    public void testGetIsSorted() {
         List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 10;
         LocalDate startDate = new LocalDate(2007, 12, 23);
@@ -155,22 +186,8 @@ public class AgendaViewModelTest {
         LocalDate startDate = new LocalDate(2019, 12, 3);
         LocalDate endDate = startDate.plusYears(2);
 
-        for (int i = taskAmt; i > 0; i--) {
-            Task task = new Task();
-            task.setId(taskAmt - i + 1);
-            task.setUserId(1);
-
-            if (i % 2 == 0) {
-                task.setLocalDueDate(startDate.minusDays(i + 1));
-            }
-            else {
-                task.setLocalDueDate(endDate.plusDays(i + 1));
-            }
-
-            boolean addResult = avm.addTask(task);
-            assertThat(addResult, equalTo(true));
-        }
-
+        addMultiple(taskAmt / 2, 1, endDate);
+        addMultiple(taskAmt / 2, 1 + taskAmt / 2, startDate.minusYears(1));
         List<Task> getResult = avm.getSortedTasks(startDate, endDate)
                 .getValue();
         assertThat(getResult, equalTo(expectedGetResult));
@@ -220,46 +237,24 @@ public class AgendaViewModelTest {
      */
     @Test
     public void testDeleteTask() {
-        List<Task> expectedGetResult = new ArrayList<>();
         int taskAmt = 3;
+        int[] removeOrder = {1, 0, 0};
         LocalDate startDate = new LocalDate(1990, 4, 2);
-        LocalDate endDate = startDate.plusDays(1);
+        LocalDate endDate = startDate.plusDays(taskAmt);
+
+        List<Task> addedTasks = addMultiple(taskAmt, 1, startDate);
+        List<Task> expectedGetResult = addedTasks;
 
         for (int i = 0; i < taskAmt; i++) {
-            Task task = new Task();
-            task.setId(i);
-            task.setUserId(1);
-            task.setLocalDueDate(startDate);
-            expectedGetResult.add(task);
+            boolean deleteSuccess = avm.deleteTask(expectedGetResult
+                    .get(removeOrder[i]));
+            assertThat(deleteSuccess, equalTo(true));
 
-            boolean addResult = avm.addTask(task);
-            assertThat(addResult, equalTo(true));
+            expectedGetResult.remove(removeOrder[i]);
+            List<Task> getResult = avm.getSortedTasks(startDate, endDate)
+                    .getValue();
+            assertThat(getResult, equalTo(expectedGetResult));
         }
-
-        boolean deleteResult1 = avm.deleteTask(expectedGetResult.get(1));
-        assertThat(deleteResult1, equalTo(true));
-
-        expectedGetResult.remove(1);
-        Collections.sort(expectedGetResult, new SortByDate());
-        List<Task> getResult1 = avm.getSortedTasks(startDate, endDate)
-                .getValue();
-        assertThat(getResult1, equalTo(expectedGetResult));
-
-        boolean deleteResult2 = avm.deleteTask(expectedGetResult.get(0));
-        assertThat(deleteResult2, equalTo(true));
-
-        expectedGetResult.remove(0);
-        List<Task> getResult2 = avm.getSortedTasks(startDate, endDate)
-                .getValue();
-        assertThat(getResult2, equalTo(expectedGetResult));
-
-        boolean deleteResult3 = avm.deleteTask(expectedGetResult.get(0));
-        assertThat(deleteResult3, equalTo(true));
-
-        expectedGetResult.remove(0);
-        List<Task> getResult3 = avm.getSortedTasks(startDate, endDate)
-                .getValue();
-        assertThat(getResult3, equalTo(expectedGetResult));
     }
 
     /**

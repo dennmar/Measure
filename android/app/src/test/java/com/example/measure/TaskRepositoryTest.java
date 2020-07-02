@@ -249,6 +249,7 @@ public class TaskRepositoryTest {
     public void testDeleteTask() throws DBOperationException,
             InvalidQueryException {
         int taskAmt = 3;
+        int[] removeOrder = {1, 0, 0};
         User testUser = new User(1, "test", null);
         LocalDate startDate = new LocalDate(1990, 4, 2);
         LocalDate endDate = startDate.plusDays(taskAmt);
@@ -256,32 +257,16 @@ public class TaskRepositoryTest {
         List<Task> addedTasks = addMultiple(taskAmt, 1, testUser, startDate);
         List<Task> expectedGetResult = addedTasks;
 
-        boolean deleteResult1 = taskRepo.deleteTask(testUser,
-                expectedGetResult.get(1));
-        assertThat(deleteResult1, equalTo(true));
+        for (int i = 0; i < taskAmt; i++) {
+            boolean deleteSuccess = taskRepo.deleteTask(testUser,
+                    expectedGetResult.get(removeOrder[i]));
+            assertThat(deleteSuccess, equalTo(true));
 
-        expectedGetResult.remove(1);
-        List<Task> getResult1 = taskRepo.getSortedTasks(testUser, startDate,
-                endDate).getValue();
-        assertThat(getResult1, equalTo(expectedGetResult));
-
-        boolean deleteResult2 = taskRepo.deleteTask(testUser,
-                expectedGetResult.get(0));
-        assertThat(deleteResult2, equalTo(true));
-
-        expectedGetResult.remove(0);
-        List<Task> getResult2 = taskRepo.getSortedTasks(testUser, startDate,
-                endDate).getValue();
-        assertThat(getResult2, equalTo(expectedGetResult));
-
-        boolean deleteResult3 = taskRepo.deleteTask(testUser,
-                expectedGetResult.get(0));
-        assertThat(deleteResult3, equalTo(true));
-
-        expectedGetResult.remove(0);
-        List<Task> getResult3 = taskRepo.getSortedTasks(testUser, startDate,
-                endDate).getValue();
-        assertThat(getResult3, equalTo(expectedGetResult));
+            expectedGetResult.remove(removeOrder[i]);
+            List<Task> getResult = taskRepo.getSortedTasks(testUser, startDate,
+                    endDate).getValue();
+            assertThat(getResult, equalTo(expectedGetResult));
+        }
     }
 
     /**
