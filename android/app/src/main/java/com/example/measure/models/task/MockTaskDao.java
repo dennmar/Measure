@@ -6,13 +6,13 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.SortByDate;
 
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 

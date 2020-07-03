@@ -10,11 +10,10 @@ import com.example.measure.di.components.DaggerTestTaskDaoComponent;
 import com.example.measure.di.components.TestTaskDaoComponent;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
-import com.example.measure.models.task.SortByDate;
+import com.example.measure.utils.SortByDate;
 import com.example.measure.models.task.TaskDao;
 import com.example.measure.utils.DBOperationException;
 
-import org.hamcrest.core.Every;
 import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;

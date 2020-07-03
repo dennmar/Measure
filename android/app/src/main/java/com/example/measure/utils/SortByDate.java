@@ -1,4 +1,4 @@
-package com.example.measure.models.task;
+package com.example.measure.utils;
 
 import com.example.measure.models.data.Task;
 

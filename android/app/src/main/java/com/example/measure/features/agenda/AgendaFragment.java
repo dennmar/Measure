@@ -19,10 +19,14 @@ import org.joda.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * A fragment that handles the UI for the user's agenda.
  */
 public class AgendaFragment extends Fragment {
+    @Inject
+    public AgendaViewModel.Factory avmFactory;
     private AgendaViewModel agendaViewModel;
     private RecyclerView agendaRecycler;
     private AgendaItemAdapter agendaAdapter;
@@ -36,10 +40,10 @@ public class AgendaFragment extends Fragment {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        agendaViewModel = ((MeasureApplication) getActivity()
-                .getApplicationContext()).appComponent.avmFactory()
-                .create(savedInstanceState);
+        ((MeasureApplication) getActivity().getApplicationContext())
+                .appComponent.inject(this);
         super.onCreate(savedInstanceState);
+        agendaViewModel = avmFactory.create(savedInstanceState);
         agendaItems = new ArrayList<>();
     }
 

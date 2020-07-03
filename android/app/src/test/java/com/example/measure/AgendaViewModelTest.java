@@ -8,7 +8,7 @@ import com.example.measure.di.components.DaggerTestAgendaViewModelComponent;
 import com.example.measure.di.components.TestAgendaViewModelComponent;
 import com.example.measure.features.agenda.AgendaViewModel;
 import com.example.measure.models.data.Task;
-import com.example.measure.models.task.SortByDate;
+import com.example.measure.utils.SortByDate;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;

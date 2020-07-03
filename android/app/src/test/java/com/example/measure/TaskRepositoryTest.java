@@ -6,7 +6,7 @@ import com.example.measure.di.components.DaggerTestTaskRepositoryComponent;
 import com.example.measure.di.components.TestTaskRepositoryComponent;
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
-import com.example.measure.models.task.SortByDate;
+import com.example.measure.utils.SortByDate;
 import com.example.measure.models.task.TaskRepository;
 import com.example.measure.utils.DBOperationException;
 import com.example.measure.utils.InvalidQueryException;

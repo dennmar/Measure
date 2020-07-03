@@ -5,7 +5,7 @@ import com.example.measure.di.modules.MockLoginRepositoryModule;
 import com.example.measure.di.modules.MockTaskDaoModule;
 import com.example.measure.di.modules.MockTaskRepositoryModule;
 import com.example.measure.di.modules.MockUserRepositoryModule;
-import com.example.measure.features.agenda.AgendaViewModel;
+import com.example.measure.features.agenda.DaggerAgendaViewModel;
 
 import dagger.Component;
 
@@ -21,5 +21,5 @@ import dagger.Component;
         MockUserRepositoryModule.class
 })
 public interface TestAgendaViewModelComponent {
-    AgendaViewModel.Factory avmFactory();
+    DaggerAgendaViewModel.Factory avmFactory();
 }
