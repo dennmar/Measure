@@ -1,7 +1,7 @@
 package com.example.measure.di.modules;
 
-import com.example.measure.features.agenda.AgendaViewModel;
-import com.example.measure.features.agenda.MockAgendaViewModel;
+import com.example.measure.features.agenda.viewmodel.AgendaViewModel;
+import com.example.measure.features.agenda.viewmodel.MockAgendaViewModel;
 
 import dagger.Module;
 import dagger.Provides;

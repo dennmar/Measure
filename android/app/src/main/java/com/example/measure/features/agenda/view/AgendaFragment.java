@@ -1,4 +1,4 @@
-package com.example.measure.features.agenda;
+package com.example.measure.features.agenda.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
+import com.example.measure.features.FragActivity;
+import com.example.measure.features.agenda.viewmodel.AgendaViewModel;
 import com.example.measure.models.data.Task;
+import com.example.measure.utils.StringConverter;
 
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
@@ -128,7 +131,7 @@ public class AgendaFragment extends Fragment {
 
         for (Task task : sortedTasks) {
             while (task.getLocalDueDate().compareTo(currDate) < 0) {
-                String dateStr = currDate.toString("MMMM d, YYYY");
+                String dateStr = StringConverter.localDateToString(currDate);
                 convAgendaItems.add(new AgendaItem(dateStr, new Duration(0)));
                 convAgendaItems.add(new AgendaItem("No tasks", new Duration(0)));
                 currDate = currDate.plusDays(1);
@@ -139,7 +142,7 @@ public class AgendaFragment extends Fragment {
         }
 
         while (currDate.compareTo(endDate) < 0) {
-            String dateStr = currDate.toString("MMMM d, YYYY");
+            String dateStr = StringConverter.localDateToString(currDate);
             convAgendaItems.add(new AgendaItem(dateStr, new Duration(0)));
             convAgendaItems.add(new AgendaItem("No tasks", new Duration(0)));
             currDate = currDate.plusDays(1);
@@ -156,10 +159,8 @@ public class AgendaFragment extends Fragment {
     private void initAddTaskBtn(View view) {
         Button addTaskBtn = view.findViewById(R.id.add_task_button);
         addTaskBtn.setOnClickListener(v -> {
-            agendaItems.add(new AgendaItem("Test agenda item",
-                    new Duration(3600000 + 1000 * 17)));
-            agendaAdapter.setAgendaItems(agendaItems);
-            agendaAdapter.notifyDataSetChanged();
+            AddTaskFragment addTaskFrag = new AddTaskFragment();
+            ((FragActivity) requireActivity()).replaceFragment(addTaskFrag);
         });
     }
 }

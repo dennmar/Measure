@@ -1,4 +1,4 @@
-package com.example.measure.features.agenda;
+package com.example.measure.features.agenda.view;
 
 import android.view.LayoutInflater;
 import android.view.View;

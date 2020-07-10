@@ -8,7 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.components.ApplicationComponent;
 import com.example.measure.di.components.DaggerTestAgendaFragmentComponent;
-import com.example.measure.features.agenda.AgendaFragment;
+import com.example.measure.features.agenda.view.AgendaFragment;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;

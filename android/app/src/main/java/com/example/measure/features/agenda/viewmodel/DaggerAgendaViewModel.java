@@ -1,7 +1,6 @@
-package com.example.measure.features.agenda;
+package com.example.measure.features.agenda.viewmodel;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;

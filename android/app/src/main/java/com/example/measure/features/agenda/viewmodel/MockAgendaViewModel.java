@@ -1,4 +1,4 @@
-package com.example.measure.features.agenda;
+package com.example.measure.features.agenda.viewmodel;
 
 import android.os.Bundle;
 
@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * A fake view model that handles the interaction between the agenda view

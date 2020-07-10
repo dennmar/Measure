@@ -5,7 +5,7 @@ import com.example.measure.di.modules.MockLoginRepositoryModule;
 import com.example.measure.di.modules.MockTaskDaoModule;
 import com.example.measure.di.modules.MockTaskRepositoryModule;
 import com.example.measure.di.modules.MockUserRepositoryModule;
-import com.example.measure.features.agenda.DaggerAgendaViewModel;
+import com.example.measure.features.agenda.viewmodel.DaggerAgendaViewModel;
 
 import dagger.Component;
 

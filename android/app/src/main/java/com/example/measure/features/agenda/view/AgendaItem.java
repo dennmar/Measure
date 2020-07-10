@@ -1,4 +1,4 @@
-package com.example.measure.features.agenda;
+package com.example.measure.features.agenda.view;
 
 import org.joda.time.Duration;
 import org.joda.time.Period;

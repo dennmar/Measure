@@ -1,4 +1,4 @@
-package com.example.measure.features.agenda;
+package com.example.measure.features.agenda.viewmodel;
 
 import android.os.Bundle;
 

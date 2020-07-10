@@ -2,18 +2,14 @@ package com.example.measure.features;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.example.measure.R;
-import com.example.measure.features.agenda.AgendaFragment;
+import com.example.measure.features.agenda.view.AgendaFragment;
 
 
 /**
  * Main activity for the measure application.
  */
-public class MeasureActivity extends AppCompatActivity {
+public class MeasureActivity extends FragActivity {
     /**
      * Set the display and add the initial fragment.
      *
@@ -23,31 +19,7 @@ public class MeasureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measure);
-        addFragment(R.id.measure_act_container, new AgendaFragment());
-    }
-
-    /**
-     * Replace the current fragment of a container with the given fragment.
-     *
-     * @param fragContainerId id of the container to display the fragment
-     * @param frag            fragment to switch to
-     */
-    private void addFragment(int fragContainerId, Fragment frag) {
-        getSupportFragmentManager().beginTransaction()
-                .add(fragContainerId, frag).commit();
-    }
-
-    /**
-     * Add a fragment to a container to be displayed.
-     *
-     * @param fragContainerId id of the container to display the fragment
-     * @param frag            fragment to be added to the container
-     */
-    private void replaceFragment(int fragContainerId, Fragment frag) {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction();
-        transaction.replace(fragContainerId, frag);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        setFragContainerId(R.id.measure_act_container);
+        addFragment(new AgendaFragment());
     }
 }

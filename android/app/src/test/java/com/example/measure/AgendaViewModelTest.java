@@ -6,7 +6,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import com.example.measure.di.components.DaggerTestAgendaViewModelComponent;
 import com.example.measure.di.components.TestAgendaViewModelComponent;
-import com.example.measure.features.agenda.AgendaViewModel;
+import com.example.measure.features.agenda.viewmodel.AgendaViewModel;
 import com.example.measure.models.data.Task;
 import com.example.measure.utils.SortByDate;
 

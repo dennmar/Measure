@@ -9,7 +9,7 @@ import com.example.measure.di.modules.MeasureRoomDatabaseModule;
 import com.example.measure.di.modules.TaskDaoModule;
 import com.example.measure.di.modules.TaskRepositoryModule;
 import com.example.measure.di.modules.UserRepositoryModule;
-import com.example.measure.features.agenda.AgendaFragment;
+import com.example.measure.features.agenda.view.AgendaFragment;
 
 import dagger.BindsInstance;
 import dagger.Component;
