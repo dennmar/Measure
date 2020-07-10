@@ -15,6 +15,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * A fake view model that handles the interaction between the agenda view
  * (fragment) and the model.
@@ -45,7 +47,7 @@ public class MockAgendaViewModel implements AgendaViewModel {
      * interface (which in turn is needed to properly instantiate
      * DaggerAgendaViewModel using assisted injection).
      */
-    public class Factory implements AgendaViewModel.Factory {
+    public static class Factory implements AgendaViewModel.Factory {
         /**
          * Create an instance of a mock agenda view model with the given saved
          * instance state.

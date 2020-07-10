@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.measure.R;
-import com.example.measure.models.data.AgendaItem;
 
 import java.util.List;
 

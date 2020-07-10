@@ -1,7 +1,9 @@
 package com.example.measure.features.agenda;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -18,6 +20,7 @@ import com.squareup.inject.assisted.AssistedInject;
 
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -170,6 +173,7 @@ public class DaggerAgendaViewModel extends ViewModel
      *
      * @return current active task for the user
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public LiveData<Task> getActiveTask() {
         enableObservers();
 
