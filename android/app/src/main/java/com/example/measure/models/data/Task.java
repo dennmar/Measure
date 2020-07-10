@@ -3,6 +3,9 @@ package com.example.measure.models.data;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * A task for a user to be completed on a due date.
  */
@@ -60,6 +63,15 @@ public class Task {
                 + ", timeWorked: " + timeWorked
                 + ", localDueDate: " + localDueDate
                 + ", isCompleted: " + isCompleted;
+    }
+
+    /**
+     * Return the string representation of the due date.
+     *
+     * @return the string representing the due date (ex: "January 17, 2001")
+     */
+    public String getLocalDueDateString() {
+        return localDueDate.toString("MMMM d, YYYY");
     }
 
     /* Getters and setters */

@@ -10,6 +10,7 @@ import com.example.measure.utils.InvalidQueryException;
 
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class LocalTaskRepository implements TaskRepository {
     @Inject
     public LocalTaskRepository(TaskDao taskDao) {
         this.taskDao = taskDao;
-        sortedTasks = new MutableLiveData<>();
+        sortedTasks = new MutableLiveData<>(new ArrayList<>());
     }
 
     /**

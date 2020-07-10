@@ -57,7 +57,7 @@ public class DaggerAgendaViewModel extends ViewModel
         this.userRepo = userRepo;
 
         currUser = this.loginRepo.getCurrentUser();
-        sortedTasks = new MutableLiveData<>();
+        sortedTasks = new MutableLiveData<>(new ArrayList<>());
         activeTask = new MutableLiveData<>();
     }
 

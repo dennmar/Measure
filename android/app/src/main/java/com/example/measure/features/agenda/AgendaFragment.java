@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
-import com.example.measure.models.data.AgendaItem;
+import com.example.measure.models.data.Task;
 
 import org.joda.time.Duration;
+import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +88,64 @@ public class AgendaFragment extends Fragment {
         agendaRecycler.setLayoutManager(layoutManager);
         agendaAdapter = new AgendaItemAdapter(agendaItems);
         agendaRecycler.setAdapter(agendaAdapter);
+
+        LocalDate agendaStartDate = LocalDate.now().minusDays(3);
+        LocalDate agendaEndDate = LocalDate.now().plusDays(4);
+        setAgenda(agendaStartDate, agendaEndDate);
+    }
+
+    /**
+     * Set the display to show the agenda between the start date and end
+     * date.
+     *
+     * @param agendaStartDate starting date of the agenda (inclusive)
+     * @param agendaEndDate   ending date of the agenda (exclusive)
+     */
+    private void setAgenda(final LocalDate agendaStartDate,
+                        final LocalDate agendaEndDate) {
+        agendaViewModel.getSortedTasks(agendaStartDate, agendaEndDate)
+                .observe(getViewLifecycleOwner(), sortedTasks -> {
+                    agendaItems = tasksToAgendaItems(sortedTasks,
+                            agendaStartDate, agendaEndDate);
+                    agendaAdapter.setAgendaItems(agendaItems);
+                    agendaAdapter.notifyDataSetChanged();
+                });
+    }
+
+    /**
+     * Return a list of agenda items for display from the given sorted tasks.
+     *
+     * @param sortedTasks tasks sorted by date (ascending)
+     * @param startDate   start date of the agenda
+     * @param endDate     end date of the agenda
+     * @return
+     */
+    private List<AgendaItem> tasksToAgendaItems(List<Task> sortedTasks,
+                                                LocalDate startDate,
+                                                LocalDate endDate) {
+        List<AgendaItem> convAgendaItems = new ArrayList<>();
+        LocalDate currDate = new LocalDate(startDate);
+
+        for (Task task : sortedTasks) {
+            while (task.getLocalDueDate().compareTo(currDate) < 0) {
+                String dateStr = currDate.toString("MMMM d, YYYY");
+                convAgendaItems.add(new AgendaItem(dateStr, new Duration(0)));
+                convAgendaItems.add(new AgendaItem("No tasks", new Duration(0)));
+                currDate = currDate.plusDays(1);
+            }
+
+            convAgendaItems.add(new AgendaItem(task.getName(),
+                    task.getTimeWorked()));
+        }
+
+        while (currDate.compareTo(endDate) < 0) {
+            String dateStr = currDate.toString("MMMM d, YYYY");
+            convAgendaItems.add(new AgendaItem(dateStr, new Duration(0)));
+            convAgendaItems.add(new AgendaItem("No tasks", new Duration(0)));
+            currDate = currDate.plusDays(1);
+        }
+
+        return convAgendaItems;
     }
 
     /**

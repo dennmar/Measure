@@ -32,7 +32,7 @@ public class SQLiteTaskDao implements TaskDao {
     @Inject
     public SQLiteTaskDao(MeasureRoomDatabase db) {
         roomTaskDao = db.taskDao();
-        sortedTasks = new MutableLiveData<>();
+        sortedTasks = new MutableLiveData<>(new ArrayList<>());
     }
 
     /**
