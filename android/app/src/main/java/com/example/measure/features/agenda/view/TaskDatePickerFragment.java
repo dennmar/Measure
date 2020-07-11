@@ -11,9 +11,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.measure.utils.StringConverter;
 
 import org.joda.time.LocalDate;
-import org.w3c.dom.Text;
-
-import java.util.Calendar;
 
 /**
  * A fragment that creates a dialog to allow the user to pick task date
@@ -40,12 +37,13 @@ public class TaskDatePickerFragment extends DialogFragment
      */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Calendar c = Calendar.getInstance();
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int month = c.get(Calendar.MONTH);
-        int year = c.get(Calendar.YEAR);
+        LocalDate today = LocalDate.now();
+        int day = today.getDayOfMonth();
+        int month = today.getMonthOfYear();
+        int year = today.getYear();
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        // Month is zero-indexed.
+        return new DatePickerDialog(getActivity(), this, year, month - 1, day);
     }
 
     /**
@@ -53,11 +51,11 @@ public class TaskDatePickerFragment extends DialogFragment
      *
      * @param view  datepicker that set the date
      * @param year  year of set date
-     * @param month month of set date
+     * @param month month of set date (0-indexed)
      * @param day   day of set date
      */
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        LocalDate selectedDate = new LocalDate(year, month, day);
+        LocalDate selectedDate = new LocalDate(year, month + 1, day);
         String dateStr = StringConverter.localDateToString(selectedDate);
         dateTextView.setText(dateStr);
     }
