@@ -36,4 +36,12 @@ public class MockLoginRepository implements LoginRepository {
         currUser = user;
         return true;
     }
+
+    /**
+     * Clear the current login session.
+     */
+    @Override
+    public void clearSession() {
+        currUser = null;
+    }
 }

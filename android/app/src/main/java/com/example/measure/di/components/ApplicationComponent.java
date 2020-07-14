@@ -10,6 +10,7 @@ import com.example.measure.di.modules.TaskDaoModule;
 import com.example.measure.di.modules.TaskRepositoryModule;
 import com.example.measure.di.modules.UserRepositoryModule;
 import com.example.measure.features.agenda.view.AgendaFragment;
+import com.example.measure.models.login.LoginDao;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -24,6 +25,7 @@ import dagger.Component;
         TaskRepositoryModule.class,
         TaskDaoModule.class,
         LoginRepositoryModule.class,
+        LoginDao.class,
         UserRepositoryModule.class,
         ContextModule.class,
         MeasureRoomDatabaseModule.class

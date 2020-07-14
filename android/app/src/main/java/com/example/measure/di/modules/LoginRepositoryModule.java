@@ -14,10 +14,12 @@ public class LoginRepositoryModule {
     /**
      * Return the login repository to be provided for all dependents.
      *
+     * @param localLoginRepo login repository using a local database
      * @return login repository to be used for login session data access
      */
     @Provides
-    public LoginRepository provideLoginRepository() {
-        return new LocalLoginRepository();
+    public LoginRepository provideLoginRepository(
+            LocalLoginRepository localLoginRepo) {
+        return localLoginRepo;
     }
 }
