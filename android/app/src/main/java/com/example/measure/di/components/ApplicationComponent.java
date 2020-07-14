@@ -9,6 +9,7 @@ import com.example.measure.di.modules.LoginRepositoryModule;
 import com.example.measure.di.modules.MeasureRoomDatabaseModule;
 import com.example.measure.di.modules.TaskDaoModule;
 import com.example.measure.di.modules.TaskRepositoryModule;
+import com.example.measure.di.modules.UserDaoModule;
 import com.example.measure.di.modules.UserRepositoryModule;
 import com.example.measure.features.agenda.view.AgendaFragment;
 
@@ -27,6 +28,7 @@ import dagger.Component;
         LoginRepositoryModule.class,
         LoginDaoModule.class,
         UserRepositoryModule.class,
+        UserDaoModule.class,
         ContextModule.class,
         MeasureRoomDatabaseModule.class
 })

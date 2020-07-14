@@ -3,7 +3,9 @@ package com.example.measure.di.components;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.LoginRepositoryModule;
 import com.example.measure.di.modules.MockLoginDaoModule;
+import com.example.measure.di.modules.MockUserDaoModule;
 import com.example.measure.models.login.LoginRepository;
+import com.example.measure.models.user.UserDao;
 
 import dagger.Component;
 
@@ -14,8 +16,10 @@ import dagger.Component;
 @Component(modules = {
         AssistedInjectModule.class,
         LoginRepositoryModule.class,
-        MockLoginDaoModule.class
+        MockLoginDaoModule.class,
+        MockUserDaoModule.class
 })
 public interface TestLoginRepositoryComponent {
     LoginRepository loginRepository();
+    UserDao mockUserDao();
 }

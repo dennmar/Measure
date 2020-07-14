@@ -4,6 +4,7 @@ import com.example.measure.di.components.DaggerTestLoginRepositoryComponent;
 import com.example.measure.di.components.TestLoginRepositoryComponent;
 import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginRepository;
+import com.example.measure.models.user.UserDao;
 import com.example.measure.utils.AuthenticationException;
 
 import org.junit.Before;
@@ -77,7 +78,7 @@ public class LoginRepositoryTest {
      * Test clearing the current login session.
      */
     @Test
-    public void testClearSession() {
+    public void testClearSession() throws AuthenticationException {
         User testUser = new User(1, "test", null);
         String password = "password";
         mockUserDao.addUser(testUser, password);
