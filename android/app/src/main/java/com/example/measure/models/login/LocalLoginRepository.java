@@ -1,6 +1,7 @@
 package com.example.measure.models.login;
 
 import com.example.measure.models.data.User;
+import com.example.measure.models.user.UserDao;
 
 import javax.inject.Inject;
 
@@ -9,10 +10,18 @@ import javax.inject.Inject;
  */
 public class LocalLoginRepository implements LoginRepository {
     private LoginDao loginDao;
+    private UserDao userDao;
 
+    /**
+     * Initialize member variables.
+     *
+     * @param loginDao data access object for the login session
+     * @param userDao  data access object for users
+     */
     @Inject
-    public LocalLoginRepository(LoginDao loginDao) {
+    public LocalLoginRepository(LoginDao loginDao, UserDao userDao) {
         this.loginDao = loginDao;
+        this.userDao = userDao;
     }
 
     @Override

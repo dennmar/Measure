@@ -13,4 +13,13 @@ public interface UserDao {
      * @param password password of the user
      */
     void addUser(User user, String password);
+
+    /**
+     * Retrieve a user with the matching username and password.
+     *
+     * @param username username of the user to fetch
+     * @param password password of the user to fetch
+     * @return the matching user or null if no matching user was found
+     */
+    User getUser(String username, String password);
 }
