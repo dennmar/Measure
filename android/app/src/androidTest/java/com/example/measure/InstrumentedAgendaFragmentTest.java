@@ -138,7 +138,7 @@ public class InstrumentedAgendaFragmentTest {
         task.setLocalDueDate(LocalDate.now());
 
         int agendaDayRange = 7;
-        int todayIndex = agendaDayRange / 2 + 1;
+        int todayIndex = agendaDayRange / 2;
         int todayDateRowPos = todayIndex * 2;
         int expectedTaskPos = todayDateRowPos + 1;
 
@@ -162,8 +162,8 @@ public class InstrumentedAgendaFragmentTest {
         // Check that an additional task under a date is displayed correctly.
         Task task = new Task();
         task.setName("Study music theory");
-        task.setLocalDueDate(agendaStartDate.minusDays(2));
-        addTask(task, 5);
+        task.setLocalDueDate(agendaStartDate.plusDays(2));
+        addTask(task, 6);
     }
 
     /**

@@ -24,7 +24,8 @@ public class MockAgendaViewModel implements AgendaViewModel {
     private MutableLiveData<Task> activeTask;
     private List<Task> allTasks;
     private Comparator<Task> sortByDate;
-
+    private LocalDate agendaStartDate;
+    private LocalDate agendaEndDate;
 
     /**
      * Initialize member variables.
@@ -36,6 +37,8 @@ public class MockAgendaViewModel implements AgendaViewModel {
         activeTask = new MutableLiveData<>(null);
         allTasks = new ArrayList<>();
         sortByDate = new SortByDate();
+        agendaStartDate = null;
+        agendaEndDate = null;
     }
 
     /**
@@ -69,15 +72,32 @@ public class MockAgendaViewModel implements AgendaViewModel {
     @Override
     public LiveData<List<Task>> getSortedTasks(LocalDate startDate,
                                                LocalDate endDate) {
+        agendaStartDate = startDate;
+        agendaEndDate = endDate;
+        return updateSortedTasks();
+    }
+
+    /**
+     * Update the sorted tasks to contain all tasks within the agenda date
+     * range in ascending order by date.
+     *
+     * @return observable list of tasks for the user sorted by date
+     */
+    private LiveData<List<Task>> updateSortedTasks() {
+        if (agendaStartDate == null || agendaEndDate == null) {
+            sortedTasks.setValue(new ArrayList<>());
+            return sortedTasks;
+        }
+
         List<Task> sortedTaskList = new ArrayList<>();
         Collections.sort(allTasks, sortByDate);
 
         for (Task t : allTasks) {
-            if (t.getLocalDueDate().compareTo(startDate) >= 0
-                    && t.getLocalDueDate().compareTo(endDate) < 0) {
+            if (t.getLocalDueDate().compareTo(agendaStartDate) >= 0
+                    && t.getLocalDueDate().compareTo(agendaEndDate) < 0) {
                 sortedTaskList.add(t);
             }
-            else if (t.getLocalDueDate().compareTo(endDate) >= 0) {
+            else if (t.getLocalDueDate().compareTo(agendaEndDate) >= 0) {
                 break;
             }
         }
@@ -85,6 +105,7 @@ public class MockAgendaViewModel implements AgendaViewModel {
         sortedTasks.setValue(sortedTaskList);
         return sortedTasks;
     }
+
 
     /**
      * Add a task for the user.
@@ -95,6 +116,7 @@ public class MockAgendaViewModel implements AgendaViewModel {
     @Override
     public boolean addTask(Task newTask) {
         allTasks.add(newTask);
+        updateSortedTasks();
         return true;
     }
 
@@ -113,6 +135,7 @@ public class MockAgendaViewModel implements AgendaViewModel {
             }
         }
 
+        updateSortedTasks();
         return false;
     }
 
@@ -131,6 +154,7 @@ public class MockAgendaViewModel implements AgendaViewModel {
             }
         }
 
+        updateSortedTasks();
         return false;
     }
 

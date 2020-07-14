@@ -13,10 +13,9 @@ import com.example.measure.utils.StringConverter;
 import org.joda.time.LocalDate;
 
 /**
- * A fragment that creates a dialog to allow the user to pick task date
- * represented in a text view.
+ * A fragment that creates a dialog to allow the user to pick the task date.
  */
-public class TaskDatePickerFragment extends DialogFragment
+public class TaskDatePickerDialogFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
     private TextView dateTextView;
 
@@ -25,7 +24,7 @@ public class TaskDatePickerFragment extends DialogFragment
      *
      * @param dateTextView text view that will hold the date
      */
-    public TaskDatePickerFragment(TextView dateTextView) {
+    public TaskDatePickerDialogFragment(TextView dateTextView) {
         this.dateTextView = dateTextView;
     }
 

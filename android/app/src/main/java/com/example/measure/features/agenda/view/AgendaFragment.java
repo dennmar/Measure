@@ -1,23 +1,23 @@
 package com.example.measure.features.agenda.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
-import com.example.measure.features.FragActivity;
 import com.example.measure.features.agenda.viewmodel.AgendaViewModel;
 import com.example.measure.models.data.Task;
 import com.example.measure.utils.StringConverter;
 
+import org.joda.time.Days;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 
@@ -128,28 +128,45 @@ public class AgendaFragment extends Fragment {
                                                 LocalDate startDate,
                                                 LocalDate endDate) {
         List<AgendaItem> convAgendaItems = new ArrayList<>();
-        LocalDate currDate = new LocalDate(startDate);
+        LocalDate currDate;
+        int dayAmt = Days.daysBetween(startDate, endDate).getDays();
+        int sortedTasksInd = 0;
 
-        for (Task task : sortedTasks) {
-            while (task.getLocalDueDate().compareTo(currDate) < 0) {
-                String dateStr = StringConverter.localDateToString(currDate);
-                convAgendaItems.add(new AgendaItem(dateStr, new Duration(0)));
-                convAgendaItems.add(new AgendaItem("No tasks", new Duration(0)));
-                currDate = currDate.plusDays(1);
-            }
-
-            convAgendaItems.add(new AgendaItem(task.getName(),
-                    task.getTimeWorked()));
-        }
-
-        while (currDate.compareTo(endDate) < 0) {
+        for (int i = 0; i < dayAmt; i++) {
+            currDate = startDate.plusDays(i);
             String dateStr = StringConverter.localDateToString(currDate);
             convAgendaItems.add(new AgendaItem(dateStr, new Duration(0)));
-            convAgendaItems.add(new AgendaItem("No tasks", new Duration(0)));
-            currDate = currDate.plusDays(1);
+
+            int addedTasks = 0;
+            while (sortedTasksInd < sortedTasks.size()) {
+                Task currTask = sortedTasks.get(sortedTasksInd);
+
+                if (!currTask.getLocalDueDate().equals(currDate)) {
+                    break;
+                }
+
+                convAgendaItems.add(new AgendaItem(currTask.getName(),
+                        currTask.getTimeWorked()));
+                addedTasks++;
+                sortedTasksInd++;
+            }
+
+            if (addedTasks == 0) {
+                convAgendaItems.add(new AgendaItem("No tasks",
+                        new Duration(0)));
+            }
         }
 
         return convAgendaItems;
+    }
+
+    /**
+     * Add the task to the agenda.
+     *
+     * @param task task to be added
+     */
+    public void addTask(Task task) {
+        agendaViewModel.addTask(task);
     }
 
     /**
@@ -160,8 +177,9 @@ public class AgendaFragment extends Fragment {
     private void initAddTaskBtn(View view) {
         Button addTaskBtn = view.findViewById(R.id.btn_add_task);
         addTaskBtn.setOnClickListener(v -> {
-            AddTaskFragment addTaskFrag = new AddTaskFragment();
-            ((FragActivity) requireActivity()).replaceFragment(addTaskFrag);
+            AddTaskDialogFragment addTaskDialog = new AddTaskDialogFragment();
+            addTaskDialog.show(getChildFragmentManager(),
+                    "AddTaskDialogFragment");
         });
     }
 }

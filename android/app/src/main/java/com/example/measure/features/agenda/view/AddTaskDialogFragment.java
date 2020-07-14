@@ -1,15 +1,15 @@
 package com.example.measure.features.agenda.view;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
 import com.example.measure.models.data.Task;
@@ -18,40 +18,28 @@ import com.example.measure.utils.StringConverter;
 import org.joda.time.LocalDate;
 
 /**
- * A fragment that creates a dialog showing the user a form to add a task.
+ * A fragment that creates a dialog to allow the user to fill out information
+ * for a new task.
  */
-public class AddTaskFragment extends Fragment {
+public class AddTaskDialogFragment extends DialogFragment {
     /**
-     * Restore the fragment from the previously saved state.
+     * Create a new task dialog to be displayed by the fragment.
      *
      * @param savedInstanceState previously saved state of the fragment
+     * @return a dialog to fill out information for a new task
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_task, null);
+        builder.setView(dialogView);
 
-    /**
-     * Instantiate the user interface view.
-     *
-     * @param inflater           layout inflater to inflate views
-     * @param container          parent view to attach to
-     * @param savedInstanceState previously saved state of the fragment
-     * @return view for the user interface
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_add_task, container,
-                false);
-        initDatePicker(rootView);
-        initSubmitButton(rootView);
-        return rootView;
-    }
+        initDatePicker(dialogView);
+        initSubmitBtn(dialogView);
+        initCancelBtn(dialogView);
 
-    @Override
-    public void onPause() {
-        super.onPause();
+        return builder.create();
     }
 
     /**
@@ -74,11 +62,11 @@ public class AddTaskFragment extends Fragment {
     }
 
     /**
-     * Initialize the submit button for adding a new task.
+     * Initialize the submit button to add the task.
      *
      * @param view view for the user interface
      */
-    private void initSubmitButton(View view) {
+    private void initSubmitBtn(View view) {
         Button submitBtn = view.findViewById(R.id.btn_submit_add_task);
         TextView nameText = view.findViewById(R.id.edittext_new_task_name);
         TextView dateText = view.findViewById(R.id.textview_new_task_date);
@@ -91,6 +79,21 @@ public class AddTaskFragment extends Fragment {
             Task newTask = new Task();
             newTask.setName(taskName);
             newTask.setLocalDueDate(taskDueDate);
+
+            ((AgendaFragment) requireParentFragment()).addTask(newTask);
+            dismiss();
+        });
+    }
+
+    /**
+     * Initialize the cancel button to close the dialog.
+     *
+     * @param view view for the user interface
+     */
+    private void initCancelBtn(View view) {
+        Button cancelBtn = view.findViewById(R.id.btn_cancel_add_task);
+        cancelBtn.setOnClickListener(v -> {
+            dismiss();
         });
     }
 }
