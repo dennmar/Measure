@@ -45,22 +45,20 @@ public class InstrumentedAgendaFragmentTest {
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
 
-    MeasureApplication mockApp;
     ActivityScenario<MeasureActivity> measureActScenario;
+    MeasureApplication mockApp = (MeasureApplication) InstrumentationRegistry
+            .getInstrumentation()
+            .getTargetContext()
+            .getApplicationContext();
 
     /**
      * Launch the measure activity (which displays the agenda fragment first).
      */
     @Before
     public void initAgendaFragment() {
-        mockApp = (MeasureApplication) InstrumentationRegistry
-                .getInstrumentation()
-                .getTargetContext()
-                .getApplicationContext();
         ApplicationComponent testComponent =
                 DaggerTestAgendaFragmentComponent.create();
         mockApp.setAppComponent(testComponent);
-
         measureActScenario = ActivityScenario.launch(MeasureActivity.class);
     }
 

@@ -42,19 +42,18 @@ public class InstrumentedTaskDaoTest {
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
 
-    MeasureApplication mockApp;
     TaskDao taskDao;
     RoomDatabase testRoomDb;
+    MeasureApplication mockApp = (MeasureApplication) InstrumentationRegistry
+            .getInstrumentation()
+            .getTargetContext()
+            .getApplicationContext();
 
     /**
      * Create a new task DAO.
      */
     @Before
     public void initTaskDao() {
-        mockApp = (MeasureApplication) InstrumentationRegistry
-                .getInstrumentation()
-                .getTargetContext()
-                .getApplicationContext();
         TestTaskDaoComponent taskDaoComponent =
                 DaggerTestTaskDaoComponent.factory().newAppComponent(mockApp);
         taskDao = taskDaoComponent.taskDao();
