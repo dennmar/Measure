@@ -1,15 +1,21 @@
 package com.example.measure.models.user;
 
+import android.util.Log;
+
 import com.example.measure.models.data.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * A fake user database access object.
+ *
+ * Note: this class is made singleton for use in login repository test.
  */
+@Singleton
 public class MockUserDao implements UserDao {
     private HashMap<User, String> users;
 

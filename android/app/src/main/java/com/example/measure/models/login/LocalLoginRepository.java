@@ -1,7 +1,10 @@
 package com.example.measure.models.login;
 
+import android.util.Log;
+
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserDao;
+import com.example.measure.utils.AuthenticationException;
 
 import javax.inject.Inject;
 
@@ -24,14 +27,39 @@ public class LocalLoginRepository implements LoginRepository {
         this.userDao = userDao;
     }
 
+    /**
+     * Retrieve the current user logged in.
+     *
+     * @return the user currently logged in
+     */
     @Override
     public User getCurrentUser() {
-        return null;
+        return loginDao.getCurrentUser();
     }
 
+    /**
+     * Start a login session for the user if the credentials are valid.
+     *
+     * @param username username of the user
+     * @param password password of the user
+     * @throws AuthenticationException if the username and password are invalid
+     */
     @Override
-    public void login(String username, String password) {}
+    public void login(String username, String password)
+            throws AuthenticationException {
+        User loginUser = userDao.getUser(username, password);
+        if (loginUser == null) {
+            throw new AuthenticationException("Invalid username or password");
+        }
 
+        loginDao.setCurrentUser(loginUser);
+    }
+
+    /**
+     * Clear the current login session.
+     */
     @Override
-    public void logout() {}
+    public void logout() {
+       loginDao.clearSession();
+    }
 }

@@ -7,6 +7,8 @@ import com.example.measure.di.modules.MockUserDaoModule;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.models.user.UserDao;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
@@ -19,6 +21,7 @@ import dagger.Component;
         MockLoginDaoModule.class,
         MockUserDaoModule.class
 })
+@Singleton
 public interface TestLoginRepositoryComponent {
     LoginRepository loginRepository();
     UserDao mockUserDao();

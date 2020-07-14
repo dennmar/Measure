@@ -21,7 +21,8 @@ public interface LoginRepository {
      * @param password password of the user
      * @throws AuthenticationException if the username and password are invalid
      */
-    void login(String username, String password) throws AuthenticationException;
+    void login(String username, String password)
+            throws AuthenticationException;
 
     /**
      * Clear the current login session.
