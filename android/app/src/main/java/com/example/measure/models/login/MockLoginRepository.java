@@ -27,21 +27,21 @@ public class MockLoginRepository implements LoginRepository {
     }
 
     /**
-     * Set the current user.
+     * Start a login session for the user.
      *
-     * @return true if the operation was successful; false otherwise
+     * @param username username of the user
+     * @param password password of the user
      */
     @Override
-    public boolean setCurrentUser(User user) {
-        currUser = user;
-        return true;
+    public void login(String username, String password) {
+        currUser = new User(1, username, null);
     }
 
     /**
      * Clear the current login session.
      */
     @Override
-    public void clearSession() {
+    public void logout() {
         currUser = null;
     }
 }

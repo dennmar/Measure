@@ -21,10 +21,8 @@ public class LocalLoginRepository implements LoginRepository {
     }
 
     @Override
-    public boolean setCurrentUser(User user) {
-        return false;
-    }
+    public void login(String username, String password) {}
 
     @Override
-    public void clearSession() { }
+    public void logout() {}
 }

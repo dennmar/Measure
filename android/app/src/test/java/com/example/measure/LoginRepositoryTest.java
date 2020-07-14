@@ -4,6 +4,7 @@ import com.example.measure.di.components.DaggerTestLoginRepositoryComponent;
 import com.example.measure.di.components.TestLoginRepositoryComponent;
 import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginRepository;
+import com.example.measure.utils.AuthenticationException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class LoginRepositoryTest {
     LoginRepository loginRepo;
+    UserDao mockUserDao;
 
     /**
      * Create a new login repository.
@@ -25,6 +27,7 @@ public class LoginRepositoryTest {
         TestLoginRepositoryComponent loginRepoComponent =
                 DaggerTestLoginRepositoryComponent.create();
         loginRepo = loginRepoComponent.loginRepository();
+        mockUserDao = loginRepoComponent.mockUserDao();
     }
 
     /**
@@ -37,13 +40,35 @@ public class LoginRepositoryTest {
     }
 
     /**
-     * Test setting the current user of the login session.
+     * Test logging in with invalid credentials.
      */
     @Test
-    public void testSetCurrentUser() {
-        User testUser = new User(1, "test", null);
-        loginRepo.setCurrentUser(testUser);
+    public void testInvalidLogin() {
+        String username = "test";
+        String password = "password";
 
+        try {
+            loginRepo.login(username, password);
+            assertThat(false, equalTo(true));
+        }
+        catch (AuthenticationException e) {
+            // Expected behavior.
+        }
+
+        User getResult = loginRepo.getCurrentUser();
+        assertThat(getResult, equalTo(null));
+    }
+
+    /**
+     * Test logging in with valid credentials.
+     */
+    @Test
+    public void testLogin() throws AuthenticationException {
+        User testUser = new User(1, "test", null);
+        String password = "password";
+        mockUserDao.addUser(testUser, password);
+
+        loginRepo.login(testUser.getUsername(), password);
         User getResult = loginRepo.getCurrentUser();
         assertThat(getResult, equalTo(testUser));
     }
@@ -54,12 +79,14 @@ public class LoginRepositoryTest {
     @Test
     public void testClearSession() {
         User testUser = new User(1, "test", null);
-        loginRepo.setCurrentUser(testUser);
+        String password = "password";
+        mockUserDao.addUser(testUser, password);
 
+        loginRepo.login(testUser.getUsername(), password);
         User getResult = loginRepo.getCurrentUser();
         assertThat(getResult, equalTo(testUser));
 
-        loginRepo.clearSession();
+        loginRepo.logout();
         User getResult2 = loginRepo.getCurrentUser();
         assertThat(getResult2, equalTo(null));
     }
