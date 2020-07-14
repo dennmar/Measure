@@ -31,13 +31,13 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Run integration tests on the task DAO (and the Room database).
+ * Run instrumented integration tests on the task DAO (and the Room database).
  *
  * Note: Unit testing resulted in java.lang.RuntimeException: Method
  * getMainLooper in android.os.Looper not mocked.
  */
 @RunWith(AndroidJUnit4.class)
-public class InstrumentedTaskDaoTest {
+public class TaskDaoTest {
     // Execute background tasks synchronously (to allow LiveData to work).
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();

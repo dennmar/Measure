@@ -38,10 +38,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.measure.CustomMatchers.rowAtPos;
 
 /**
- * Run integration tests with measure activity and the agenda fragment.
+ * Run instrumented integration tests with the measure activity and agenda
+ * fragment.
  */
 @RunWith(AndroidJUnit4.class)
-public class InstrumentedAgendaFragmentTest {
+public class AgendaFragmentTest {
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
 
