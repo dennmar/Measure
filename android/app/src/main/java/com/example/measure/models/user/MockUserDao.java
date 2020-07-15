@@ -1,7 +1,5 @@
 package com.example.measure.models.user;
 
-import android.util.Log;
-
 import com.example.measure.models.data.User;
 
 import java.util.HashMap;

@@ -7,11 +7,13 @@ import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.prod.LoginDaoModule;
 import com.example.measure.di.modules.prod.LoginRepositoryModule;
 import com.example.measure.di.modules.prod.MeasureRoomDatabaseModule;
+import com.example.measure.di.modules.prod.RegisterViewModelModule;
 import com.example.measure.di.modules.prod.TaskDaoModule;
 import com.example.measure.di.modules.prod.TaskRepositoryModule;
 import com.example.measure.di.modules.prod.UserDaoModule;
 import com.example.measure.di.modules.prod.UserRepositoryModule;
 import com.example.measure.features.agenda.view.AgendaFragment;
+import com.example.measure.features.register.RegisterFragment;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -23,6 +25,7 @@ import dagger.Component;
 @Component(modules = {
         AssistedInjectModule.class,
         AgendaViewModelModule.class,
+        RegisterViewModelModule.class,
         TaskRepositoryModule.class,
         TaskDaoModule.class,
         LoginRepositoryModule.class,
@@ -34,11 +37,18 @@ import dagger.Component;
 })
 public interface ApplicationComponent {
     /**
-     * Tells dagger that agenda fragment requests injection.
+     * Tells Dagger that the agenda fragment requests injection.
      *
-     * @param agendaFragment fragment needing injection
+     * @param agendaFragment agenda fragment needing injection
      */
     void inject(AgendaFragment agendaFragment);
+
+    /**
+     * Tells Dagger that the register fragment requests injection.
+     *
+     * @param registerFragment register fragment needing injection
+     */
+    void inject(RegisterFragment registerFragment);
 
     /**
      * Creates a new ApplicationComponent instance each time it is called.

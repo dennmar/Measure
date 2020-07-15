@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * A fake view model that handles the interaction between the agenda view
+ * A fake view model that imitates the interaction between the agenda view
  * (fragment) and the model.
  */
 public class MockAgendaViewModel implements AgendaViewModel {

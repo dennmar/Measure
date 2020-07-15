@@ -197,6 +197,7 @@ public class DaggerAgendaViewModel extends ViewModel
     /**
      * Perform clean-up for this instance.
      */
+    @Override
     public void onDestroy() {
         removeObservers();
     }
