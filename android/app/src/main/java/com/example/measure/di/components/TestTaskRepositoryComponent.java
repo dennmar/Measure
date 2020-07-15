@@ -1,8 +1,8 @@
 package com.example.measure.di.components;
 
 import com.example.measure.di.modules.AssistedInjectModule;
-import com.example.measure.di.modules.MockTaskDaoModule;
-import com.example.measure.di.modules.TaskRepositoryModule;
+import com.example.measure.di.modules.test.MockTaskDaoModule;
+import com.example.measure.di.modules.prod.TaskRepositoryModule;
 import com.example.measure.models.task.TaskRepository;
 
 import dagger.Component;

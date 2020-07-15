@@ -1,4 +1,4 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.test;
 
 import com.example.measure.models.task.MockTaskDao;
 import com.example.measure.models.task.TaskDao;

@@ -1,4 +1,4 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.test;
 
 import android.content.Context;
 

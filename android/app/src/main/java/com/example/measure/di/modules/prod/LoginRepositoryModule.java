@@ -1,4 +1,4 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.prod;
 
 import com.example.measure.models.login.LocalLoginRepository;
 import com.example.measure.models.login.LoginRepository;

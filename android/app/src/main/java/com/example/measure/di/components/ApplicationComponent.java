@@ -1,16 +1,16 @@
 package com.example.measure.di.components;
 
 import com.example.measure.di.MeasureApplication;
-import com.example.measure.di.modules.AgendaViewModelModule;
+import com.example.measure.di.modules.prod.AgendaViewModelModule;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
-import com.example.measure.di.modules.LoginDaoModule;
-import com.example.measure.di.modules.LoginRepositoryModule;
-import com.example.measure.di.modules.MeasureRoomDatabaseModule;
-import com.example.measure.di.modules.TaskDaoModule;
-import com.example.measure.di.modules.TaskRepositoryModule;
-import com.example.measure.di.modules.UserDaoModule;
-import com.example.measure.di.modules.UserRepositoryModule;
+import com.example.measure.di.modules.prod.LoginDaoModule;
+import com.example.measure.di.modules.prod.LoginRepositoryModule;
+import com.example.measure.di.modules.prod.MeasureRoomDatabaseModule;
+import com.example.measure.di.modules.prod.TaskDaoModule;
+import com.example.measure.di.modules.prod.TaskRepositoryModule;
+import com.example.measure.di.modules.prod.UserDaoModule;
+import com.example.measure.di.modules.prod.UserRepositoryModule;
 import com.example.measure.features.agenda.view.AgendaFragment;
 
 import dagger.BindsInstance;

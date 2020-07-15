@@ -1,16 +1,16 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.test;
 
-import com.example.measure.models.user.LocalUserRepository;
+import com.example.measure.models.user.MockUserRepository;
 import com.example.measure.models.user.UserRepository;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * A Dagger module that specifies how to provide the user repository.
+ * A Dagger module that specifies how to provide a fake user repository.
  */
 @Module
-public class UserRepositoryModule {
+public class MockUserRepositoryModule {
     /**
      * Return the user repository to be provided for all dependents.
      *
@@ -18,6 +18,6 @@ public class UserRepositoryModule {
      */
     @Provides
     public UserRepository provideUserRepository() {
-        return new LocalUserRepository();
+        return new MockUserRepository();
     }
 }

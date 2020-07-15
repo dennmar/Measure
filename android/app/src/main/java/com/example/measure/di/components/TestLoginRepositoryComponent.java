@@ -1,9 +1,9 @@
 package com.example.measure.di.components;
 
 import com.example.measure.di.modules.AssistedInjectModule;
-import com.example.measure.di.modules.LoginRepositoryModule;
-import com.example.measure.di.modules.MockLoginDaoModule;
-import com.example.measure.di.modules.MockUserDaoModule;
+import com.example.measure.di.modules.prod.LoginRepositoryModule;
+import com.example.measure.di.modules.test.MockLoginDaoModule;
+import com.example.measure.di.modules.test.MockUserDaoModule;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.models.user.UserDao;
 

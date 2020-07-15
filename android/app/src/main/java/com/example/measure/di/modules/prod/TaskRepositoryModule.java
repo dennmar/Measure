@@ -1,25 +1,25 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.prod;
 
-import com.example.measure.models.task.MockTaskRepository;
+import com.example.measure.models.task.LocalTaskRepository;
 import com.example.measure.models.task.TaskRepository;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * A Dagger module that specifies how to provide a fake task repository.
+ * A Dagger module that specifies how to provide the task repository.
  */
 @Module
-public class MockTaskRepositoryModule {
+public class TaskRepositoryModule {
     /**
      * Return the task repository to be provided for all dependents.
      *
-     * @param mockTaskRepo fake task repository
+     * @param localTaskRepo task repository using local database
      * @return task repository to be used for task data access
      */
     @Provides
     public TaskRepository provideTaskRepository(
-            MockTaskRepository mockTaskRepo) {
-        return mockTaskRepo;
+            LocalTaskRepository localTaskRepo) {
+        return localTaskRepo;
     }
 }

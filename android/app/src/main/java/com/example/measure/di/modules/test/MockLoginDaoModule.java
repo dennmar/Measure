@@ -1,4 +1,4 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.test;
 
 import com.example.measure.models.login.LoginDao;
 import com.example.measure.models.login.MockLoginDao;

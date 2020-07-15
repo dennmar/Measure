@@ -4,8 +4,8 @@ import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
-import com.example.measure.di.modules.TaskDaoModule;
-import com.example.measure.di.modules.TestMeasureRoomDatabaseModule;
+import com.example.measure.di.modules.prod.TaskDaoModule;
+import com.example.measure.di.modules.test.TestMeasureRoomDatabaseModule;
 import com.example.measure.models.task.TaskDao;
 
 import dagger.BindsInstance;

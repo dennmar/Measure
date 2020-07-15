@@ -1,7 +1,7 @@
 package com.example.measure.di.components;
 
 import com.example.measure.di.modules.AssistedInjectModule;
-import com.example.measure.di.modules.MockAgendaViewModelModule;
+import com.example.measure.di.modules.test.MockAgendaViewModelModule;
 
 import dagger.Component;
 

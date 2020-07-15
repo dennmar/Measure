@@ -1,10 +1,10 @@
 package com.example.measure.di.components;
 
 import com.example.measure.di.modules.AssistedInjectModule;
-import com.example.measure.di.modules.MockLoginRepositoryModule;
-import com.example.measure.di.modules.MockTaskDaoModule;
-import com.example.measure.di.modules.MockTaskRepositoryModule;
-import com.example.measure.di.modules.MockUserRepositoryModule;
+import com.example.measure.di.modules.test.MockLoginRepositoryModule;
+import com.example.measure.di.modules.test.MockTaskDaoModule;
+import com.example.measure.di.modules.test.MockTaskRepositoryModule;
+import com.example.measure.di.modules.test.MockUserRepositoryModule;
 import com.example.measure.features.agenda.viewmodel.DaggerAgendaViewModel;
 
 import dagger.Component;

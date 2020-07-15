@@ -1,4 +1,4 @@
-package com.example.measure.di.modules;
+package com.example.measure.di.modules.prod;
 
 import com.example.measure.features.agenda.viewmodel.AgendaViewModel;
 import com.example.measure.features.agenda.viewmodel.DaggerAgendaViewModel;
