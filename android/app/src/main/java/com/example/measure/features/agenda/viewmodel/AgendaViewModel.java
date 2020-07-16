@@ -2,6 +2,7 @@ package com.example.measure.features.agenda.viewmodel;
 
 import android.os.Bundle;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import com.example.measure.models.data.Task;
 
@@ -68,6 +69,7 @@ public interface AgendaViewModel {
      *
      * @return current active task for the user
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     LiveData<Task> getActiveTask();
 
     /**

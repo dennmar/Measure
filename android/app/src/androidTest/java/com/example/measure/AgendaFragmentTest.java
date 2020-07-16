@@ -43,6 +43,7 @@ import static com.example.measure.CustomMatchers.rowAtPos;
  */
 @RunWith(AndroidJUnit4.class)
 public class AgendaFragmentTest {
+    // Execute background tasks synchronously (to allow LiveData to work).
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
 
