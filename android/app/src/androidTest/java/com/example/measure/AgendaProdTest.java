@@ -5,9 +5,7 @@ import android.widget.DatePicker;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.measure.di.MeasureApplication;
 import com.example.measure.features.MeasureActivity;
 import com.example.measure.models.data.Task;
 import com.example.measure.utils.StringConverter;
@@ -39,10 +37,6 @@ import static com.example.measure.CustomMatchers.rowAtPos;
 @RunWith(AndroidJUnit4.class)
 public class AgendaProdTest {
     ActivityScenario<MeasureActivity> measureActScenario;
-    MeasureApplication mockApp = (MeasureApplication) InstrumentationRegistry
-            .getInstrumentation()
-            .getTargetContext()
-            .getApplicationContext();
 
     /**
      * Launch the measure activity (which displays the agenda fragment first).

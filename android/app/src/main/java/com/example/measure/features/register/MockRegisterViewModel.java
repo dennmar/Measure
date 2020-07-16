@@ -14,7 +14,7 @@ import java.util.HashMap;
  * (fragment) and the model.
  */
 public class MockRegisterViewModel implements RegisterViewModel {
-    private HashMap<User, String> userPasswordMap;
+    private HashMap<String, User> usernameUserMap;
     private MutableLiveData<String> errMsg;
 
     /**
@@ -23,7 +23,7 @@ public class MockRegisterViewModel implements RegisterViewModel {
      * @param savedInstanceState previously saved state of the view model
      */
     private MockRegisterViewModel(Bundle savedInstanceState) {
-        userPasswordMap = new HashMap<>();
+        usernameUserMap = new HashMap<>();
         errMsg = new MutableLiveData<>(null);
     }
 
@@ -47,10 +47,16 @@ public class MockRegisterViewModel implements RegisterViewModel {
      * Add a new user.
      *
      * @param newUser  new user to be added
-     * @param password password of the new user
      */
-    public void addUser(User newUser, String password) {
-        userPasswordMap.put(newUser, password);
+    public void addUser(User newUser) throws IllegalArgumentException {
+        if (newUser == null) {
+            throw new IllegalArgumentException("User is null");
+        }
+        else if (newUser.getUsername() == null) {
+            throw new IllegalArgumentException("Username is null");
+        }
+
+        usernameUserMap.put(newUser.getUsername(), newUser);
         errMsg = null;
     }
 

@@ -48,7 +48,7 @@ public class AgendaFragmentTest {
     public TestWatcher rule = new InstantTaskExecutorRule();
 
     ActivityScenario<MeasureActivity> measureActScenario;
-    MeasureApplication mockApp = (MeasureApplication) InstrumentationRegistry
+    MeasureApplication app = (MeasureApplication) InstrumentationRegistry
             .getInstrumentation()
             .getTargetContext()
             .getApplicationContext();
@@ -60,7 +60,7 @@ public class AgendaFragmentTest {
     public void initAgendaFragment() {
         ApplicationComponent testComponent =
                 DaggerTestAgendaFragmentComponent.create();
-        mockApp.setAppComponent(testComponent);
+        app.setAppComponent(testComponent);
         measureActScenario = ActivityScenario.launch(MeasureActivity.class);
     }
 

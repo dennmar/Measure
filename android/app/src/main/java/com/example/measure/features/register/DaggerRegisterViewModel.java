@@ -47,9 +47,8 @@ public class DaggerRegisterViewModel implements RegisterViewModel {
      * Add a new user.
      *
      * @param newUser  new user to be added
-     * @param password password of the new user
      */
-    public void addUser(User newUser, String password) {
+    public void addUser(User newUser) {
 
     }
 

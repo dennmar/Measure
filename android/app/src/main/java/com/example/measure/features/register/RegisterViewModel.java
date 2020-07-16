@@ -25,11 +25,9 @@ public interface RegisterViewModel {
      * Add a new user.
      *
      * @param newUser  new user to be added
-     * @param password password of the new user
      * @throws IllegalArgumentException when the new user would be invalid
      */
-    void addUser(User newUser, String password)
-            throws IllegalArgumentException;
+    void addUser(User newUser) throws IllegalArgumentException;
 
     /**
      * Return the error message.

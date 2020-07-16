@@ -78,10 +78,11 @@ public class RegisterFragment extends Fragment {
 
         registerBtn.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString();
+            String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
-            User newUser = new User(-1, username, null);
-            registerUser(newUser, password);
 
+            User newUser = new User(username, email, password);
+            registerUser(newUser);
             ((FragActivity) requireActivity())
                     .replaceFragment(new LoginFragment());
         });
@@ -91,9 +92,8 @@ public class RegisterFragment extends Fragment {
      * Register the given user.
      *
      * @param user     user to be registered
-     * @param password password of user
      */
-    private void registerUser(User user, String password) {
-        registerViewModel.addUser(user, password);
+    private void registerUser(User user) {
+        registerViewModel.addUser(user);
     }
 }

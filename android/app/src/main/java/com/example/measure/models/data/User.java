@@ -6,7 +6,24 @@ package com.example.measure.models.data;
 public class User {
     private int id;
     private String username;
+    private String email;
+    private String password;
     private Task activeTask;
+
+    /**
+     * Initialize member variables.
+     *
+     * @param username username of the user
+     * @param email    email of the user
+     * @param password password of the user
+     */
+    public User(String username, String email, String password) {
+        this.id = -1;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.activeTask = null;
+    }
 
     /**
      * Initialize member variables.
@@ -18,6 +35,8 @@ public class User {
     public User(int id, String username, Task activeTask) {
         this.id = id;
         this.username = username;
+        this.email = null;
+        this.password = null;
         this.activeTask = activeTask;
     }
 
@@ -44,6 +63,22 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Task getActiveTask() {

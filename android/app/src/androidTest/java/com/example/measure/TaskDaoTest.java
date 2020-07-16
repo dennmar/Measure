@@ -44,7 +44,7 @@ public class TaskDaoTest {
 
     TaskDao taskDao;
     RoomDatabase testRoomDb;
-    MeasureApplication mockApp = (MeasureApplication) InstrumentationRegistry
+    MeasureApplication app = (MeasureApplication) InstrumentationRegistry
             .getInstrumentation()
             .getTargetContext()
             .getApplicationContext();
@@ -55,7 +55,7 @@ public class TaskDaoTest {
     @Before
     public void initTaskDao() {
         TestTaskDaoComponent taskDaoComponent =
-                DaggerTestTaskDaoComponent.factory().newAppComponent(mockApp);
+                DaggerTestTaskDaoComponent.factory().newAppComponent(app);
         taskDao = taskDaoComponent.taskDao();
 
         // Clear all data before each test.

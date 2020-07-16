@@ -30,7 +30,7 @@ import javax.inject.Inject;
  */
 public class AgendaFragment extends Fragment {
     @Inject
-    public AgendaViewModel.Factory avmFactory;
+    protected AgendaViewModel.Factory avmFactory;
     private AgendaViewModel agendaViewModel;
     private RecyclerView agendaRecycler;
     private AgendaItemAdapter agendaAdapter;

@@ -35,7 +35,7 @@ public class RegisterFragmentTest {
     public TestWatcher rule = new InstantTaskExecutorRule();
 
     ActivityScenario<EnterActivity> enterActScenario;
-    MeasureApplication mockApp = (MeasureApplication) InstrumentationRegistry
+    MeasureApplication app = (MeasureApplication) InstrumentationRegistry
             .getInstrumentation()
             .getTargetContext()
             .getApplicationContext();
@@ -47,7 +47,7 @@ public class RegisterFragmentTest {
     public void initRegisterFragment() {
         ApplicationComponent testComponent =
                 DaggerTestRegisterFragmentComponent.create();
-        mockApp.setAppComponent(testComponent);
+        app.setAppComponent(testComponent);
         enterActScenario = ActivityScenario.launch(EnterActivity.class);
     }
 
