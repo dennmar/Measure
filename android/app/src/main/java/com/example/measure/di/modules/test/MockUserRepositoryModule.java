@@ -3,6 +3,8 @@ package com.example.measure.di.modules.test;
 import com.example.measure.models.user.MockUserRepository;
 import com.example.measure.models.user.UserRepository;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -14,10 +16,12 @@ public class MockUserRepositoryModule {
     /**
      * Return the user repository to be provided for all dependents.
      *
+     * @param mockUserRepo fake user repository
      * @return user repository to be used for user data access
      */
     @Provides
-    public UserRepository provideUserRepository() {
-        return new MockUserRepository();
+    public UserRepository provideUserRepository(
+            MockUserRepository mockUserRepo) {
+        return mockUserRepo;
     }
 }

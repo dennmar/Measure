@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
 /**
  * Custom Hamcrest matchers for testing.

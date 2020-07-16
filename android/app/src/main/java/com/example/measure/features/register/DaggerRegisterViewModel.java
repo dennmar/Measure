@@ -49,7 +49,7 @@ public class DaggerRegisterViewModel implements RegisterViewModel {
      * @param newUser  new user to be added
      */
     public void addUser(User newUser) {
-
+        userRepo.addUser(newUser);
     }
 
     /**

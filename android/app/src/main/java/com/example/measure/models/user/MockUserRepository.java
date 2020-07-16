@@ -1,6 +1,5 @@
 package com.example.measure.models.user;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,13 +8,20 @@ import com.example.measure.models.data.User;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * A fake repository for accessing user data.
+ *
+ * Note: this class is made singleton for use in the register view model test.
  */
+@Singleton
 public class MockUserRepository implements UserRepository {
     private MutableLiveData<Task> activeTask;
     private HashMap<String, User> usernameUserMap;
 
+    @Inject
     public MockUserRepository() {
         activeTask = new MutableLiveData<>();
         usernameUserMap = new HashMap<>();
@@ -65,7 +71,10 @@ public class MockUserRepository implements UserRepository {
      */
     public User getUser(String username) {
         if (usernameUserMap.containsKey(username)) {
-            return usernameUserMap.get(username);
+            User foundUser = usernameUserMap.get(username);
+            return new User(foundUser.getId(), foundUser.getUsername(),
+                    foundUser.getEmail(), null,
+                    foundUser.getActiveTask());
         }
 
         return null;

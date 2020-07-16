@@ -7,6 +7,9 @@ import com.example.measure.di.modules.test.MockTaskRepositoryModule;
 import com.example.measure.di.modules.test.MockUserRepositoryModule;
 import com.example.measure.features.agenda.viewmodel.DaggerAgendaViewModel;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
@@ -20,6 +23,7 @@ import dagger.Component;
         MockLoginRepositoryModule.class,
         MockUserRepositoryModule.class
 })
+@Singleton
 public interface TestAgendaViewModelComponent {
     DaggerAgendaViewModel.Factory avmFactory();
 }

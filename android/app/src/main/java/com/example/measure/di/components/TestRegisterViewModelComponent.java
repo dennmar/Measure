@@ -6,6 +6,8 @@ import com.example.measure.di.modules.test.MockUserRepositoryModule;
 import com.example.measure.features.register.RegisterViewModel;
 import com.example.measure.models.user.UserRepository;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
@@ -17,6 +19,7 @@ import dagger.Component;
         RegisterViewModelModule.class,
         MockUserRepositoryModule.class
 })
+@Singleton
 public interface TestRegisterViewModelComponent {
     RegisterViewModel.Factory rvmFactory();
     UserRepository userRepository();
