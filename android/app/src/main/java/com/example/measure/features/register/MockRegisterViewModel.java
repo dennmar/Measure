@@ -52,9 +52,6 @@ public class MockRegisterViewModel implements RegisterViewModel {
         if (newUser == null) {
             throw new IllegalArgumentException("User is null");
         }
-        else if (newUser.getUsername() == null) {
-            throw new IllegalArgumentException("Username is null");
-        }
 
         usernameUserMap.put(newUser.getUsername(), newUser);
         errMsg = null;

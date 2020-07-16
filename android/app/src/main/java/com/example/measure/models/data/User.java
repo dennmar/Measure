@@ -40,10 +40,30 @@ public class User {
         this.activeTask = activeTask;
     }
 
+    /**
+     *  Initialize member variables.
+     *
+     * @param id         id of the user stored in the database
+     * @param username   username of the user
+     * @param email      email of the user
+     * @param password   password of the user
+     * @param activeTask active task for the user
+     */
+    public User(int id, String username, String email, String password,
+                Task activeTask) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.activeTask = activeTask;
+    }
+
     @Override
     public String toString() {
         return "id: " + id  + ", "
                 + "username: " + username + ", "
+                + "email: " + email + ", "
+                + "password: " + password + ", "
                 + "activeTask: " + activeTask;
     }
 
