@@ -2,6 +2,7 @@ package com.example.measure;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -55,7 +56,7 @@ public class RegisterFragmentTest {
      */
     @Test
     public void testDisplay() {
-        onView(withId(R.id.edittext_new_username))
+        onView(withId(R.id.edittext_new_user_username))
                 .check(matches(isDisplayed()));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }
@@ -65,7 +66,7 @@ public class RegisterFragmentTest {
      */
     @Test
     public void testAddUser() {
-        onView(withId(R.id.edittext_new_username))
+        onView(withId(R.id.edittext_new_user_username))
                 .perform(typeText("testuser"));
         onView(withId(R.id.edittext_new_user_email))
                 .perform(typeText("test@email.com"));
@@ -73,11 +74,13 @@ public class RegisterFragmentTest {
                 .perform(typeText("password"));
         onView(withId(R.id.edittext_new_user_password2))
                 .perform(typeText("password"));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.btn_register_user))
                 .perform(click());
 
         // Check that the login screen is displayed.
-        onView(withId(R.id.edittext_login_username)).check(isDisplayed());
-        onView(withId(R.id.btn_login_user)).check(isDisplayed());
+        onView(withId(R.id.edittext_login_username))
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.btn_login_user)).check(matches(isDisplayed()));
     }
 }
