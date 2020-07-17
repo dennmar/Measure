@@ -41,7 +41,7 @@ public class TaskRepositoryTest {
     public void initTaskRepository() {
         TestTaskRepositoryComponent taskRepositoryComponent =
                 DaggerTestTaskRepositoryComponent.create();
-         taskRepo = taskRepositoryComponent.taskRepository();
+        taskRepo = taskRepositoryComponent.taskRepository();
     }
 
     /**
