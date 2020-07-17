@@ -5,6 +5,8 @@ import com.example.measure.di.modules.prod.UserRepositoryModule;
 import com.example.measure.di.modules.test.MockUserDaoModule;
 import com.example.measure.models.user.UserRepository;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 
 /**
@@ -16,6 +18,7 @@ import dagger.Component;
         UserRepositoryModule.class,
         MockUserDaoModule.class
 })
+@Singleton
 public interface TestUserRepositoryComponent {
     UserRepository userRepository();
 }

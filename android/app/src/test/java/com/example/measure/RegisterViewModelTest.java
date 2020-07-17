@@ -84,7 +84,8 @@ public class RegisterViewModelTest {
 
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
-        User getResult = userRepo.getUser(testUser.getUsername());
+        User getResult = userRepo.getUser(testUser.getUsername(),
+                testUser.getPassword());
         assertThat(getResult, reflectEquals(expectedUser));
     }
 }

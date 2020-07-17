@@ -34,11 +34,12 @@ public interface UserRepository {
     void addUser(User user) throws IllegalArgumentException;
 
     /**
-     * Return the user with the matching username
+     * Return the user with the matching username and password.
      *
      * @param username username of the user
+     * @param password password of the user
      * @return the matching user or null if no such user was found
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    User getUser(String username);
+    User getUser(String username, String password);
 }

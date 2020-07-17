@@ -14,10 +14,12 @@ public class UserRepositoryModule {
     /**
      * Return the user repository to be provided for all dependents.
      *
+     * @param localUserRepo user repository using a local database
      * @return user repository to be used for user data access
      */
     @Provides
-    public UserRepository provideUserRepository() {
-        return new LocalUserRepository();
+    public UserRepository provideUserRepository(
+            LocalUserRepository localUserRepo) {
+        return localUserRepo;
     }
 }

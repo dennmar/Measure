@@ -67,14 +67,17 @@ public class MockUserRepository implements UserRepository {
      * Return the user with the matching username
      *
      * @param username username of the user
+     * @param password password of the user
      * @return the matching user or null if no such user was found
      */
-    public User getUser(String username) {
+    public User getUser(String username, String password) {
         if (usernameUserMap.containsKey(username)) {
             User foundUser = usernameUserMap.get(username);
-            return new User(foundUser.getId(), foundUser.getUsername(),
-                    foundUser.getEmail(), null,
-                    foundUser.getActiveTask());
+            if (foundUser.getPassword().equals(password)) {
+                return new User(foundUser.getId(), foundUser.getUsername(),
+                        foundUser.getEmail(), null,
+                        foundUser.getActiveTask());
+            }
         }
 
         return null;

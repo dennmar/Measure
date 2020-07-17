@@ -10,9 +10,8 @@ public interface UserDao {
      * Add a user to the database.
      *
      * @param user user to be added
-     * @param password password of the user
      */
-    void addUser(User user, String password);
+    void addUser(User user);
 
     /**
      * Retrieve a user with the matching username and password.

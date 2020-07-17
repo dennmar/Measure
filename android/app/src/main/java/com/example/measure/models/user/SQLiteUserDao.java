@@ -14,7 +14,7 @@ public class SQLiteUserDao implements UserDao {
     }
 
     @Override
-    public void addUser(User user, String password) {
+    public void addUser(User user) {
 
     }
 

@@ -29,11 +29,10 @@ public class MockUserDao implements UserDao {
      * Add a user to the database.
      *
      * @param user user to be added
-     * @param password password of the user
      */
     @Override
-    public void addUser(User user, String password) {
-        users.put(user, password);
+    public void addUser(User user) {
+        users.put(user, user.getPassword());
     }
 
     /**

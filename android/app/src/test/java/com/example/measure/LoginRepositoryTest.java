@@ -65,11 +65,11 @@ public class LoginRepositoryTest {
      */
     @Test
     public void testLogin() throws AuthenticationException {
-        User testUser = new User(1, "test", null);
-        String password = "password";
-        mockUserDao.addUser(testUser, password);
+        User testUser = new User("test", "testemail@email.com", "password");
+        testUser.setId(1);
+        mockUserDao.addUser(testUser);
 
-        loginRepo.login(testUser.getUsername(), password);
+        loginRepo.login(testUser.getUsername(), testUser.getPassword());
         User getResult = loginRepo.getCurrentUser();
         assertThat(getResult, equalTo(testUser));
     }
@@ -79,11 +79,11 @@ public class LoginRepositoryTest {
      */
     @Test
     public void testClearSession() throws AuthenticationException {
-        User testUser = new User(1, "test", null);
-        String password = "password";
-        mockUserDao.addUser(testUser, password);
+        User testUser = new User("test", "testemail@email.com", "password");
+        testUser.setId(1);
+        mockUserDao.addUser(testUser);
 
-        loginRepo.login(testUser.getUsername(), password);
+        loginRepo.login(testUser.getUsername(), testUser.getPassword());
         User getResult = loginRepo.getCurrentUser();
         assertThat(getResult, equalTo(testUser));
 
