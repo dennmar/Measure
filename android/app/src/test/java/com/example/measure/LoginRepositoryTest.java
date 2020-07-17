@@ -10,7 +10,7 @@ import com.example.measure.utils.AuthenticationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.example.measure.RegisterViewModelTest.reflectEquals;
+import static com.example.measure.CustomMatchers.reflectEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 

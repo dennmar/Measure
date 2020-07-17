@@ -12,7 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 
-import static com.example.measure.RegisterViewModelTest.reflectEquals;
+import static com.example.measure.CustomMatchers.reflectEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 

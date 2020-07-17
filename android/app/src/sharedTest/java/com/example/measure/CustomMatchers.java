@@ -66,4 +66,26 @@ public class CustomMatchers {
             }
         };
     }
+
+    /**
+     * Create a matcher that matches if the given object is equal through
+     * reflection.
+     *
+     * @param expectedObj expected object
+     * @return matcher that uses reflection to check for equality
+     */
+    public static <T> Matcher<T> reflectEquals(T expectedObj) {
+        return new TypeSafeMatcher<T>() {
+            @Override
+            protected boolean matchesSafely(T item) {
+                return new ReflectionEquals(expectedObj).matches(item);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("reflect equals of <" + expectedObj
+                        + ">");
+            }
+        };
+    }
 }

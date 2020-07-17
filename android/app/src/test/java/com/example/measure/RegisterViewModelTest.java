@@ -10,17 +10,14 @@ import com.example.measure.features.register.RegisterViewModel;
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserRepository;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestWatcher;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
+import static com.example.measure.CustomMatchers.reflectEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -49,28 +46,6 @@ public class RegisterViewModelTest {
                 DaggerTestRegisterViewModelComponent.create();
         rvm = testComponent.rvmFactory().create(savedInstanceState);
         userRepo = testComponent.userRepository();
-    }
-
-    /**
-     * Create a matcher that matches if the given object is equal through
-     * reflection.
-     *
-     * @param expectedObj expected object
-     * @return matcher that uses reflection to check for equality
-     */
-    public static <T> Matcher<T> reflectEquals(T expectedObj) {
-        return new TypeSafeMatcher<T>() {
-            @Override
-            protected boolean matchesSafely(T item) {
-                return new ReflectionEquals(expectedObj).matches(item);
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("reflect equals of <" + expectedObj
-                        + ">");
-            }
-        };
     }
 
     /**
