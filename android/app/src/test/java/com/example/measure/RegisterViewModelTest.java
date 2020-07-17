@@ -9,6 +9,7 @@ import com.example.measure.di.components.TestRegisterViewModelComponent;
 import com.example.measure.features.register.RegisterViewModel;
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserRepository;
+import com.example.measure.utils.DBOperationException;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -52,7 +53,7 @@ public class RegisterViewModelTest {
      * Test adding a user.
      */
     @Test
-    public void testAddUser() {
+    public void testAddUser() throws DBOperationException {
         User testUser = new User("test", "tester@gmail.com", "password");
         testUser.setId(1);
         rvm.addUser(testUser);

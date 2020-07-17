@@ -6,6 +6,7 @@ import com.example.measure.di.components.DaggerTestUserRepositoryComponent;
 import com.example.measure.di.components.TestUserRepositoryComponent;
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserRepository;
+import com.example.measure.utils.DBOperationException;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +41,7 @@ public class UserRepositoryTest {
      * Test adding a user successfully.
      */
     @Test
-    public void testAddUser() {
+    public void testAddUser() throws DBOperationException {
         User testUser = new User("test", "tester@yahoo.com", "nothing");
         testUser.setId(1);
         userRepo.addUser(testUser);
@@ -56,7 +57,7 @@ public class UserRepositoryTest {
      * Test adding a user without a password.
      */
     @Test
-    public void testAddUserMissingPassword() {
+    public void testAddUserMissingPassword() throws DBOperationException {
         User testUser = new User("exam", "red@blue.com", null);
         testUser.setId(1);
 
@@ -73,7 +74,7 @@ public class UserRepositoryTest {
      * Test adding a user with an invalid username.
      */
     @Test
-    public void testAddUserInvalidUsername() {
+    public void testAddUserInvalidUsername() throws DBOperationException {
         User testUser1 = new User("ran.p3ge>", "armadillo@animal.net", "what");
         User testUser2 = new User("hello there", "greetings@abc.def", "why");
         User testUser3 = new User("/@.@\\", "enter@leave.bye", "when");
@@ -98,7 +99,7 @@ public class UserRepositoryTest {
      * Test adding a user with an invalid email.
      */
     @Test
-    public void testAddUserInvalidEmail() {
+    public void testAddUserInvalidEmail() throws DBOperationException {
         User testUser = new User("Joy", "glademail", "happy");
         testUser.setId(1);
 

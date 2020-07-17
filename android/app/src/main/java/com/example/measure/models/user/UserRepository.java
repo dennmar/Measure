@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 /**
  * A repository for accessing user data.
@@ -30,8 +31,10 @@ public interface UserRepository {
      *
      * @param user user to be added
      * @throws IllegalArgumentException when the new user would be invalid
+     * @throws DBOperationException     if the user could not be added
      */
-    void addUser(User user) throws IllegalArgumentException;
+    void addUser(User user)
+            throws IllegalArgumentException, DBOperationException;
 
     /**
      * Return the user with the matching username and password.
@@ -39,7 +42,8 @@ public interface UserRepository {
      * @param username username of the user
      * @param password password of the user
      * @return the matching user or null if no such user was found
+     * @throws DBOperationException if the user could not be fetched
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    User getUser(String username, String password);
+    User getUser(String username, String password) throws DBOperationException;
 }

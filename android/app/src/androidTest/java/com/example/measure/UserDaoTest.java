@@ -6,6 +6,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.measure.di.MeasureApplication;
+import com.example.measure.di.components.DaggerTestUserDaoComponent;
+import com.example.measure.di.components.TestUserDaoComponent;
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserDao;
 import com.example.measure.utils.DBOperationException;
@@ -60,9 +62,10 @@ public class UserDaoTest {
      * Test getting a user that doesn't exist.
      */
     @Test
-    public void testGetMissingUser() {
+    public void testGetMissingUser() throws DBOperationException {
         User testUser = new User("Nonexistent", "no@no.com", "none");
-        User getResult = userDao.getUser(testUser.getUsername(), testUser.getPassword());
+        User getResult = userDao.getUser(testUser.getUsername(),
+                testUser.getPassword());
         assertThat(getResult, equalTo(null));
     }
 
@@ -70,7 +73,7 @@ public class UserDaoTest {
      * Test adding a user successfully.
      */
     @Test
-    public void testAddUser() {
+    public void testAddUser() throws DBOperationException {
         User testUser = new User("Keyboard", "type@fast.com", "qwerty");
         testUser.setId(1);
         userDao.addUser(testUser);
@@ -86,7 +89,7 @@ public class UserDaoTest {
      * Test adding a user with a username that already exists.
      */
     @Test
-    public void testAddUserDupUsername() {
+    public void testAddUserDupUsername() throws DBOperationException {
         User testUser = new User("Keyboard", "type@fast.com", "qwerty");
         testUser.setId(1);
         userDao.addUser(testUser);
@@ -114,7 +117,7 @@ public class UserDaoTest {
      * Test adding a user with an email that already exists.
      */
     @Test
-    public void testAddUserDupEmail() {
+    public void testAddUserDupEmail() throws DBOperationException {
         User testUser = new User("Keyboard", "type@fast.com", "qwerty");
         testUser.setId(1);
         userDao.addUser(testUser);
@@ -141,7 +144,7 @@ public class UserDaoTest {
      * Test adding multiple users.
      */
     @Test
-    public void testAddMultUsers() {
+    public void testAddMultUsers() throws DBOperationException {
         int userAmt = 5;
 
         for (int i = 1; i <= userAmt; i++) {

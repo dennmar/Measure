@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Task;
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 import javax.inject.Inject;
 
@@ -50,8 +51,10 @@ public class LocalUserRepository implements UserRepository {
      *
      * @param user user to be added
      * @throws IllegalArgumentException when the new user would be invalid
+     * @throws DBOperationException if the user could not be added
      */
-    public void addUser(User user) throws IllegalArgumentException {
+    public void addUser(User user)
+            throws IllegalArgumentException, DBOperationException {
         validateNewUser(user);
         userDao.addUser(user);
     }
@@ -88,9 +91,11 @@ public class LocalUserRepository implements UserRepository {
      * @param username username of the user
      * @param password password of the user
      * @return the matching user or null if no such user was found
+     * @throws DBOperationException if the user could not be fetched
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public User getUser(String username, String password) {
+    public User getUser(String username, String password)
+            throws DBOperationException {
         return userDao.getUser(username, password);
     }
 }

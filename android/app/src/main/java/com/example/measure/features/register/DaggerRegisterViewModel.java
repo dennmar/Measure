@@ -6,6 +6,7 @@ import androidx.annotation.VisibleForTesting;
 
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserRepository;
+import com.example.measure.utils.DBOperationException;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 
@@ -49,7 +50,12 @@ public class DaggerRegisterViewModel implements RegisterViewModel {
      * @param newUser  new user to be added
      */
     public void addUser(User newUser) {
-        userRepo.addUser(newUser);
+        try {
+            userRepo.addUser(newUser);
+        }
+        catch (DBOperationException e) {
+            // TODO: handle exception
+        }
     }
 
     /**

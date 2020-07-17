@@ -6,6 +6,7 @@ import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.models.user.UserDao;
 import com.example.measure.utils.AuthenticationException;
+import com.example.measure.utils.DBOperationException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class LoginRepositoryTest {
      * Test logging in with invalid credentials.
      */
     @Test
-    public void testInvalidLogin() {
+    public void testInvalidLogin() throws DBOperationException {
         String username = "test";
         String password = "password";
 
@@ -65,7 +66,8 @@ public class LoginRepositoryTest {
      * Test logging in with valid credentials.
      */
     @Test
-    public void testLogin() throws AuthenticationException {
+    public void testLogin()
+            throws AuthenticationException, DBOperationException {
         User testUser = new User("test", "testemail@email.com", "password");
         testUser.setId(1);
         mockUserDao.addUser(testUser);
@@ -81,7 +83,8 @@ public class LoginRepositoryTest {
      * Test clearing the current login session.
      */
     @Test
-    public void testClearSession() throws AuthenticationException {
+    public void testClearSession()
+            throws AuthenticationException, DBOperationException {
         User testUser = new User("test", "testemail@email.com", "password");
         testUser.setId(1);
         mockUserDao.addUser(testUser);
