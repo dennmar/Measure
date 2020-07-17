@@ -10,6 +10,7 @@ import com.example.measure.utils.AuthenticationException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.example.measure.RegisterViewModelTest.reflectEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -70,8 +71,10 @@ public class LoginRepositoryTest {
         mockUserDao.addUser(testUser);
 
         loginRepo.login(testUser.getUsername(), testUser.getPassword());
+        User expectedUser = new User(testUser.getId(), testUser.getUsername(),
+                testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = loginRepo.getCurrentUser();
-        assertThat(getResult, equalTo(testUser));
+        assertThat(getResult, reflectEquals(expectedUser));
     }
 
     /**
@@ -84,8 +87,10 @@ public class LoginRepositoryTest {
         mockUserDao.addUser(testUser);
 
         loginRepo.login(testUser.getUsername(), testUser.getPassword());
+        User expectedUser = new User(testUser.getId(), testUser.getUsername(),
+                testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = loginRepo.getCurrentUser();
-        assertThat(getResult, equalTo(testUser));
+        assertThat(getResult, reflectEquals(expectedUser));
 
         loginRepo.logout();
         User getResult2 = loginRepo.getCurrentUser();

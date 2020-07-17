@@ -15,14 +15,14 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class MockUserDao implements UserDao {
-    private HashMap<User, String> users;
+    private HashMap<String, User> usernameUserMap;
 
     /**
      * Initialize member variables.
      */
     @Inject
     public MockUserDao() {
-        users = new HashMap<>();
+        usernameUserMap = new HashMap<>();
     }
 
     /**
@@ -32,7 +32,7 @@ public class MockUserDao implements UserDao {
      */
     @Override
     public void addUser(User user) {
-        users.put(user, user.getPassword());
+        usernameUserMap.put(user.getUsername(), user);
     }
 
     /**
@@ -44,10 +44,14 @@ public class MockUserDao implements UserDao {
      */
     @Override
     public User getUser(String username, String password) {
-        for (Map.Entry<User, String> userPasswordEntry : users.entrySet()) {
-            if (userPasswordEntry.getKey().getUsername().equals(username)
-                    && userPasswordEntry.getValue().equals(password)) {
-                return userPasswordEntry.getKey();
+        for (Map.Entry<String, User> entry : usernameUserMap.entrySet()) {
+            if (entry.getKey().equals(username)
+                    && entry.getValue().getPassword().equals(password)) {
+                User foundUser = entry.getValue();
+                User returnUser = new User(foundUser.getId(),
+                        foundUser.getUsername(), foundUser.getEmail(), null,
+                        foundUser.getActiveTask());
+                return returnUser;
             }
         }
 

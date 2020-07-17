@@ -93,5 +93,4 @@ public class LocalUserRepository implements UserRepository {
     public User getUser(String username, String password) {
         return userDao.getUser(username, password);
     }
-
 }
