@@ -6,7 +6,8 @@ import androidx.room.RoomDatabase;
 /**
  * A Room database that stores data for the Measure application.
  */
-@Database(entities = {RoomTask.class}, version = 1)
+@Database(entities = {RoomTask.class, RoomUser.class}, version = 1)
 public abstract class MeasureRoomDatabase extends RoomDatabase {
     public abstract RoomTaskDao taskDao();
+    public abstract RoomUserDao userDao();
 }

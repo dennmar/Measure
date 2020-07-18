@@ -16,7 +16,8 @@ public interface UserDao {
     void addUser(User user) throws DBOperationException;
 
     /**
-     * Retrieve a user with the matching username and password.
+     * Retrieve a user from the database with the matching username and
+     * password.
      *
      * @param username username of the user to fetch
      * @param password password of the user to fetch

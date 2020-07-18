@@ -30,7 +30,7 @@ public interface RoomTaskDao {
     @Query("SELECT * FROM tasks WHERE user_id == :userId"
             + " AND local_due_date >= :startDate"
             + " AND local_due_date < :endDate ORDER BY local_due_date ASC")
-    LiveData<List<RoomTask>> getSortedTasks(int userId, LocalDate startDate,
+    LiveData<List<RoomTask>> getSortedTasks(long userId, LocalDate startDate,
                                             LocalDate endDate);
 
     /**

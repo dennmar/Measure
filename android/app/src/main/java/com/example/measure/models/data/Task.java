@@ -3,15 +3,12 @@ package com.example.measure.models.data;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 /**
  * A task for a user to be completed on a due date.
  */
 public class Task {
-    private int id;
-    private int userId;
+    private long id;
+    private long userId;
     private String name;
     private Duration timeWorked;
     private LocalDate localDueDate;
@@ -39,8 +36,8 @@ public class Task {
      * @param localDueDate local due date without a time zone
      * @param isCompleted  whether the task has been completed
      */
-    public Task(int id, int userId, String name, Duration timeWorked,
-            LocalDate localDueDate, boolean isCompleted) {
+    public Task(long id, long userId, String name, Duration timeWorked,
+                LocalDate localDueDate, boolean isCompleted) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -76,19 +73,19 @@ public class Task {
 
     /* Getters and setters */
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

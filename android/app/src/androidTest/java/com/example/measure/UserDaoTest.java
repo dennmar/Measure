@@ -82,7 +82,7 @@ public class UserDaoTest {
                 testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = userDao.getUser(testUser.getUsername(),
                 testUser.getPassword());
-        assertThat(getResult, reflectEquals(testUser));
+        assertThat(getResult, reflectEquals(expectedUser));
     }
 
     /**
@@ -98,7 +98,7 @@ public class UserDaoTest {
                 testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = userDao.getUser(testUser.getUsername(),
                 testUser.getPassword());
-        assertThat(getResult, reflectEquals(testUser));
+        assertThat(getResult, reflectEquals(expectedUser));
 
         User testUser2 = new User(testUser.getUsername(), "laptop@pc.io",
                 "asdf");
@@ -126,7 +126,7 @@ public class UserDaoTest {
                 testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = userDao.getUser(testUser.getUsername(),
                 testUser.getPassword());
-        assertThat(getResult, reflectEquals(testUser));
+        assertThat(getResult, reflectEquals(expectedUser));
 
         User testUser2 = new User("Typer", testUser.getEmail(), "asdf");
         testUser2.setId(2);
@@ -158,7 +158,7 @@ public class UserDaoTest {
             User expectedUser = new User(i, "User#" + i,
                     "email" + i + "@gmail.com", null, null);
             User getResult = userDao.getUser("User#" + i, "pass");
-            assertThat(getResult, equalTo(expectedUser));
+            assertThat(getResult, reflectEquals(expectedUser));
         }
     }
 }

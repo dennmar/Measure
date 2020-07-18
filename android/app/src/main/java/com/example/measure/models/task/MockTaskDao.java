@@ -22,13 +22,13 @@ import javax.inject.Inject;
  * A fake task database object.
  */
 public class MockTaskDao implements TaskDao {
-    private HashMap<Integer, List<Task>> userTaskMap;
+    private HashMap<Long, List<Task>> userTaskMap;
     private MutableLiveData<List<Task>> sortedTasks;
     private Comparator<Task> sortByDate;
 
     @Inject
     public MockTaskDao() {
-        userTaskMap = new HashMap<>();
+        userTaskMap = new HashMap<Long, List<Task>>();
         sortedTasks = new MutableLiveData<>();
         sortByDate = new SortByDate();
     }

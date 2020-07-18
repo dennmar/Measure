@@ -4,7 +4,7 @@ package com.example.measure.models.data;
  * A user of the measure application.
  */
 public class User {
-    private int id;
+    private long id;
     private String username;
     private String email;
     private String password;
@@ -32,7 +32,7 @@ public class User {
      * @param username   username of the user
      * @param activeTask active task for the user
      */
-    public User(int id, String username, Task activeTask) {
+    public User(long id, String username, Task activeTask) {
         this.id = id;
         this.username = username;
         this.email = null;
@@ -49,7 +49,7 @@ public class User {
      * @param password   password of the user
      * @param activeTask active task for the user
      */
-    public User(int id, String username, String email, String password,
+    public User(long id, String username, String email, String password,
                 Task activeTask) {
         this.id = id;
         this.username = username;
@@ -69,11 +69,11 @@ public class User {
 
     /* Getters and setters */
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

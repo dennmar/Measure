@@ -11,6 +11,10 @@ import com.example.measure.models.user.UserDao;
 import dagger.BindsInstance;
 import dagger.Component;
 
+/**
+ * A component targeted for user DAO tests that makes Dagger create a graph of
+ * dependencies and exposes objects from the application graph.
+ */
 @Component(modules = {
         AssistedInjectModule.class,
         UserDaoModule.class,

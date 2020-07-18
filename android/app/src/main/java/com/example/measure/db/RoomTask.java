@@ -18,11 +18,11 @@ import org.joda.time.LocalDate;
 @TypeConverters({RoomTaskConverters.class})
 public class RoomTask {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo(name="user_id")
     @NonNull
-    private int userId;
+    private long userId;
 
     private String name;
 
@@ -72,19 +72,19 @@ public class RoomTask {
 
     /* Getters and setters */
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

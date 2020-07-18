@@ -87,7 +87,7 @@ public class TaskDaoTest {
             Task task = new Task();
             task.setId(startingId + i);
             task.setUserId(taskOwner.getId());
-            task.setName(Integer.toString(task.getId()));
+            task.setName(Long.toString(task.getId()));
             task.setLocalDueDate(startingDate.plusDays(i));
 
             taskDao.addTask(taskOwner, task);
@@ -197,7 +197,7 @@ public class TaskDaoTest {
                 startDate, endDate).getValue();
         assertThat(actualGetResult1, looseMatch(expectedGetResult1));
 
-        int actualTaskId = actualGetResult1.get(0).getId();
+        long actualTaskId = actualGetResult1.get(0).getId();
         Task editedTask = new Task(actualTaskId, testUser.getId(), "What",
                 null, taskDate, true);
         List<Task> expectedGetResult2 = new ArrayList<Task>();
