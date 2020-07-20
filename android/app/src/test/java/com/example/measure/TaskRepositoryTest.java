@@ -62,7 +62,7 @@ public class TaskRepositoryTest {
             Task task = new Task();
             task.setId(startingId + i);
             task.setUserId(taskOwner.getId());
-            task.setName(Integer.toString(task.getId()));
+            task.setName(Long.toString(task.getId()));
             task.setLocalDueDate(startingDate.plusDays(i));
 
             addedTasks.add(task);

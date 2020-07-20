@@ -65,7 +65,7 @@ public class AgendaViewModelTest {
             Task task = new Task();
             task.setId(startingId + i);
             task.setUserId(1);
-            task.setName(Integer.toString(task.getId()));
+            task.setName(Long.toString(task.getId()));
             task.setLocalDueDate(startingDate.plusDays(i));
 
             addedTasks.add(task);
