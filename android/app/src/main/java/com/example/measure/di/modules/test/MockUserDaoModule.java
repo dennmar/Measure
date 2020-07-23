@@ -1,7 +1,10 @@
 package com.example.measure.di.modules.test;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.user.MockUserDao;
 import com.example.measure.models.user.UserDao;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,6 +21,7 @@ public class MockUserDaoModule {
      * @return user DAO to be used for user database access
      */
     @Provides
+    @Scopes.ApplicationScope
     public UserDao provideUserDao(MockUserDao mockUserDao) {
         return mockUserDao;
     }

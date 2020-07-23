@@ -13,10 +13,7 @@ import javax.inject.Singleton;
 
 /**
  * A fake repository for accessing user data.
- *
- * Note: this class is made singleton for use in the register view model test.
  */
-@Singleton
 public class MockUserRepository implements UserRepository {
     private MutableLiveData<Task> activeTask;
     private HashMap<String, User> usernameUserMap;

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.measure.di.MeasureApplication;
+import com.example.measure.di.Scopes;
 import com.example.measure.models.task.SQLiteTaskDao;
 import com.example.measure.models.task.TaskDao;
 
@@ -23,6 +24,7 @@ public class TaskDaoModule {
      * @return task DAO to be used for task database access
      */
     @Provides
+    @Scopes.ApplicationScope
     public TaskDao provideTaskDao(SQLiteTaskDao sqliteTaskDao) {
         return sqliteTaskDao;
     }

@@ -2,6 +2,7 @@ package com.example.measure.di.components;
 
 import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
+import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.prod.UserDaoModule;
@@ -21,6 +22,7 @@ import dagger.Component;
         ContextModule.class,
         TestMeasureRoomDatabaseModule.class
 })
+@Scopes.ApplicationScope
 public interface TestUserDaoComponent {
     UserDao userDao();
     MeasureRoomDatabase measureRoomDatabase();

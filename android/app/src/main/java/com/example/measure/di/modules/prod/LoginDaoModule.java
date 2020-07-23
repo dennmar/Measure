@@ -1,5 +1,6 @@
 package com.example.measure.di.modules.prod;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.login.LoginDao;
 import com.example.measure.models.login.SharedPrefsLoginDao;
 
@@ -18,6 +19,7 @@ public class LoginDaoModule {
      * @return login DAO to be used for login session data access
      */
     @Provides
+    @Scopes.ApplicationScope
     public LoginDao provideLoginDao(SharedPrefsLoginDao sharedPrefsLoginDao) {
         return sharedPrefsLoginDao;
     }

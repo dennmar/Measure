@@ -1,5 +1,6 @@
 package com.example.measure.di.components;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.prod.UserRepositoryModule;
 import com.example.measure.di.modules.test.MockUserDaoModule;
@@ -18,7 +19,7 @@ import dagger.Component;
         UserRepositoryModule.class,
         MockUserDaoModule.class
 })
-@Singleton
+@Scopes.ApplicationScope
 public interface TestUserRepositoryComponent {
     UserRepository userRepository();
 }

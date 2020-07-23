@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.example.measure.db.MeasureRoomDatabase;
+import com.example.measure.di.Scopes;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,6 +22,7 @@ public class MeasureRoomDatabaseModule {
      * @return the Room database for the application
      */
     @Provides
+    @Scopes.ApplicationScope
     public MeasureRoomDatabase provideMeasureRoomDatabase(Context appContext) {
         return Room.databaseBuilder(appContext, MeasureRoomDatabase.class,
                 "measure_db").fallbackToDestructiveMigration().build();

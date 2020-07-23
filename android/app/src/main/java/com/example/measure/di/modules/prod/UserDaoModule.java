@@ -1,5 +1,6 @@
 package com.example.measure.di.modules.prod;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.user.SQLiteUserDao;
 import com.example.measure.models.user.UserDao;
 
@@ -18,6 +19,7 @@ public class UserDaoModule {
      * @return user DAO to be used for user database access
      */
     @Provides
+    @Scopes.ApplicationScope
     public UserDao provideUserDao(SQLiteUserDao sqLiteUserDao) {
         return sqLiteUserDao;
     }

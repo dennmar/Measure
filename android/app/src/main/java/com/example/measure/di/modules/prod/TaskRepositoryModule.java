@@ -1,5 +1,6 @@
 package com.example.measure.di.modules.prod;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.task.LocalTaskRepository;
 import com.example.measure.models.task.TaskRepository;
 
@@ -18,6 +19,7 @@ public class TaskRepositoryModule {
      * @return task repository to be used for task data access
      */
     @Provides
+    @Scopes.ApplicationScope
     public TaskRepository provideTaskRepository(
             LocalTaskRepository localTaskRepo) {
         return localTaskRepo;

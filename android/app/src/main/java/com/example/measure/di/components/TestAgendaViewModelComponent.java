@@ -1,10 +1,13 @@
 package com.example.measure.di.components;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
+import com.example.measure.di.modules.prod.AgendaViewModelModule;
 import com.example.measure.di.modules.test.MockLoginRepositoryModule;
 import com.example.measure.di.modules.test.MockTaskDaoModule;
 import com.example.measure.di.modules.test.MockTaskRepositoryModule;
 import com.example.measure.di.modules.test.MockUserRepositoryModule;
+import com.example.measure.features.agenda.viewmodel.AgendaViewModel;
 import com.example.measure.features.agenda.viewmodel.DaggerAgendaViewModel;
 
 import javax.inject.Inject;
@@ -18,12 +21,13 @@ import dagger.Component;
  */
 @Component(modules = {
         AssistedInjectModule.class,
+        AgendaViewModelModule.class,
         MockTaskRepositoryModule.class,
         MockTaskDaoModule.class,
         MockLoginRepositoryModule.class,
         MockUserRepositoryModule.class
 })
-@Singleton
+@Scopes.ApplicationScope
 public interface TestAgendaViewModelComponent {
-    DaggerAgendaViewModel.Factory avmFactory();
+    AgendaViewModel.Factory avmFactory();
 }

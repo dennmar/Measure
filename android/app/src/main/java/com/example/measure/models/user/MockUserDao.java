@@ -10,10 +10,7 @@ import javax.inject.Singleton;
 
 /**
  * A fake user database access object.
- *
- * Note: this class is made singleton for use in login repository test.
  */
-@Singleton
 public class MockUserDao implements UserDao {
     private HashMap<String, User> usernameUserMap;
 

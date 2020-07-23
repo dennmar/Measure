@@ -1,5 +1,6 @@
 package com.example.measure.di.modules.prod;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.user.LocalUserRepository;
 import com.example.measure.models.user.UserRepository;
 
@@ -18,6 +19,7 @@ public class UserRepositoryModule {
      * @return user repository to be used for user data access
      */
     @Provides
+    @Scopes.ApplicationScope
     public UserRepository provideUserRepository(
             LocalUserRepository localUserRepo) {
         return localUserRepo;

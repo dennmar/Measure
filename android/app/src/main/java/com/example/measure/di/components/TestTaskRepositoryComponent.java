@@ -1,5 +1,6 @@
 package com.example.measure.di.components;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.test.MockTaskDaoModule;
 import com.example.measure.di.modules.prod.TaskRepositoryModule;
@@ -16,6 +17,7 @@ import dagger.Component;
         TaskRepositoryModule.class,
         MockTaskDaoModule.class
 })
+@Scopes.ApplicationScope
 public interface TestTaskRepositoryComponent {
     TaskRepository taskRepository();
 }

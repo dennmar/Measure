@@ -1,5 +1,6 @@
 package com.example.measure.di.modules.prod;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.login.LocalLoginRepository;
 import com.example.measure.models.login.LoginRepository;
 
@@ -18,6 +19,7 @@ public class LoginRepositoryModule {
      * @return login repository to be used for login session data access
      */
     @Provides
+    @Scopes.ApplicationScope
     public LoginRepository provideLoginRepository(
             LocalLoginRepository localLoginRepo) {
         return localLoginRepo;

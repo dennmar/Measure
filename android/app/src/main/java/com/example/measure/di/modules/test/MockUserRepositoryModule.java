@@ -1,5 +1,6 @@
 package com.example.measure.di.modules.test;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.models.user.MockUserRepository;
 import com.example.measure.models.user.UserRepository;
 
@@ -20,6 +21,7 @@ public class MockUserRepositoryModule {
      * @return user repository to be used for user data access
      */
     @Provides
+    @Scopes.ApplicationScope
     public UserRepository provideUserRepository(
             MockUserRepository mockUserRepo) {
         return mockUserRepo;
