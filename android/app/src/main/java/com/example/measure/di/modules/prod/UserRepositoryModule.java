@@ -19,7 +19,6 @@ public class UserRepositoryModule {
      * @return user repository to be used for user data access
      */
     @Provides
-    @Scopes.ApplicationScope
     public UserRepository provideUserRepository(
             LocalUserRepository localUserRepo) {
         return localUserRepo;

@@ -24,7 +24,6 @@ public class TaskDaoModule {
      * @return task DAO to be used for task database access
      */
     @Provides
-    @Scopes.ApplicationScope
     public TaskDao provideTaskDao(SQLiteTaskDao sqliteTaskDao) {
         return sqliteTaskDao;
     }

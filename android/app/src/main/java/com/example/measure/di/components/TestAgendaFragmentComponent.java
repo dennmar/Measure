@@ -1,5 +1,6 @@
 package com.example.measure.di.components;
 
+import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.test.MockAgendaViewModelModule;
 import com.example.measure.di.modules.test.MockRegisterViewModelModule;
@@ -19,6 +20,7 @@ import dagger.Component;
         MockRegisterViewModelModule.class,
         MockUserRepositoryModule.class
 })
+@Scopes.ApplicationScope
 public interface TestAgendaFragmentComponent extends ApplicationComponent {
 
 }

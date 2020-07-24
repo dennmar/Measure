@@ -22,7 +22,6 @@ import dagger.Component;
         ContextModule.class,
         TestMeasureRoomDatabaseModule.class
 })
-@Scopes.ApplicationScope
 public interface TestTaskDaoComponent {
     TaskDao taskDao();
     MeasureRoomDatabase measureRoomDatabase();

@@ -19,7 +19,6 @@ public class LoginRepositoryModule {
      * @return login repository to be used for login session data access
      */
     @Provides
-    @Scopes.ApplicationScope
     public LoginRepository provideLoginRepository(
             LocalLoginRepository localLoginRepo) {
         return localLoginRepo;

@@ -19,7 +19,6 @@ public class LoginDaoModule {
      * @return login DAO to be used for login session data access
      */
     @Provides
-    @Scopes.ApplicationScope
     public LoginDao provideLoginDao(SharedPrefsLoginDao sharedPrefsLoginDao) {
         return sharedPrefsLoginDao;
     }

@@ -3,6 +3,7 @@ package com.example.measure;
 import android.widget.DatePicker;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -62,6 +63,7 @@ public class AgendaProdTest {
         // Perform actions and checks on task date picker screen.
         onView(withId(R.id.edittext_new_task_name))
                 .perform(typeText(task.getName()));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.btn_new_task_datepicker))
                 .perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))

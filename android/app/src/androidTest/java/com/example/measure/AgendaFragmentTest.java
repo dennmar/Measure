@@ -4,6 +4,7 @@ import android.widget.DatePicker;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -80,6 +81,7 @@ public class AgendaFragmentTest {
         // Perform actions and checks on task date picker screen.
         onView(withId(R.id.edittext_new_task_name))
                 .perform(typeText(task.getName()));
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.btn_new_task_datepicker))
                 .perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))

@@ -19,7 +19,6 @@ public class TaskRepositoryModule {
      * @return task repository to be used for task data access
      */
     @Provides
-    @Scopes.ApplicationScope
     public TaskRepository provideTaskRepository(
             LocalTaskRepository localTaskRepo) {
         return localTaskRepo;

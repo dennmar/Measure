@@ -19,7 +19,6 @@ public class UserDaoModule {
      * @return user DAO to be used for user database access
      */
     @Provides
-    @Scopes.ApplicationScope
     public UserDao provideUserDao(SQLiteUserDao sqLiteUserDao) {
         return sqLiteUserDao;
     }

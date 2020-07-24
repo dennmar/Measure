@@ -17,7 +17,6 @@ import dagger.Component;
         TaskRepositoryModule.class,
         MockTaskDaoModule.class
 })
-@Scopes.ApplicationScope
 public interface TestTaskRepositoryComponent {
     TaskRepository taskRepository();
 }
