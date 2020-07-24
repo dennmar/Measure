@@ -19,7 +19,6 @@ import dagger.Component;
         UserRepositoryModule.class,
         MockUserDaoModule.class
 })
-@Scopes.ApplicationScope
 public interface TestUserRepositoryComponent {
     UserRepository userRepository();
 }

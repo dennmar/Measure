@@ -1,5 +1,7 @@
 package com.example.measure.models.login;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.example.measure.models.data.User;
 import com.example.measure.models.user.UserDao;
 import com.example.measure.utils.AuthenticationException;
@@ -62,5 +64,18 @@ public class LocalLoginRepository implements LoginRepository {
     @Override
     public void logout() {
        loginDao.clearSession();
+    }
+
+    /**
+     * Add the user to the database.
+     *
+     * @param user user to be added
+     * @throws IllegalArgumentException when the new user would be invalid
+     * @throws DBOperationException     if the user could not be added
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public void addUser(User user)
+            throws IllegalArgumentException, DBOperationException {
+        userDao.addUser(user);
     }
 }

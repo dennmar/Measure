@@ -21,7 +21,6 @@ public class MockUserRepositoryModule {
      * @return user repository to be used for user data access
      */
     @Provides
-    @Scopes.ApplicationScope
     public UserRepository provideUserRepository(
             MockUserRepository mockUserRepo) {
         return mockUserRepo;

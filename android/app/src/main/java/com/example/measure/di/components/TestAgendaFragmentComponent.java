@@ -20,7 +20,4 @@ import dagger.Component;
         MockRegisterViewModelModule.class,
         MockUserRepositoryModule.class
 })
-@Scopes.ApplicationScope
-public interface TestAgendaFragmentComponent extends ApplicationComponent {
-
-}
+public interface TestAgendaFragmentComponent extends ApplicationComponent {}

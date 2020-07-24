@@ -1,5 +1,7 @@
 package com.example.measure.models.login;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.example.measure.models.data.User;
 
 /**
@@ -44,4 +46,14 @@ public class MockLoginRepository implements LoginRepository {
     public void logout() {
         currUser = null;
     }
+
+    /**
+     * Add the user to the database.
+     *
+     * Note: This is not implemented for the mock login repository on purpose.
+     *
+     * @param user user to be added
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public void addUser(User user) {}
 }

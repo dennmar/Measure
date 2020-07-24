@@ -67,4 +67,17 @@ public class DaggerRegisterViewModel implements RegisterViewModel {
     public String getErrorMessage() {
         return null;
     }
+
+    /**
+     * Return the user with the matching username and password.
+     *
+     * @param username username of the user to fetch
+     * @param password password of the user to fetch
+     * @return the matching user or null if no such user was found
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public User getUser(String username, String password)
+            throws DBOperationException {
+        return userRepo.getUser(username, password);
+    }
 }

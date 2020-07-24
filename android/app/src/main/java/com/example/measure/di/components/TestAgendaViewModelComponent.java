@@ -27,7 +27,6 @@ import dagger.Component;
         MockLoginRepositoryModule.class,
         MockUserRepositoryModule.class
 })
-@Scopes.ApplicationScope
 public interface TestAgendaViewModelComponent {
     AgendaViewModel.Factory avmFactory();
 }

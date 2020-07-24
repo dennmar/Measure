@@ -1,14 +1,10 @@
 package com.example.measure.di.components;
 
-import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.prod.LoginRepositoryModule;
 import com.example.measure.di.modules.test.MockLoginDaoModule;
 import com.example.measure.di.modules.test.MockUserDaoModule;
 import com.example.measure.models.login.LoginRepository;
-import com.example.measure.models.user.UserDao;
-
-import javax.inject.Singleton;
 
 import dagger.Component;
 
@@ -22,8 +18,6 @@ import dagger.Component;
         MockLoginDaoModule.class,
         MockUserDaoModule.class
 })
-@Scopes.ApplicationScope
 public interface TestLoginRepositoryComponent {
     LoginRepository loginRepository();
-    UserDao mockUserDao();
 }

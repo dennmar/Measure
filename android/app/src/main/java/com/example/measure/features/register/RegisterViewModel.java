@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.VisibleForTesting;
 
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 public interface RegisterViewModel {
     /**
@@ -36,4 +37,15 @@ public interface RegisterViewModel {
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     String getErrorMessage();
+
+    /**
+     * Return the user with the matching username and password.
+     *
+     * @param username username of the user to fetch
+     * @param password password of the user to fetch
+     * @return the matching user or null if no such user was found
+     * @throws DBOperationException if the user could not be fetched
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    User getUser(String username, String password) throws DBOperationException;
 }

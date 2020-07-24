@@ -20,7 +20,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class LoginRepositoryTest {
     LoginRepository loginRepo;
-    UserDao mockUserDao;
 
     /**
      * Create a new login repository.
@@ -30,7 +29,6 @@ public class LoginRepositoryTest {
         TestLoginRepositoryComponent loginRepoComponent =
                 DaggerTestLoginRepositoryComponent.create();
         loginRepo = loginRepoComponent.loginRepository();
-        mockUserDao = loginRepoComponent.mockUserDao();
     }
 
     /**
@@ -70,7 +68,7 @@ public class LoginRepositoryTest {
             throws AuthenticationException, DBOperationException {
         User testUser = new User("test", "testemail@email.com", "password");
         testUser.setId(1);
-        mockUserDao.addUser(testUser);
+        loginRepo.addUser(testUser);
 
         loginRepo.login(testUser.getUsername(), testUser.getPassword());
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
@@ -87,7 +85,7 @@ public class LoginRepositoryTest {
             throws AuthenticationException, DBOperationException {
         User testUser = new User("test", "testemail@email.com", "password");
         testUser.setId(1);
-        mockUserDao.addUser(testUser);
+        loginRepo.addUser(testUser);
 
         loginRepo.login(testUser.getUsername(), testUser.getPassword());
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),

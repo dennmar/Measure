@@ -6,8 +6,10 @@ import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A fake view model that imitates the interaction between the register view
@@ -65,5 +67,24 @@ public class MockRegisterViewModel implements RegisterViewModel {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public String getErrorMessage() {
         return errMsg.getValue();
+    }
+
+    /**
+     * Return the user with the matching username and password.
+     *
+     * @param username username of the user to fetch
+     * @param password password of the user to fetch
+     * @return the matching user or null if no such user was found
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public User getUser(String username, String password) {
+        for (Map.Entry<String, User> entry : usernameUserMap.entrySet()) {
+            if (entry.getKey().equals(username)
+                    && entry.getValue().getPassword().equals(password)) {
+                return entry.getValue();
+            }
+        }
+
+        return null;
     }
 }

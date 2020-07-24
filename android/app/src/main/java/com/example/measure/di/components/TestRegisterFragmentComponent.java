@@ -17,6 +17,4 @@ import dagger.Component;
         // to work.
         MockAgendaViewModelModule.class
 })
-public interface TestRegisterFragmentComponent extends ApplicationComponent {
-
-}
+public interface TestRegisterFragmentComponent extends ApplicationComponent {}

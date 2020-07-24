@@ -21,7 +21,6 @@ public class MockUserDaoModule {
      * @return user DAO to be used for user database access
      */
     @Provides
-    @Scopes.ApplicationScope
     public UserDao provideUserDao(MockUserDao mockUserDao) {
         return mockUserDao;
     }
