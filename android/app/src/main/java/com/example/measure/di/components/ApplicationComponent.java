@@ -7,6 +7,7 @@ import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.prod.LoginDaoModule;
 import com.example.measure.di.modules.prod.LoginRepositoryModule;
+import com.example.measure.di.modules.prod.LoginViewModelModule;
 import com.example.measure.di.modules.prod.MeasureRoomDatabaseModule;
 import com.example.measure.di.modules.prod.RegisterViewModelModule;
 import com.example.measure.di.modules.prod.TaskDaoModule;
@@ -14,6 +15,7 @@ import com.example.measure.di.modules.prod.TaskRepositoryModule;
 import com.example.measure.di.modules.prod.UserDaoModule;
 import com.example.measure.di.modules.prod.UserRepositoryModule;
 import com.example.measure.features.agenda.view.AgendaFragment;
+import com.example.measure.features.login.LoginFragment;
 import com.example.measure.features.register.RegisterFragment;
 
 import dagger.BindsInstance;
@@ -27,6 +29,7 @@ import dagger.Component;
         AssistedInjectModule.class,
         AgendaViewModelModule.class,
         RegisterViewModelModule.class,
+        LoginViewModelModule.class,
         TaskRepositoryModule.class,
         TaskDaoModule.class,
         LoginRepositoryModule.class,
@@ -51,6 +54,13 @@ public interface ApplicationComponent {
      * @param registerFragment register fragment needing injection
      */
     void inject(RegisterFragment registerFragment);
+
+    /**
+     * Tells Dagger that the login fragment requests injection.
+     *
+     * @param loginFragment login fragment needing injection
+     */
+    void inject(LoginFragment loginFragment);
 
     /**
      * Creates a new ApplicationComponent instance each time it is called.

@@ -3,6 +3,7 @@ package com.example.measure.di.components;
 import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.test.MockAgendaViewModelModule;
+import com.example.measure.di.modules.test.MockLoginViewModelModule;
 import com.example.measure.di.modules.test.MockRegisterViewModelModule;
 import com.example.measure.di.modules.test.MockUserRepositoryModule;
 
@@ -17,6 +18,7 @@ import dagger.Component;
         MockAgendaViewModelModule.class,
         // Below are modules that are needed from extending
         // ApplicationComponent.
-        MockRegisterViewModelModule.class
+        MockRegisterViewModelModule.class,
+        MockLoginViewModelModule.class
 })
 public interface TestAgendaFragmentComponent extends ApplicationComponent {}

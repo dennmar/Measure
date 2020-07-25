@@ -9,14 +9,24 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
+import com.example.measure.di.MeasureApplication;
+
+import javax.inject.Inject;
 
 /**
  * A fragment that handles the UI for login.
  */
 public class LoginFragment extends Fragment {
+    @Inject
+    protected LoginViewModel.Factory lvmFactory;
+    private LoginViewModel loginViewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((MeasureApplication) getActivity().getApplicationContext())
+                .appComponent.inject(this);
         super.onCreate(savedInstanceState);
+        loginViewModel = lvmFactory.create(savedInstanceState);
     }
 
     /**
@@ -41,7 +51,7 @@ public class LoginFragment extends Fragment {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public void addUser(String user, String password) {
+    public void addUser(String username, String password) {
 
     }
 }

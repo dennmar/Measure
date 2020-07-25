@@ -7,6 +7,10 @@ import androidx.annotation.VisibleForTesting;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
+/**
+ * A view model that handles the interaction between the register view
+ * (fragment) and the model.
+ */
 public interface RegisterViewModel {
     /**
      * Factory for creating a register view model.

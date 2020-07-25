@@ -2,6 +2,7 @@ package com.example.measure.di.components;
 
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.test.MockAgendaViewModelModule;
+import com.example.measure.di.modules.test.MockLoginViewModelModule;
 import com.example.measure.di.modules.test.MockRegisterViewModelModule;
 
 import dagger.Component;
@@ -12,6 +13,7 @@ import dagger.Component;
  */
 @Component(modules = {
         AssistedInjectModule.class,
+        MockLoginViewModelModule.class,
         // Below are modules that are needed from extending
         // ApplicationComponent.
         MockAgendaViewModelModule.class,
