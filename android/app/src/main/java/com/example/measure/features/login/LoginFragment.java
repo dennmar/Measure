@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
@@ -37,5 +38,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public void addUser(String user, String password) {
+
     }
 }

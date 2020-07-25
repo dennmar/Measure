@@ -13,8 +13,8 @@ import dagger.Component;
 @Component(modules = {
         AssistedInjectModule.class,
         MockRegisterViewModelModule.class,
-        // Below are modules that are needed for the entire Measure application
-        // to work.
+        // Below are modules that are needed from extending
+        // ApplicationComponent.
         MockAgendaViewModelModule.class
 })
 public interface TestRegisterFragmentComponent extends ApplicationComponent {}

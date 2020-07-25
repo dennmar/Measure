@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -52,6 +53,7 @@ public class RegisterFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_register, container,
                 false);
         initRegisterBtn(rootView);
+        initLoginBtn(rootView);
         return rootView;
     }
 
@@ -91,9 +93,23 @@ public class RegisterFragment extends Fragment {
     /**
      * Register the given user.
      *
-     * @param user     user to be registered
+     * @param user user to be registered
      */
     private void registerUser(User user) {
         registerViewModel.addUser(user);
+    }
+
+    /**
+     * Set an on-click listener to allow the user to go to the login screen.
+     *
+     * @param view view for the user interface
+     */
+    private void initLoginBtn(View view) {
+        TextView loginTextView = view.findViewById(
+                R.id.textview_login_redirect);
+        loginTextView.setOnClickListener(v -> {
+            LoginFragment loginFrag = new LoginFragment();
+            ((FragActivity) requireActivity()).replaceFragment(loginFrag);
+        });
     }
 }
