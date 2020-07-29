@@ -43,7 +43,8 @@ public interface LoginViewModel {
      *
      * @param username username of the user to be added
      * @param password password of the user to be added
+     * @throws DBOperationException if the user could not be added
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    void addUser(String username, String password);
+    void addUser(String username, String password) throws DBOperationException;
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.utils.AuthenticationException;
 import com.example.measure.utils.DBOperationException;
@@ -55,17 +56,20 @@ public class DaggerLoginViewModel implements LoginViewModel {
      */
     public void login(String username, String password)
             throws AuthenticationException, DBOperationException {
-
+        loginRepo.login(username, password);
     }
 
     /**
      * Add the user to the database.
      *
-     * Note: this is not implemented on purpose.
-     *
      * @param username username of the user to be added
      * @param password password of the user to be added
+     * @throws DBOperationException if the user could not be added
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public void addUser(String username, String password) {}
+    public void addUser(String username, String password)
+            throws DBOperationException {
+        User newUser = new User(username, "email@email.com", password);
+        loginRepo.addUser(newUser);
+    }
 }
