@@ -65,9 +65,7 @@ public class DaggerLoginViewModel implements LoginViewModel {
      *
      * @param username username of the user to be added
      * @param password password of the user to be added
-     * @throws AuthenticationException if the username and password are invalid
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public void addUser(String username, String password)
-            throws AuthenticationException {}
+    public void addUser(String username, String password) {}
 }

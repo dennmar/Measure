@@ -43,9 +43,7 @@ public interface LoginViewModel {
      *
      * @param username username of the user to be added
      * @param password password of the user to be added
-     * @throws AuthenticationException if the username and password are invalid
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    void addUser(String username, String password)
-        throws AuthenticationException;
+    void addUser(String username, String password);
 }
