@@ -1,5 +1,8 @@
 package com.example.measure.models.user;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.measure.models.data.User;
 
 import java.util.HashMap;
@@ -37,10 +40,10 @@ public class MockUserDao implements UserDao {
      *
      * @param username username of the user to fetch
      * @param password password of the user to fetch
-     * @return the matching user or null if no matching user was found
+     * @return observable matching user or null if no matching user was found
      */
     @Override
-    public User getUser(String username, String password) {
+    public LiveData<User> getUser(String username, String password) {
         for (Map.Entry<String, User> entry : usernameUserMap.entrySet()) {
             if (entry.getKey().equals(username)
                     && entry.getValue().getPassword().equals(password)) {
@@ -48,10 +51,10 @@ public class MockUserDao implements UserDao {
                 User returnUser = new User(foundUser.getId(),
                         foundUser.getUsername(), foundUser.getEmail(), null,
                         foundUser.getActiveTask());
-                return returnUser;
+                return new MutableLiveData<>(returnUser);
             }
         }
 
-        return null;
+        return new MutableLiveData<>(null);
     }
 }

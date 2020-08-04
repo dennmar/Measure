@@ -1,5 +1,6 @@
 package com.example.measure.db;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -14,13 +15,13 @@ public interface RoomUserDao {
      * password.
      * @param username username of the user to fetch
      * @param password password of the user to fetch
-     * @return the matching user from the Room database or null if no
+     * @return observable matching user from the Room database or null if no
      *         matching user was found
      */
     // TODO: fix * to specify columns
     @Query("SELECT * FROM users WHERE username = :username "
             + "AND password = :password")
-    RoomUser getUser(String username, String password);
+    LiveData<RoomUser> getUser(String username, String password);
 
     /**
      * Insert a user in the Room database

@@ -90,12 +90,12 @@ public class LocalUserRepository implements UserRepository {
      *
      * @param username username of the user
      * @param password password of the user
-     * @return the matching user or null if no such user was found
+     * @return matching user or null if no such user was found
      * @throws DBOperationException if the user could not be fetched
      */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public User getUser(String username, String password)
             throws DBOperationException {
-        return userDao.getUser(username, password);
+        return userDao.getUser(username, password).getValue();
     }
 }

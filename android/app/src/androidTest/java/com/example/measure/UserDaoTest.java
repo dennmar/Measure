@@ -65,7 +65,7 @@ public class UserDaoTest {
     public void testGetMissingUser() throws DBOperationException {
         User testUser = new User("Nonexistent", "no@no.com", "none");
         User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword());
+                testUser.getPassword()).getValue();
         assertThat(getResult, equalTo(null));
     }
 
@@ -81,7 +81,7 @@ public class UserDaoTest {
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword());
+                testUser.getPassword()).getValue();
         assertThat(getResult, reflectEquals(expectedUser));
     }
 
@@ -97,7 +97,7 @@ public class UserDaoTest {
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword());
+                testUser.getPassword()).getValue();
         assertThat(getResult, reflectEquals(expectedUser));
 
         User testUser2 = new User(testUser.getUsername(), "laptop@pc.io",
@@ -125,7 +125,7 @@ public class UserDaoTest {
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
         User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword());
+                testUser.getPassword()).getValue();
         assertThat(getResult, reflectEquals(expectedUser));
 
         User testUser2 = new User("Typer", testUser.getEmail(), "asdf");
@@ -157,7 +157,7 @@ public class UserDaoTest {
         for (int i = 1; i <= userAmt; i++) {
             User expectedUser = new User(i, "User#" + i,
                     "email" + i + "@gmail.com", null, null);
-            User getResult = userDao.getUser("User#" + i, "pass");
+            User getResult = userDao.getUser("User#" + i, "pass").getValue();
             assertThat(getResult, reflectEquals(expectedUser));
         }
     }

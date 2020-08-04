@@ -1,5 +1,8 @@
 package com.example.measure.models.user;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.db.RoomUser;
 import com.example.measure.db.RoomUserDao;
@@ -13,6 +16,7 @@ import javax.inject.Inject;
  */
 public class SQLiteUserDao implements UserDao {
     private RoomUserDao roomUserDao;
+    private MutableLiveData<User> foundUser;
 
     /**
      * Initialize member variables.
@@ -22,6 +26,7 @@ public class SQLiteUserDao implements UserDao {
     @Inject
     public SQLiteUserDao(MeasureRoomDatabase db) {
         roomUserDao = db.userDao();
+        foundUser = new MutableLiveData<>(null);
     }
 
     /**
@@ -48,23 +53,26 @@ public class SQLiteUserDao implements UserDao {
      *
      * @param username username of the user to fetch
      * @param password password of the user to fetch
-     * @return the matching user or null if no matching user was found
+     * @return observable matching user or null if no matching user was found
      * @throws DBOperationException if the user could not be fetched
      */
     @Override
-    public User getUser(String username, String password)
+    public LiveData<User> getUser(String username, String password)
             throws DBOperationException {
         try {
-            RoomUser foundUser = roomUserDao.getUser(username, password);
-
-            if (foundUser != null) {
-                return foundUser.toUser();
-            }
-
-            return null;
+            roomUserDao.getUser(username, password).observeForever(user -> {
+                if (user != null) {
+                    foundUser.setValue(user.toUser());
+                }
+                else {
+                    foundUser.setValue(null);
+                }
+            });
         }
         catch (Exception e) {
             throw new DBOperationException(e.getMessage());
         }
+
+        return foundUser;
     }
 }

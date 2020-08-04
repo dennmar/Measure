@@ -1,5 +1,7 @@
 package com.example.measure.models.user;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
@@ -21,8 +23,9 @@ public interface UserDao {
      *
      * @param username username of the user to fetch
      * @param password password of the user to fetch
-     * @return the matching user or null if no matching user was found
+     * @return observable matching user or null if no matching user was found
      * @throws DBOperationException if the user could not be fetched
      */
-    User getUser(String username, String password) throws DBOperationException;
+    LiveData<User> getUser(String username, String password)
+            throws DBOperationException;
 }

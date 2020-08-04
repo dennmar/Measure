@@ -50,7 +50,8 @@ public class LocalLoginRepository implements LoginRepository {
     @Override
     public void login(String username, String password)
             throws AuthenticationException, DBOperationException {
-        User loginUser = userDao.getUser(username, password);
+        User loginUser = userDao.getUser(username, password).getValue();
+
         if (loginUser == null) {
             throw new AuthenticationException("Invalid username or password");
         }
