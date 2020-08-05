@@ -1,6 +1,7 @@
 package com.example.measure.features.register;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -55,6 +56,7 @@ public class DaggerRegisterViewModel implements RegisterViewModel {
         }
         catch (DBOperationException e) {
             // TODO: handle exception
+            Log.d("DaggerRegisterViewModel", e.getMessage());
         }
     }
 

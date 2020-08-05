@@ -64,8 +64,8 @@ public class UserDaoTest {
     @Test
     public void testGetMissingUser() throws DBOperationException {
         User testUser = new User("Nonexistent", "no@no.com", "none");
-        User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword()).getValue();
+        User getResult = userDao.asyncGetUser(testUser.getUsername(),
+                testUser.getPassword());
         assertThat(getResult, equalTo(null));
     }
 
@@ -76,12 +76,12 @@ public class UserDaoTest {
     public void testAddUser() throws DBOperationException {
         User testUser = new User("Keyboard", "type@fast.com", "qwerty");
         testUser.setId(1);
-        userDao.addUser(testUser);
+        userDao.asyncAddUser(testUser);
 
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
-        User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword()).getValue();
+        User getResult = userDao.asyncGetUser(testUser.getUsername(),
+                testUser.getPassword());
         assertThat(getResult, reflectEquals(expectedUser));
     }
 
@@ -92,12 +92,12 @@ public class UserDaoTest {
     public void testAddUserDupUsername() throws DBOperationException {
         User testUser = new User("Keyboard", "type@fast.com", "qwerty");
         testUser.setId(1);
-        userDao.addUser(testUser);
+        userDao.asyncAddUser(testUser);
 
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
-        User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword()).getValue();
+        User getResult = userDao.asyncGetUser(testUser.getUsername(),
+                testUser.getPassword());
         assertThat(getResult, reflectEquals(expectedUser));
 
         User testUser2 = new User(testUser.getUsername(), "laptop@pc.io",
@@ -105,7 +105,7 @@ public class UserDaoTest {
         testUser2.setId(2);
 
         try {
-            userDao.addUser(testUser2);
+            userDao.asyncAddUser(testUser2);
             assertThat(false, equalTo(true));
         }
         catch (DBOperationException e) {
@@ -120,19 +120,19 @@ public class UserDaoTest {
     public void testAddUserDupEmail() throws DBOperationException {
         User testUser = new User("Keyboard", "type@fast.com", "qwerty");
         testUser.setId(1);
-        userDao.addUser(testUser);
+        userDao.asyncAddUser(testUser);
 
         User expectedUser = new User(testUser.getId(), testUser.getUsername(),
                 testUser.getEmail(), null, testUser.getActiveTask());
-        User getResult = userDao.getUser(testUser.getUsername(),
-                testUser.getPassword()).getValue();
+        User getResult = userDao.asyncGetUser(testUser.getUsername(),
+                testUser.getPassword());
         assertThat(getResult, reflectEquals(expectedUser));
 
         User testUser2 = new User("Typer", testUser.getEmail(), "asdf");
         testUser2.setId(2);
 
         try {
-            userDao.addUser(testUser2);
+            userDao.asyncAddUser(testUser2);
             assertThat(false, equalTo(true));
         }
         catch (DBOperationException e) {
@@ -151,13 +151,13 @@ public class UserDaoTest {
             User testUser = new User("User#" + i, "email" + i + "@gmail.com",
                     "pass");
             testUser.setId(i);
-            userDao.addUser(testUser);
+            userDao.asyncAddUser(testUser);
         }
 
         for (int i = 1; i <= userAmt; i++) {
             User expectedUser = new User(i, "User#" + i,
                     "email" + i + "@gmail.com", null, null);
-            User getResult = userDao.getUser("User#" + i, "pass").getValue();
+            User getResult = userDao.asyncGetUser("User#" + i, "pass");
             assertThat(getResult, reflectEquals(expectedUser));
         }
     }

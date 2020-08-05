@@ -56,7 +56,7 @@ public class LocalUserRepository implements UserRepository {
     public void addUser(User user)
             throws IllegalArgumentException, DBOperationException {
         validateNewUser(user);
-        userDao.addUser(user);
+        userDao.asyncAddUser(user);
     }
 
     /**
@@ -96,6 +96,6 @@ public class LocalUserRepository implements UserRepository {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public User getUser(String username, String password)
             throws DBOperationException {
-        return userDao.getUser(username, password).getValue();
+        return userDao.asyncGetUser(username, password);
     }
 }

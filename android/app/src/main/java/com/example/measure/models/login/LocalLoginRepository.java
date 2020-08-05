@@ -50,8 +50,8 @@ public class LocalLoginRepository implements LoginRepository {
     @Override
     public void login(String username, String password)
             throws AuthenticationException, DBOperationException {
-        User loginUser = userDao.getUser(username, password).getValue();
-
+        User loginUser = userDao.asyncGetUser(username, password);
+        
         if (loginUser == null) {
             throw new AuthenticationException("Invalid username or password");
         }
@@ -77,6 +77,6 @@ public class LocalLoginRepository implements LoginRepository {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public void addUser(User user)
             throws IllegalArgumentException, DBOperationException {
-        userDao.addUser(user);
+        userDao.asyncAddUser(user);
     }
 }

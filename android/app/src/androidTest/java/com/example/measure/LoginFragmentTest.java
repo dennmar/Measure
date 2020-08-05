@@ -11,6 +11,7 @@ import com.example.measure.di.components.ApplicationComponent;
 import com.example.measure.di.components.DaggerTestLoginFragmentComponent;
 import com.example.measure.features.EnterActivity;
 import com.example.measure.features.login.LoginFragment;
+import com.example.measure.utils.DBOperationException;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -70,9 +71,13 @@ public class LoginFragmentTest {
     }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws DBOperationException, InterruptedException {
+        // Wait for view model to be initialized.
+        Thread.sleep(500);
+
         String username = "Test";
         String password = "password";
+
         loginFrag.addUser(username, password);
 
         onView(withId(R.id.edittext_login_username))

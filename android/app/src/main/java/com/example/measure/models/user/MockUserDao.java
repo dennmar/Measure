@@ -1,15 +1,11 @@
 package com.example.measure.models.user;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.example.measure.models.data.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * A fake user database access object.
@@ -31,7 +27,7 @@ public class MockUserDao implements UserDao {
      * @param user user to be added
      */
     @Override
-    public void addUser(User user) {
+    public void asyncAddUser(User user) {
         usernameUserMap.put(user.getUsername(), user);
     }
 
@@ -40,10 +36,10 @@ public class MockUserDao implements UserDao {
      *
      * @param username username of the user to fetch
      * @param password password of the user to fetch
-     * @return observable matching user or null if no matching user was found
+     * @return the matching user or null if no matching user was found
      */
     @Override
-    public LiveData<User> getUser(String username, String password) {
+    public User asyncGetUser(String username, String password) {
         for (Map.Entry<String, User> entry : usernameUserMap.entrySet()) {
             if (entry.getKey().equals(username)
                     && entry.getValue().getPassword().equals(password)) {
@@ -51,10 +47,10 @@ public class MockUserDao implements UserDao {
                 User returnUser = new User(foundUser.getId(),
                         foundUser.getUsername(), foundUser.getEmail(), null,
                         foundUser.getActiveTask());
-                return new MutableLiveData<>(returnUser);
+                return returnUser;
             }
         }
 
-        return new MutableLiveData<>(null);
+        return null;
     }
 }

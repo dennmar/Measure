@@ -52,7 +52,7 @@ public class MockLoginViewModel implements LoginViewModel {
             throws AuthenticationException {
         for (Map.Entry<String, String> entry : userPasswordMap.entrySet()) {
             if (entry.getKey().equals(username)
-                    && entry.getKey().equals(password)) {
+                    && entry.getValue().equals(password)) {
                 return;
             }
         }

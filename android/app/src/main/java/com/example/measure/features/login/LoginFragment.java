@@ -89,6 +89,16 @@ public class LoginFragment extends Fragment {
         });
     }
 
+    /**
+     * Add the user to the database.
+     *
+     * @param username username of the user to be added
+     * @param password password of the user to be added
+     * @throws DBOperationException if the user could not be added
+     */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public void addUser(String username, String password) {}
+    public void addUser(String username, String password)
+            throws DBOperationException {
+        loginViewModel.addUser(username, password);
+    }
 }
