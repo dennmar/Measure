@@ -1,11 +1,9 @@
 package com.example.measure.di.components;
 
-import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.prod.LoginDaoModule;
-import com.example.measure.di.modules.test.TestMeasureRoomDatabaseModule;
 import com.example.measure.models.login.LoginDao;
 
 import dagger.BindsInstance;
@@ -18,12 +16,10 @@ import dagger.Component;
 @Component(modules = {
         AssistedInjectModule.class,
         LoginDaoModule.class,
-        ContextModule.class,
-        TestMeasureRoomDatabaseModule.class
+        ContextModule.class
 })
 public interface TestLoginDaoComponent {
     LoginDao loginDao();
-    MeasureRoomDatabase measureRoomDatabase();
 
     /**
      * Creates a new TestLoginDaoComponent instance each time it is called.

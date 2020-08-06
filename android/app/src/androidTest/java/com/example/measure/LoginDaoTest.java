@@ -1,7 +1,6 @@
 package com.example.measure;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.room.RoomDatabase;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -11,7 +10,6 @@ import com.example.measure.di.components.TestLoginDaoComponent;
 import com.example.measure.models.data.User;
 import com.example.measure.models.login.LoginDao;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +29,6 @@ public class LoginDaoTest {
     public TestWatcher rule = new InstantTaskExecutorRule();
 
     LoginDao loginDao;
-    RoomDatabase testRoomDb;
     MeasureApplication app = (MeasureApplication) InstrumentationRegistry
             .getInstrumentation()
             .getTargetContext()
@@ -47,13 +44,7 @@ public class LoginDaoTest {
         loginDao = loginDaoComponent.loginDao();
 
         // Clear all data before each test.
-        testRoomDb = loginDaoComponent.measureRoomDatabase();
-        testRoomDb.clearAllTables();
-    }
-
-    @After
-    public void closeConnections() {
-        testRoomDb.close();
+        loginDao.clearSession();
     }
 
     /**
@@ -61,8 +52,8 @@ public class LoginDaoTest {
      */
     @Test
     public void testNoCurrentUser() {
-        User actualUser = loginDao.getCurrentUser();
-        assertThat(actualUser, equalTo(null));
+        User getResult = loginDao.getCurrentUser();
+        assertThat(getResult, equalTo(null));
     }
 
     /**
@@ -74,7 +65,8 @@ public class LoginDaoTest {
         loginDao.setCurrentUser(testUser);
 
         User getResult = loginDao.getCurrentUser();
-        assertThat(getResult, equalTo(testUser));
+        assertThat(getResult.getUsername(), equalTo(testUser.getUsername()));
+        assertThat(getResult.getPassword(), equalTo(testUser.getPassword()));
     }
 
     /**
@@ -86,7 +78,8 @@ public class LoginDaoTest {
         loginDao.setCurrentUser(testUser);
 
         User getResult = loginDao.getCurrentUser();
-        assertThat(getResult, equalTo(testUser));
+        assertThat(getResult.getUsername(), equalTo(testUser.getUsername()));
+        assertThat(getResult.getPassword(), equalTo(testUser.getPassword()));
 
         loginDao.clearSession();
         User getResult2 = loginDao.getCurrentUser();
@@ -105,7 +98,8 @@ public class LoginDaoTest {
             loginDao.setCurrentUser(testUser);
 
             User getResult = loginDao.getCurrentUser();
-            assertThat(getResult, equalTo(testUser));
+            assertThat(getResult.getUsername(), equalTo(testUser.getUsername()));
+            assertThat(getResult.getPassword(), equalTo(testUser.getPassword()));
         }
     }
 }

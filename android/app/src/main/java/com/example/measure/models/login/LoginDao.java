@@ -7,9 +7,9 @@ import com.example.measure.models.data.User;
  */
 public interface LoginDao {
     /**
-     * Retrieve the current user logged in from the database.
+     * Retrieve the currently logged in user's credentials from the database.
      *
-     * @return the user currently logged in
+     * @return the currently logged in user's credentials
      */
     User getCurrentUser();
 
