@@ -17,6 +17,7 @@ import com.example.measure.models.data.User;
         @Index(value = "email", unique = true)
 })
 public class RoomUser {
+    // Should be equal to 0 to allow id to be auto-generated.
     @PrimaryKey(autoGenerate = true)
     private long id;
 

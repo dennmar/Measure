@@ -17,6 +17,7 @@ import org.joda.time.LocalDate;
 @Entity(tableName = "tasks")
 @TypeConverters({RoomTaskConverters.class})
 public class RoomTask {
+    // Should be equal to 0 to allow id to be auto-generated.
     @PrimaryKey(autoGenerate = true)
     private long id;
 

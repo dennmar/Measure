@@ -18,7 +18,7 @@ public class Task {
      * Initialize member variables to defaults.
      */
     public Task() {
-        id = -1;
+        id = 0;
         userId = -1;
         name = null;
         timeWorked = null;

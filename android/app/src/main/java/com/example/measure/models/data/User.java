@@ -18,7 +18,7 @@ public class User {
      * @param password password of the user
      */
     public User(String username, String email, String password) {
-        this.id = -1;
+        this.id = 0;
         this.username = username;
         this.email = email;
         this.password = password;
