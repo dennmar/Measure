@@ -33,7 +33,7 @@ import static com.example.measure.CustomMatchers.rowAtPos;
 
 /**
  * Run instrumented integration tests on the agenda using the production
- * Dagger components.
+ * Dagger modules.
  */
 @RunWith(AndroidJUnit4.class)
 public class AgendaProdTest {
