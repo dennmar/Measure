@@ -3,12 +3,8 @@ package com.example.measure;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.measure.di.MeasureApplication;
-import com.example.measure.di.components.ApplicationComponent;
-import com.example.measure.di.components.DaggerTestLoginFragmentComponent;
 import com.example.measure.features.EnterActivity;
 import com.example.measure.features.login.LoginFragment;
 import com.example.measure.utils.DBOperationException;
@@ -28,11 +24,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 /**
- * Run instrumented integration tests with the enter activity and login
- * fragment.
+ * Run instrumented integration tests on user login using the production Dagger
+ * modules.
  */
 @RunWith(AndroidJUnit4.class)
-public class LoginFragmentTest {
+public class LoginProdTest {
     // Execute background tasks synchronously (to allow LiveData to work).
     public TestWatcher instantTaskExecutorRule = new InstantTaskExecutorRule();
     public ActivityTestRule<EnterActivity> enterActivityTestRule =
@@ -43,19 +39,12 @@ public class LoginFragmentTest {
 
     EnterActivity enterActivity;
     LoginFragment loginFrag;
-    MeasureApplication app = (MeasureApplication) InstrumentationRegistry
-            .getInstrumentation()
-            .getTargetContext()
-            .getApplicationContext();
 
     /**
      * Launch the enter activity and display the login fragment.
      */
     @Before
     public void initLoginFragment() {
-        ApplicationComponent testComponent =
-                DaggerTestLoginFragmentComponent.create();
-        app.setAppComponent(testComponent);
         enterActivity = enterActivityTestRule.getActivity();
         loginFrag = new LoginFragment();
         enterActivity.replaceFragment(loginFrag);
