@@ -1,6 +1,7 @@
 package com.example.measure.features.agenda.viewmodel;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
@@ -55,7 +56,7 @@ public class DaggerAgendaViewModel extends ViewModel
         this.loginRepo = loginRepo;
         this.userRepo = userRepo;
 
-        currUser = this.loginRepo.getCurrentUser();
+        currUser = getCurrentUser();
         sortedTasks = new MutableLiveData<>(new ArrayList<>());
         activeTask = new MutableLiveData<>();
     }
@@ -74,6 +75,21 @@ public class DaggerAgendaViewModel extends ViewModel
          * @return the created agenda view model
          */
         DaggerAgendaViewModel create(Bundle savedInstanceState);
+    }
+
+    /**
+     * Get the currently logged in user.
+     *
+     * @return the currently logged in user
+     */
+    private User getCurrentUser() {
+        try {
+            return this.loginRepo.getCurrentUser();
+        }
+        catch (DBOperationException e) {
+            Log.d("DaggerAgendaViewModel", "getCurrUser: " + e.getMessage());
+            return null;
+        }
     }
 
     /**

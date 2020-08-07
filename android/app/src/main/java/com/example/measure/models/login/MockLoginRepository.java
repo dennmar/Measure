@@ -27,7 +27,7 @@ public class MockLoginRepository implements LoginRepository {
     /**
      * Retrieve the current user logged in.
      *
-     * @return the user currently logged in
+     * @return the user currently logged in (with their password not included)
      */
     @Override
     public User getCurrentUser() {

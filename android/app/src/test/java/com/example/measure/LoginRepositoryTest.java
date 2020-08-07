@@ -35,7 +35,7 @@ public class LoginRepositoryTest {
      * Test getting the current user when there is no active login session.
      */
     @Test
-    public void testNoSession() {
+    public void testNoSession() throws DBOperationException {
         User getResult = loginRepo.getCurrentUser();
         assertThat(getResult, equalTo(null));
     }

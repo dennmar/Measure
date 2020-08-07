@@ -3,7 +3,6 @@ package com.example.measure.models.user;
 import com.example.measure.models.data.User;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -40,17 +39,13 @@ public class MockUserDao implements UserDao {
      */
     @Override
     public User asyncGetUser(String username, String password) {
-        for (Map.Entry<String, User> entry : usernameUserMap.entrySet()) {
-            if (entry.getKey().equals(username)
-                    && entry.getValue().getPassword().equals(password)) {
-                User foundUser = entry.getValue();
-                User returnUser = new User(foundUser.getId(),
-                        foundUser.getUsername(), foundUser.getEmail(), null,
-                        foundUser.getActiveTask());
-                return returnUser;
-            }
+        User foundUser = usernameUserMap.get(username);
+        if (foundUser == null) {
+            return null;
         }
 
-        return null;
+        User returnUser = new User(foundUser.getId(), foundUser.getUsername(),
+                foundUser.getEmail(), null, foundUser.getActiveTask());
+        return returnUser;
     }
 }

@@ -12,14 +12,14 @@ public interface RoomUserDao {
     /**
      * Retrieve a user from the database with the matching username and
      * password.
+     *
      * @param username username of the user to fetch
      * @param password password of the user to fetch
-     * @return the matching user from the Room database or null if no
-     *         matching user was found
+     * @return the matching user from the Room database (with their password
+     *         not included) or null if no matching user was found
      */
-    // TODO: fix * to specify columns
-    @Query("SELECT * FROM users WHERE username = :username "
-            + "AND password = :password")
+    @Query("SELECT id, username, email, active_task_id FROM users "
+            + "WHERE username = :username AND password = :password")
     RoomUser getUser(String username, String password);
 
     /**

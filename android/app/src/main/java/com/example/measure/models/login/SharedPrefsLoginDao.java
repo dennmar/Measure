@@ -13,12 +13,22 @@ import javax.inject.Inject;
 public class SharedPrefsLoginDao implements LoginDao {
     SharedPreferences sharedPrefs;
 
+    /**
+     * Initialize member variables.
+     *
+     * @param appContext application context
+     */
     @Inject
     public SharedPrefsLoginDao(Context appContext) {
         sharedPrefs = appContext.getSharedPreferences("login_session",
                     Context.MODE_PRIVATE);
     }
 
+    /**
+     * Retrieve the currently logged in user's credentials from the database.
+     *
+     * @return the currently logged in user's credentials
+     */
     @Override
     public User getCurrentUser() {
         String username = sharedPrefs.getString("username", null);
@@ -31,6 +41,12 @@ public class SharedPrefsLoginDao implements LoginDao {
         return new User(username, "", password);
     }
 
+    /**
+     * Set the current user in the database.
+     *
+     * @param user current user to set
+     * @return true if the operation was successful; false otherwise
+     */
     @Override
     public void setCurrentUser(User user) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -42,6 +58,9 @@ public class SharedPrefsLoginDao implements LoginDao {
         editor.commit();
     }
 
+    /**
+     * Clear the current login session in the database.
+     */
     @Override
     public void clearSession() {
         SharedPreferences.Editor editor = sharedPrefs.edit();

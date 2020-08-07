@@ -13,9 +13,10 @@ public interface LoginRepository {
     /**
      * Retrieve the current user logged in.
      *
-     * @return the user currently logged in
+     * @return the user currently logged in (with their password not included)
+     * @throws DBOperationException if the current user could not be fetched
      */
-    User getCurrentUser();
+    User getCurrentUser() throws DBOperationException;
 
     /**
      * Start a login session for the user if the credentials are valid.

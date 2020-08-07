@@ -31,11 +31,19 @@ public class LocalLoginRepository implements LoginRepository {
     /**
      * Retrieve the current user logged in.
      *
-     * @return the user currently logged in
+     * @return the user currently logged in (with their password not included)
+     * @throws DBOperationException if the current user could not be fetched
      */
     @Override
-    public User getCurrentUser() {
-        return loginDao.getCurrentUser();
+    public User getCurrentUser() throws DBOperationException {
+        User credentials = loginDao.getCurrentUser();
+        if (credentials == null) {
+            return null;
+        }
+
+        User foundUser = userDao.asyncGetUser(credentials.getUsername(),
+                credentials.getPassword());
+        return foundUser;
     }
 
     /**

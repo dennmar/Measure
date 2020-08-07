@@ -27,7 +27,6 @@ public class RoomUser {
     @NonNull
     private String email;
 
-    @NonNull
     private String password;
 
     @ColumnInfo(name = "active_task_id")
@@ -71,7 +70,7 @@ public class RoomUser {
      */
     public User toUser() {
         // TODO: active task needs a relation to be fetched
-        return new User(id, username, email, null, null);
+        return new User(id, username, email, password, null);
     }
 
     /* Getters and setters */
