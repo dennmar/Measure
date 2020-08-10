@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
@@ -95,7 +96,8 @@ public class RegisterFragment extends Fragment {
      *
      * @param user user to be registered
      */
-    private void registerUser(User user) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public void registerUser(User user) {
         registerViewModel.addUser(user);
     }
 
