@@ -17,7 +17,6 @@ import java.util.Map;
  */
 public class MockRegisterViewModel implements RegisterViewModel {
     private HashMap<String, User> usernameUserMap;
-    private MutableLiveData<String> errMsg;
 
     /**
      * Initialize member variables.
@@ -26,7 +25,6 @@ public class MockRegisterViewModel implements RegisterViewModel {
      */
     private MockRegisterViewModel(Bundle savedInstanceState) {
         usernameUserMap = new HashMap<>();
-        errMsg = new MutableLiveData<>(null);
     }
 
     /**
@@ -56,17 +54,6 @@ public class MockRegisterViewModel implements RegisterViewModel {
         }
 
         usernameUserMap.put(newUser.getUsername(), newUser);
-        errMsg = null;
-    }
-
-    /**
-     * Return the error message.
-     *
-     * @return error message
-     */
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public String getErrorMessage() {
-        return errMsg.getValue();
     }
 
     /**

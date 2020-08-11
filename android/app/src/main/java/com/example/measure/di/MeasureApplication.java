@@ -30,4 +30,9 @@ public class MeasureApplication extends Application {
     public void setAppComponent(ApplicationComponent appComponent) {
         this.appComponent = appComponent;
     }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public void clearAllData() {
+        this.appComponent.measureRoomDb().clearAllTables();
+    }
 }

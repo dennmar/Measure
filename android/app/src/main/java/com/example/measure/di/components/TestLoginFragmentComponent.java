@@ -1,10 +1,14 @@
 package com.example.measure.di.components;
 
+import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
+import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.test.MockAgendaViewModelModule;
 import com.example.measure.di.modules.test.MockLoginViewModelModule;
 import com.example.measure.di.modules.test.MockRegisterViewModelModule;
+import com.example.measure.di.modules.test.TestMeasureRoomDatabaseModule;
 
+import dagger.BindsInstance;
 import dagger.Component;
 
 /**
@@ -17,6 +21,18 @@ import dagger.Component;
         // Below are modules that are needed from extending
         // ApplicationComponent.
         MockAgendaViewModelModule.class,
-        MockRegisterViewModelModule.class
+        MockRegisterViewModelModule.class,
+        ContextModule.class,
+        TestMeasureRoomDatabaseModule.class
 })
-public interface TestLoginFragmentComponent extends ApplicationComponent {}
+public interface TestLoginFragmentComponent extends ApplicationComponent {
+    /**
+     * Creates a new TestLoginFragmentComponent instance each time it is
+     * called.
+     */
+    @Component.Factory
+    interface Factory {
+        TestLoginFragmentComponent newAppComponent(
+                @BindsInstance MeasureApplication app);
+    }
+}

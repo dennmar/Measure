@@ -16,6 +16,7 @@ import com.example.measure.di.MeasureApplication;
 import com.example.measure.features.FragActivity;
 import com.example.measure.features.login.LoginFragment;
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 import javax.inject.Inject;
 
@@ -78,16 +79,31 @@ public class RegisterFragment extends Fragment {
                 view.findViewById(R.id.edittext_new_user_password);
         EditText password2EditText =
                 view.findViewById(R.id.edittext_new_user_password2);
+        TextView errorTextView =
+                view.findViewById(R.id.textview_register_error);
 
         registerBtn.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString();
             String email = emailEditText.getText().toString();
             String password = passwordEditText.getText().toString();
+            String password2 = password2EditText.getText().toString();
 
-            User newUser = new User(username, email, password);
-            registerUser(newUser);
-            ((FragActivity) requireActivity())
-                    .replaceFragment(new LoginFragment());
+            try {
+                if (!password.equals(password2)) {
+                    throw new IllegalArgumentException("Passwords do not match.");
+                }
+
+                User newUser = new User(username, email, password);
+                registerUser(newUser);
+                ((FragActivity) requireActivity())
+                        .replaceFragment(new LoginFragment());
+            }
+            catch (DBOperationException dboe) {
+                errorTextView.setText(dboe.getMessage());
+            }
+            catch (IllegalArgumentException iae) {
+                errorTextView.setText(iae.getMessage());
+            }
         });
     }
 
@@ -97,7 +113,8 @@ public class RegisterFragment extends Fragment {
      * @param user user to be registered
      */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    public void registerUser(User user) {
+    public void registerUser(User user)
+            throws DBOperationException, IllegalArgumentException {
         registerViewModel.addUser(user);
     }
 

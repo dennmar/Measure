@@ -1,6 +1,7 @@
 package com.example.measure.features.register;
 
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
@@ -49,25 +50,12 @@ public class DaggerRegisterViewModel implements RegisterViewModel {
      * Add a new user.
      *
      * @param newUser  new user to be added
+     * @throws DBOperationException if the new user could not be added
+     * @throws IllegalArgumentException when the new user would be invalid
      */
-    public void addUser(User newUser) {
-        try {
-            userRepo.addUser(newUser);
-        }
-        catch (DBOperationException e) {
-            // TODO: handle exception
-            Log.d("DaggerRegisterViewModel", e.getMessage());
-        }
-    }
-
-    /**
-     * Return the error message.
-     *
-     * @return error message
-     */
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    public String getErrorMessage() {
-        return null;
+    public void addUser(User newUser)
+            throws DBOperationException, IllegalArgumentException {
+        userRepo.addUser(newUser);
     }
 
     /**

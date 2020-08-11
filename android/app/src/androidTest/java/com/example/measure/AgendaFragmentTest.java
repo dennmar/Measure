@@ -59,8 +59,9 @@ public class AgendaFragmentTest {
      */
     @Before
     public void initAgendaFragment() {
-        ApplicationComponent testComponent =
-                DaggerTestAgendaFragmentComponent.create();
+        ApplicationComponent testComponent = DaggerTestAgendaFragmentComponent
+                .factory()
+                .newAppComponent(app);
         app.setAppComponent(testComponent);
         measureActScenario = ActivityScenario.launch(MeasureActivity.class);
     }

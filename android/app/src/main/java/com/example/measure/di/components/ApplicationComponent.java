@@ -1,5 +1,6 @@
 package com.example.measure.di.components;
 
+import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.prod.AgendaViewModelModule;
@@ -41,6 +42,8 @@ import dagger.Component;
 })
 @Scopes.ApplicationScope
 public interface ApplicationComponent {
+    MeasureRoomDatabase measureRoomDb();
+
     /**
      * Tells Dagger that the agenda fragment requests injection.
      *

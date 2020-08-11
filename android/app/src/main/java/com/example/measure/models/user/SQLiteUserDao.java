@@ -1,5 +1,7 @@
 package com.example.measure.models.user;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.db.MeasureRoomDatabase;
@@ -55,6 +57,16 @@ public class SQLiteUserDao implements UserDao {
             insertUser.get();
         }
         catch (Exception e) {
+            String errMsg = e.getMessage();
+            Log.d("SQLiteUserDAO", "ERROR: " + errMsg);
+
+            if (errMsg.contains("UNIQUE constraint failed: users.username")) {
+                throw new DBOperationException("Username is not available.");
+            }
+            else if (errMsg.contains("UNIQUE constraint failed: users.email")) {
+                throw new DBOperationException("Email address is not available.");
+            }
+
             throw new DBOperationException(e.getMessage());
         }
     }

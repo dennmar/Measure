@@ -30,17 +30,11 @@ public interface RegisterViewModel {
      * Add a new user.
      *
      * @param newUser  new user to be added
+     * @throws DBOperationException if the new user could not be added
      * @throws IllegalArgumentException when the new user would be invalid
      */
-    void addUser(User newUser) throws IllegalArgumentException;
-
-    /**
-     * Return the error message.
-     *
-     * @return error message
-     */
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    String getErrorMessage();
+    void addUser(User newUser)
+            throws DBOperationException, IllegalArgumentException;
 
     /**
      * Return the user with the matching username and password.

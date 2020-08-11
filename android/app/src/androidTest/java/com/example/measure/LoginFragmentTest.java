@@ -53,8 +53,9 @@ public class LoginFragmentTest {
      */
     @Before
     public void initLoginFragment() {
-        ApplicationComponent testComponent =
-                DaggerTestLoginFragmentComponent.create();
+        ApplicationComponent testComponent = DaggerTestLoginFragmentComponent
+                .factory()
+                .newAppComponent(app);
         app.setAppComponent(testComponent);
         enterActivity = enterActivityTestRule.getActivity();
         loginFrag = new LoginFragment();

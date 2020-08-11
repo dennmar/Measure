@@ -66,13 +66,17 @@ public class LocalUserRepository implements UserRepository {
      * @throws IllegalArgumentException when the new user's data is invalid
      */
     private void validateNewUser(User newUser) throws IllegalArgumentException {
-        if (newUser.getUsername() == null) {
+        String username = newUser.getUsername();
+        String password = newUser.getPassword();
+        String email = newUser.getEmail();
+
+        if (username == null || username.length() == 0) {
             throw new IllegalArgumentException("Missing username.");
         }
-        else if (newUser.getPassword() == null) {
+        else if (password == null || password.length() == 0) {
             throw new IllegalArgumentException("Missing password.");
         }
-        else if (newUser.getEmail() == null) {
+        else if (email == null || email.length() == 0) {
             throw new IllegalArgumentException("Missing email.");
         }
 
