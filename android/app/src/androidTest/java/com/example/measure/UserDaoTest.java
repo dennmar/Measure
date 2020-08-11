@@ -49,7 +49,7 @@ public class UserDaoTest {
         userDao = userDaoComponent.userDao();
 
         // Clear all data before each test.
-        testRoomDb = userDaoComponent.measureRoomDatabase();
+        testRoomDb = userDaoComponent.measureRoomDb();
         testRoomDb.clearAllTables();
     }
 

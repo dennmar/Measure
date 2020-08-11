@@ -59,7 +59,7 @@ public class TaskDaoTest {
         taskDao = taskDaoComponent.taskDao();
 
         // Clear all data before each test.
-        testRoomDb = taskDaoComponent.measureRoomDatabase();
+        testRoomDb = taskDaoComponent.measureRoomDb();
         testRoomDb.clearAllTables();
     }
 

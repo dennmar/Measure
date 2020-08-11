@@ -8,6 +8,8 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
+import com.example.measure.di.components.ApplicationComponent;
+import com.example.measure.di.components.DaggerApplicationComponent;
 import com.example.measure.features.EnterActivity;
 import com.example.measure.features.register.RegisterFragment;
 import com.example.measure.models.data.User;
@@ -44,17 +46,22 @@ public class RegisterProdTest {
 
     EnterActivity enterActivity;
     RegisterFragment registerFrag;
-    MeasureRoomDatabase roomDb;
     MeasureApplication app = (MeasureApplication) InstrumentationRegistry
             .getInstrumentation()
             .getTargetContext()
             .getApplicationContext();
 
     /**
-     * Launch the enter activity (which displays the register fragment first).
+     * Display the register fragment.
      */
     @Before
     public void initRegisterFragment() {
+        // Set production application component.
+        ApplicationComponent appComponent = DaggerApplicationComponent
+                .factory()
+                .newAppComponent(app);
+        app.setAppComponent(appComponent);
+
         enterActivity = enterActivityTestRule.getActivity();
         registerFrag = new RegisterFragment();
         enterActivity.replaceFragment(registerFrag);

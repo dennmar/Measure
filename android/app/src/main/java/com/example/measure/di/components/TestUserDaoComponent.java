@@ -24,7 +24,7 @@ import dagger.Component;
 })
 public interface TestUserDaoComponent {
     UserDao userDao();
-    MeasureRoomDatabase measureRoomDatabase();
+    MeasureRoomDatabase measureRoomDb();
 
     /**
      * Creates a new TestTaskDaoComponent instance each time it is called.

@@ -2,7 +2,6 @@ package com.example.measure.di.components;
 
 import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.di.MeasureApplication;
-import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.prod.TaskDaoModule;
@@ -24,7 +23,7 @@ import dagger.Component;
 })
 public interface TestTaskDaoComponent {
     TaskDao taskDao();
-    MeasureRoomDatabase measureRoomDatabase();
+    MeasureRoomDatabase measureRoomDb();
 
     /**
      * Creates a new TestTaskDaoComponent instance each time it is called.
