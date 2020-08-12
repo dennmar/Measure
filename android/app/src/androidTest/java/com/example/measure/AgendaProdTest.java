@@ -2,19 +2,28 @@ package com.example.measure;
 
 import android.widget.DatePicker;
 
-import androidx.test.core.app.ActivityScenario;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 
-import com.example.measure.features.MeasureActivity;
+import com.example.measure.di.MeasureApplication;
+import com.example.measure.di.components.ApplicationComponent;
+import com.example.measure.di.components.DaggerApplicationComponent;
+import com.example.measure.features.EnterActivity;
+import com.example.measure.features.agenda.view.AgendaFragment;
 import com.example.measure.models.data.Task;
 import com.example.measure.utils.StringConverter;
 
 import org.hamcrest.Matchers;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestWatcher;
 import org.junit.runner.RunWith;
 
 import java.text.DateFormatSymbols;
@@ -37,14 +46,36 @@ import static com.example.measure.CustomMatchers.rowAtPos;
  */
 @RunWith(AndroidJUnit4.class)
 public class AgendaProdTest {
-    ActivityScenario<MeasureActivity> measureActScenario;
+    // Execute background tasks synchronously (to allow LiveData to work).
+    public TestWatcher instantTaskExecutorRule = new InstantTaskExecutorRule();
+    public ActivityTestRule<EnterActivity> enterActivityTestRule =
+            new ActivityTestRule<>(EnterActivity.class);
+    @Rule
+    public RuleChain ruleChain = RuleChain.outerRule(instantTaskExecutorRule)
+            .around(enterActivityTestRule);
+
+    EnterActivity enterActivity;
+    AgendaFragment agendaFrag;
+    MeasureApplication app = (MeasureApplication) InstrumentationRegistry
+            .getInstrumentation()
+            .getTargetContext()
+            .getApplicationContext();
 
     /**
      * Launch the measure activity (which displays the agenda fragment first).
      */
     @Before
     public void initAgendaFragment() {
-        measureActScenario = ActivityScenario.launch(MeasureActivity.class);
+        ApplicationComponent appComponent = DaggerApplicationComponent
+                .factory()
+                .newAppComponent(app);
+        app.setAppComponent(appComponent);
+
+        enterActivity = enterActivityTestRule.getActivity();
+        agendaFrag = new AgendaFragment();
+        enterActivity.replaceFragment(agendaFrag);
+
+        app.clearAllData();
     }
 
     /**

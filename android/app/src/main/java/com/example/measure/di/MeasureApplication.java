@@ -31,8 +31,11 @@ public class MeasureApplication extends Application {
         this.appComponent = appComponent;
     }
 
+    /**
+     * Clear all data (except login session data) from the database.
+     */
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public void clearAllData() {
-        this.appComponent.measureRoomDb().clearAllTables();
+        appComponent.measureRoomDb().clearAllTables();
     }
 }

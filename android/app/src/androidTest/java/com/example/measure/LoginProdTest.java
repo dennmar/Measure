@@ -3,8 +3,12 @@ package com.example.measure;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.measure.di.MeasureApplication;
+import com.example.measure.di.components.ApplicationComponent;
+import com.example.measure.di.components.DaggerApplicationComponent;
 import com.example.measure.features.EnterActivity;
 import com.example.measure.features.login.LoginFragment;
 import com.example.measure.utils.DBOperationException;
@@ -39,15 +43,26 @@ public class LoginProdTest {
 
     EnterActivity enterActivity;
     LoginFragment loginFrag;
+    MeasureApplication app = (MeasureApplication) InstrumentationRegistry
+            .getInstrumentation()
+            .getTargetContext()
+            .getApplicationContext();
 
     /**
      * Launch the enter activity and display the login fragment.
      */
     @Before
     public void initLoginFragment() {
+        ApplicationComponent appComponent = DaggerApplicationComponent
+                .factory()
+                .newAppComponent(app);
+        app.setAppComponent(appComponent);
+
         enterActivity = enterActivityTestRule.getActivity();
         loginFrag = new LoginFragment();
         enterActivity.replaceFragment(loginFrag);
+
+        app.clearAllData();
     }
 
     /**

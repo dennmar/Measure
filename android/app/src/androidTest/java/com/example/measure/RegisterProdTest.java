@@ -56,7 +56,6 @@ public class RegisterProdTest {
      */
     @Before
     public void initRegisterFragment() {
-        // Set production application component.
         ApplicationComponent appComponent = DaggerApplicationComponent
                 .factory()
                 .newAppComponent(app);
@@ -66,7 +65,6 @@ public class RegisterProdTest {
         registerFrag = new RegisterFragment();
         enterActivity.replaceFragment(registerFrag);
 
-        // Clear all data before each test.
         app.clearAllData();
     }
 
