@@ -17,6 +17,7 @@ import com.example.measure.features.FragActivity;
 import com.example.measure.features.login.LoginFragment;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -79,8 +80,6 @@ public class RegisterFragment extends Fragment {
                 view.findViewById(R.id.edittext_new_user_password);
         EditText password2EditText =
                 view.findViewById(R.id.edittext_new_user_password2);
-        TextView errorTextView =
-                view.findViewById(R.id.textview_register_error);
 
         registerBtn.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString();
@@ -99,10 +98,12 @@ public class RegisterFragment extends Fragment {
                         .replaceFragment(new LoginFragment());
             }
             catch (DBOperationException dboe) {
-                errorTextView.setText(dboe.getMessage());
+                Snackbar.make(view, dboe.getMessage(), Snackbar.LENGTH_LONG)
+                        .show();
             }
             catch (IllegalArgumentException iae) {
-                errorTextView.setText(iae.getMessage());
+                Snackbar.make(view, iae.getMessage(), Snackbar.LENGTH_LONG)
+                        .show();
             }
         });
     }

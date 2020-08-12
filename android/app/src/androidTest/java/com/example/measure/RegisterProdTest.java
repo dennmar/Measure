@@ -116,7 +116,7 @@ public class RegisterProdTest {
         onView(withId(R.id.btn_register_user))
                 .perform(click());
 
-        onView(withId(R.id.textview_register_error))
+        onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("Missing username.")));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }
@@ -139,7 +139,7 @@ public class RegisterProdTest {
                 .perform(click());
 
         String errMsg = "Username must only contain letters and numbers.";
-        onView(withId(R.id.textview_register_error))
+        onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText(errMsg)));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }
@@ -162,7 +162,7 @@ public class RegisterProdTest {
                 .perform(click());
 
         String errMsg = "Invalid email address.";
-        onView(withId(R.id.textview_register_error))
+        onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText(errMsg)));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }
@@ -185,7 +185,7 @@ public class RegisterProdTest {
         onView(withId(R.id.btn_register_user))
                 .perform(click());
 
-        onView(withId(R.id.textview_register_error))
+        onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("Passwords do not match.")));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }
@@ -214,7 +214,7 @@ public class RegisterProdTest {
         onView(withId(R.id.btn_register_user))
                 .perform(click());
 
-        onView(withId(R.id.textview_register_error))
+        onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("Username is not available.")));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }
@@ -243,7 +243,7 @@ public class RegisterProdTest {
         onView(withId(R.id.btn_register_user))
                 .perform(click());
 
-        onView(withId(R.id.textview_register_error))
+        onView(withId(com.google.android.material.R.id.snackbar_text))
                 .check(matches(withText("Email address is not available.")));
         onView(withId(R.id.btn_register_user)).check(matches(isDisplayed()));
     }

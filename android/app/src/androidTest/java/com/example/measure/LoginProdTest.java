@@ -98,4 +98,26 @@ public class LoginProdTest {
         onView(withId(R.id.measure_act_container))
                 .check(matches(isDisplayed()));
     }
+
+    /**
+     * Test logging in with an invalid account.
+     */
+    @Test
+    public void testInvalidLogin() throws InterruptedException {
+        // Wait for view model to be initialized.
+        Thread.sleep(500);
+
+        String username = "Nothing";
+        String password = "DNE";
+
+        onView(withId(R.id.edittext_login_username))
+                .perform(typeText(username));
+        onView(withId(R.id.edittext_login_password))
+                .perform(typeText(password));
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.btn_login_user)).perform(click());
+
+        onView(withId(R.id.btn_login_user))
+                .check(matches(isDisplayed()));
+    }
 }
