@@ -26,6 +26,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Run instrumented integration tests on user login using the production Dagger
@@ -117,6 +118,8 @@ public class LoginProdTest {
         Espresso.closeSoftKeyboard();
         onView(withId(R.id.btn_login_user)).perform(click());
 
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+                .check(matches(withText("Invalid username or password.")));
         onView(withId(R.id.btn_login_user))
                 .check(matches(isDisplayed()));
     }

@@ -17,6 +17,7 @@ import com.example.measure.features.FragActivity;
 import com.example.measure.features.MeasureActivity;
 import com.example.measure.utils.AuthenticationException;
 import com.example.measure.utils.DBOperationException;
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
@@ -80,11 +81,12 @@ public class LoginFragment extends Fragment {
                 activity.startActivity(MeasureActivity.class, true);
             }
             catch (AuthenticationException ae) {
-                // TODO: handle exception
-                Log.d("LoginFragment", ae.toString());
+                Snackbar.make(view, ae.getMessage(), Snackbar.LENGTH_LONG)
+                        .show();
             }
             catch (DBOperationException dboe) {
-                Log.d("LoginFragment", dboe.toString());
+                Snackbar.make(view, dboe.getMessage(), Snackbar.LENGTH_LONG)
+                        .show();
             }
         });
     }

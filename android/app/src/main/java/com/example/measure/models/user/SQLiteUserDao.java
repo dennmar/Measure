@@ -98,6 +98,7 @@ public class SQLiteUserDao implements UserDao {
             return foundUser.get();
         }
         catch (Exception e) {
+            Log.d("SQLiteUserDAO", "ERROR: " + e.getMessage());
             throw new DBOperationException(e.getMessage());
         }
     }

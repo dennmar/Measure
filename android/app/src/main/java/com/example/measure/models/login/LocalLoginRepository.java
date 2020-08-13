@@ -61,7 +61,7 @@ public class LocalLoginRepository implements LoginRepository {
         User loginUser = userDao.asyncGetUser(username, password);
         
         if (loginUser == null) {
-            throw new AuthenticationException("Invalid username or password");
+            throw new AuthenticationException("Invalid username or password.");
         }
 
         loginDao.setCurrentUser(loginUser);
