@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
@@ -15,6 +17,8 @@ import com.example.measure.models.data.Habit;
 import com.example.measure.utils.StringConverter;
 
 import org.joda.time.LocalDate;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -25,6 +29,9 @@ public class HabitTrackerFragment extends Fragment {
     @Inject
     protected HabitTrackerViewModel.Factory htvmFactory;
     private HabitTrackerViewModel habitTrackerViewModel;
+    private RecyclerView habitRecycler;
+    private HabitAdapter habitAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     /**
      * Initialize the habit tracker view model.
@@ -101,7 +108,19 @@ public class HabitTrackerFragment extends Fragment {
      *
      * @param view view for the user interface
      */
-    private void initHabitDisplay(View view) {}
+    private void initHabitDisplay(View view) {
+        habitRecycler = view.findViewById(R.id.recyclerview_habits);
+        layoutManager = new LinearLayoutManager(getActivity());
+        habitRecycler.setLayoutManager(layoutManager);
+        habitAdapter = new HabitAdapter(new ArrayList<>());
+        habitRecycler.setAdapter(habitAdapter);
+
+        habitTrackerViewModel.getHabits().observe(getViewLifecycleOwner(),
+                habits -> {
+                    habitAdapter.setHabits(habits);
+                    habitAdapter.notifyDataSetChanged();
+                });
+    }
 
     /**
      * Initialize the button for adding habits.
@@ -123,6 +142,6 @@ public class HabitTrackerFragment extends Fragment {
      * @param habit habit to be added
      */
     public void addHabit(Habit habit) {
-        //habitTrackerViewModel.addHabit(habit);
+        habitTrackerViewModel.addHabit(habit);
     }
 }

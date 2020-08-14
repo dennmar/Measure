@@ -2,6 +2,12 @@ package com.example.measure.features.habit_tracker;
 
 import android.os.Bundle;
 
+import androidx.lifecycle.LiveData;
+
+import com.example.measure.models.data.Habit;
+
+import java.util.List;
+
 /**
  * A view model that handles the interaction between the habit tracker view
  * (fragment) and the model.
@@ -20,4 +26,18 @@ public interface HabitTrackerViewModel {
          */
         HabitTrackerViewModel create(Bundle savedInstanceState);
     }
+
+    /**
+     * Retrieve all habits for the user.
+     *
+     * @return observable list of habits belonging to the user
+     */
+    LiveData<List<Habit>> getHabits();
+
+    /**
+     * Add a habit for the user.
+     *
+     * @param habit habit to be added
+     */
+    void addHabit(Habit habit);
 }

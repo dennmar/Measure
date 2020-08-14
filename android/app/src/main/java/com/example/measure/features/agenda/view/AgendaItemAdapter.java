@@ -54,7 +54,7 @@ public class AgendaItemAdapter
      * @param parent   viewgroup to add the new view to after it's bound to an
      *                 adapter position
      * @param viewType view type of the new view
-     * @return
+     * @return view holder for the agenda item view
      */
     @NonNull
     @Override

@@ -7,7 +7,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.components.ApplicationComponent;
-import com.example.measure.di.components.DaggerTestAgendaFragmentComponent;
+import com.example.measure.di.components.DaggerTestHabitTrackerFragmentComponent;
 import com.example.measure.features.MeasureActivity;
 import com.example.measure.features.habit_tracker.HabitTrackerFragment;
 import com.example.measure.models.data.Habit;
@@ -58,7 +58,7 @@ public class HabitTrackerFragmentTest {
      */
     @Before
     public void initAgendaFragment() {
-        ApplicationComponent testComponent = DaggerTestAgendaFragmentComponent
+        ApplicationComponent testComponent = DaggerTestHabitTrackerFragmentComponent
                 .factory()
                 .newAppComponent(app);
         app.setAppComponent(testComponent);
