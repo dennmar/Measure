@@ -53,4 +53,14 @@ public class HabitTrackerFragment extends Fragment {
     public void onPause() {
         super.onPause();
     }
+
+    /**
+     * Set the display to show the current date and the previous days.
+     */
+    private void setDateDisplay() {}
+
+    /**
+     * Set the display to show all the habits and their recent completions.
+     */
+    private void setHabitDisplay() {}
 }
