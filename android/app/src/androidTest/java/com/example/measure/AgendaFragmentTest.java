@@ -78,6 +78,9 @@ public class AgendaFragmentTest {
 
     /**
      * Add a task to the agenda.
+     *
+     * @param task              task to be added
+     * @param expectedAgendaPos expected position in the agenda recycler view
      */
     private void addTask(Task task, int expectedAgendaPos) {
         LocalDate taskDueDate = task.getLocalDueDate();
@@ -86,10 +89,10 @@ public class AgendaFragmentTest {
         int month = taskDueDate.getMonthOfYear();
         int year = taskDueDate.getYear();
 
-        // Open task date picker page from agenda screen.
+        // Open task creation dialog from agenda screen.
         onView(withId(R.id.btn_add_task)).perform(click());
 
-        // Perform actions and checks on task date picker screen.
+        // Perform actions and checks on the task creation dialog.
         onView(withId(R.id.edittext_new_task_name))
                 .perform(typeText(task.getName()));
         Espresso.closeSoftKeyboard();
@@ -103,9 +106,9 @@ public class AgendaFragmentTest {
         onView(withId(R.id.btn_submit_add_task)).perform(click());
 
         // Perform actions and checks on agenda screen.
-        onView(withId(R.id.agenda_recycler))
+        onView(withId(R.id.recyclerview_agenda))
                 .perform(scrollToPosition(expectedAgendaPos));
-        onView(rowAtPos(withId(R.id.agenda_recycler), expectedAgendaPos))
+        onView(rowAtPos(withId(R.id.recyclerview_agenda), expectedAgendaPos))
                 .check(matches(hasDescendant(withText(task.getName()))));
     }
 
@@ -115,7 +118,7 @@ public class AgendaFragmentTest {
     @Test
     public void testViewEmptyAgenda() {
         onView(withId(R.id.btn_add_task)).check(matches(isDisplayed()));
-        onView(withId(R.id.agenda_recycler)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerview_agenda)).check(matches(isDisplayed()));
 
         LocalDate agendaStartDate = LocalDate.now().minusDays(3);
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols();
@@ -130,13 +133,13 @@ public class AgendaFragmentTest {
             String dateStr = dateFormatSymbols.getMonths()[month - 1] + " " + day
                     + ", " + year;
 
-            onView(withId(R.id.agenda_recycler))
+            onView(withId(R.id.recyclerview_agenda))
                     .perform(scrollToPosition(i * 2));
-            onView(rowAtPos(withId(R.id.agenda_recycler), i * 2))
+            onView(rowAtPos(withId(R.id.recyclerview_agenda), i * 2))
                     .check(matches(hasDescendant(withText(dateStr))));
-            onView(withId(R.id.agenda_recycler))
+            onView(withId(R.id.recyclerview_agenda))
                     .perform(scrollToPosition((i * 2) + 1));
-            onView(rowAtPos(withId(R.id.agenda_recycler), (i * 2) + 1))
+            onView(rowAtPos(withId(R.id.recyclerview_agenda), (i * 2) + 1))
                     .check(matches(hasDescendant(withText("No tasks"))));
         }
     }

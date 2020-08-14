@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
+import com.example.measure.models.data.Habit;
 
 import javax.inject.Inject;
 
@@ -46,6 +48,11 @@ public class HabitTrackerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_habit_tracker,
                 container, false);
+
+        initDateDisplay(rootView);
+        initHabitDisplay(rootView);
+        initAddHabitBtn(rootView);
+
         return rootView;
     }
 
@@ -55,12 +62,38 @@ public class HabitTrackerFragment extends Fragment {
     }
 
     /**
-     * Set the display to show the current date and the previous days.
+     * Initialize the display to show the current date and the previous days.
+     *
+     * @param view view for the user interface
      */
-    private void setDateDisplay() {}
+    private void initDateDisplay(View view) {}
 
     /**
-     * Set the display to show all the habits and their recent completions.
+     * Initialize the display to show all the habits and their recent
+     * completions.
+     *
+     * @param view view for the user interface
      */
-    private void setHabitDisplay() {}
+    private void initHabitDisplay(View view) {}
+
+    /**
+     * Initialize the button for adding habits.
+     *
+     * @param view view for the user interface
+     */
+    private void initAddHabitBtn(View view) {
+        Button addHabitBtn = view.findViewById(R.id.btn_add_habit);
+        addHabitBtn.setOnClickListener(v -> {
+            AddHabitDialogFragment addHabitDialog = new AddHabitDialogFragment();
+            addHabitDialog.show(getChildFragmentManager(),
+                    "AddHabitDialogFragment");
+        });
+    }
+
+    /**
+     * Add the habit to the habit tracker.
+     *
+     * @param habit habit to be added
+     */
+    public void addHabit(Habit habit) {}
 }

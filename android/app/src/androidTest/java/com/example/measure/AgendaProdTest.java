@@ -105,9 +105,9 @@ public class AgendaProdTest {
         onView(withId(R.id.btn_submit_add_task)).perform(click());
 
         // Perform actions and checks on agenda screen.
-        onView(withId(R.id.agenda_recycler))
+        onView(withId(R.id.recyclerview_agenda))
                 .perform(scrollToPosition(expectedAgendaPos));
-        onView(rowAtPos(withId(R.id.agenda_recycler), expectedAgendaPos))
+        onView(rowAtPos(withId(R.id.recyclerview_agenda), expectedAgendaPos))
                 .check(matches(hasDescendant(withText(task.getName()))));
     }
 
@@ -117,7 +117,7 @@ public class AgendaProdTest {
     @Test
     public void testViewEmptyAgenda() {
         onView(withId(R.id.btn_add_task)).check(matches(isDisplayed()));
-        onView(withId(R.id.agenda_recycler)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerview_agenda)).check(matches(isDisplayed()));
 
         LocalDate agendaStartDate = LocalDate.now().minusDays(3);
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols();
@@ -132,13 +132,13 @@ public class AgendaProdTest {
             String dateStr = dateFormatSymbols.getMonths()[month - 1] + " " + day
                     + ", " + year;
 
-            onView(withId(R.id.agenda_recycler))
+            onView(withId(R.id.recyclerview_agenda))
                     .perform(scrollToPosition(i * 2));
-            onView(rowAtPos(withId(R.id.agenda_recycler), i * 2))
+            onView(rowAtPos(withId(R.id.recyclerview_agenda), i * 2))
                     .check(matches(hasDescendant(withText(dateStr))));
-            onView(withId(R.id.agenda_recycler))
+            onView(withId(R.id.recyclerview_agenda))
                     .perform(scrollToPosition((i * 2) + 1));
-            onView(rowAtPos(withId(R.id.agenda_recycler), (i * 2) + 1))
+            onView(rowAtPos(withId(R.id.recyclerview_agenda), (i * 2) + 1))
                     .check(matches(hasDescendant(withText("No tasks"))));
         }
     }

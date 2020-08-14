@@ -86,7 +86,7 @@ public class AgendaFragment extends Fragment {
      * @param view view for the user interface
      */
     private void initAgendaDisplay(View view) {
-        agendaRecycler = view.findViewById(R.id.agenda_recycler);
+        agendaRecycler = view.findViewById(R.id.recyclerview_agenda);
         layoutManager = new LinearLayoutManager(getActivity());
         agendaRecycler.setLayoutManager(layoutManager);
         agendaAdapter = new AgendaItemAdapter(agendaItems);
