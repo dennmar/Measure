@@ -98,7 +98,6 @@ public class HabitTrackerFragmentTest {
         LocalDate today = LocalDate.now();
         int year = today.getYear();
         int month = today.getMonthOfYear();
-        int day = today.getDayOfMonth();
 
         DateFormatSymbols dateFormatSymbols = new DateFormatSymbols();
         String dateStr = dateFormatSymbols.getMonths()[month - 1]
@@ -108,8 +107,9 @@ public class HabitTrackerFragmentTest {
 
         LocalDate prevDayDate = LocalDate.now().minusDays(1);
         LocalDate prevDayDate2 = LocalDate.now().minusDays(2);
-        int prevDay = prevDayDate.getDayOfMonth();
-        int prevDay2 = prevDayDate2.getDayOfMonth();
+        String day = Integer.toString(today.getDayOfMonth());
+        String prevDay = Integer.toString(prevDayDate.getDayOfMonth());
+        String prevDay2 = Integer.toString(prevDayDate2.getDayOfMonth());
 
         onView(withId(R.id.textview_habit_day_curr))
                 .check(matches(withText(day)));

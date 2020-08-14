@@ -5,12 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.models.data.Habit;
+import com.example.measure.utils.StringConverter;
+
+import org.joda.time.LocalDate;
 
 import javax.inject.Inject;
 
@@ -66,7 +70,30 @@ public class HabitTrackerFragment extends Fragment {
      *
      * @param view view for the user interface
      */
-    private void initDateDisplay(View view) {}
+    private void initDateDisplay(View view) {
+        TextView dateTextView =
+                view.findViewById(R.id.textview_habit_tracker_date);
+        TextView habitDayTextView =
+                view.findViewById(R.id.textview_habit_day_curr);
+        TextView habitPrevDayTextView =
+                view.findViewById(R.id.textview_habit_day_prev);
+        TextView habitPrevDay2TextView =
+                view.findViewById(R.id.textview_habit_day_prev2);
+
+        LocalDate today = LocalDate.now();
+        LocalDate prevDay = LocalDate.now().minusDays(1);
+        LocalDate prevDay2 = LocalDate.now().minusDays(2);
+
+        String dateStr = StringConverter.localDateToMonthYearString(today);
+        String todayNum = Integer.toString(today.getDayOfMonth());
+        String prevDayNum = Integer.toString(prevDay.getDayOfMonth());
+        String prevDay2Num = Integer.toString(prevDay2.getDayOfMonth());
+
+        dateTextView.setText(dateStr);
+        habitDayTextView.setText(todayNum);
+        habitPrevDayTextView.setText(prevDayNum);
+        habitPrevDay2TextView.setText(prevDay2Num);
+    }
 
     /**
      * Initialize the display to show all the habits and their recent
@@ -95,5 +122,7 @@ public class HabitTrackerFragment extends Fragment {
      *
      * @param habit habit to be added
      */
-    public void addHabit(Habit habit) {}
+    public void addHabit(Habit habit) {
+        //habitTrackerViewModel.addHabit(habit);
+    }
 }

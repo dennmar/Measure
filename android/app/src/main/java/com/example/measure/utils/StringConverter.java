@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class StringConverter {
     private static final String DATE_STR_FORMAT = "MMMM d, YYYY";
+    private static final String MONTH_YEAR_STR_FORMAT = "MMM. YYYY";
 
     /**
      * Return the string representation of the given local date.
@@ -18,6 +19,18 @@ public class StringConverter {
      */
     public static String localDateToString(LocalDate date) {
         return date.toString(DATE_STR_FORMAT);
+    }
+
+    /**
+     * Return the string representation of the given local date's month and
+     * year.
+     *
+     * @param date local date to convert
+     * @return a string representing the local date's month and year
+     * (ex: "Jan. 2020")
+     */
+    public static String localDateToMonthYearString(LocalDate date) {
+        return date.toString(MONTH_YEAR_STR_FORMAT);
     }
 
     /**
