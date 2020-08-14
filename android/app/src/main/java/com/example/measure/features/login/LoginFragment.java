@@ -29,6 +29,11 @@ public class LoginFragment extends Fragment {
     protected LoginViewModel.Factory lvmFactory;
     private LoginViewModel loginViewModel;
 
+    /**
+     * Initialize the login view model.
+     *
+     * @param savedInstanceState previously saved state of the fragment
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ((MeasureApplication) getActivity().getApplicationContext())

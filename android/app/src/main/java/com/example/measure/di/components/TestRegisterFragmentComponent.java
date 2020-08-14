@@ -4,6 +4,7 @@ import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
 import com.example.measure.di.modules.test.MockAgendaViewModelModule;
+import com.example.measure.di.modules.test.MockHabitTrackerViewModelModule;
 import com.example.measure.di.modules.test.MockLoginViewModelModule;
 import com.example.measure.di.modules.test.MockRegisterViewModelModule;
 import com.example.measure.di.modules.test.TestMeasureRoomDatabaseModule;
@@ -22,6 +23,7 @@ import dagger.Component;
         // ApplicationComponent.
         MockAgendaViewModelModule.class,
         MockLoginViewModelModule.class,
+        MockHabitTrackerViewModelModule.class,
         ContextModule.class,
         TestMeasureRoomDatabaseModule.class
 })

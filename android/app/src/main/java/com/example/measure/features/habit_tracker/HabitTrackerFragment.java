@@ -8,14 +8,29 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.example.measure.R;
+import com.example.measure.di.MeasureApplication;
+
+import javax.inject.Inject;
 
 /**
  * A fragment that handles the UI for the habit tracker.
  */
 public class HabitTrackerFragment extends Fragment {
+    @Inject
+    protected HabitTrackerViewModel.Factory htvmFactory;
+    private HabitTrackerViewModel habitTrackerViewModel;
+
+    /**
+     * Initialize the habit tracker view model.
+     *
+     * @param savedInstanceState previously saved state of the fragment
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ((MeasureApplication) getActivity().getApplicationContext())
+                .appComponent.inject(this);
         super.onCreate(savedInstanceState);
+        habitTrackerViewModel = htvmFactory.create(savedInstanceState);
     }
 
     /**

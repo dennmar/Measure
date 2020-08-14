@@ -6,6 +6,7 @@ import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.prod.AgendaViewModelModule;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
+import com.example.measure.di.modules.prod.HabitTrackerViewModelModule;
 import com.example.measure.di.modules.prod.LoginDaoModule;
 import com.example.measure.di.modules.prod.LoginRepositoryModule;
 import com.example.measure.di.modules.prod.LoginViewModelModule;
@@ -16,6 +17,7 @@ import com.example.measure.di.modules.prod.TaskRepositoryModule;
 import com.example.measure.di.modules.prod.UserDaoModule;
 import com.example.measure.di.modules.prod.UserRepositoryModule;
 import com.example.measure.features.agenda.view.AgendaFragment;
+import com.example.measure.features.habit_tracker.HabitTrackerFragment;
 import com.example.measure.features.login.LoginFragment;
 import com.example.measure.features.register.RegisterFragment;
 
@@ -31,6 +33,7 @@ import dagger.Component;
         AgendaViewModelModule.class,
         RegisterViewModelModule.class,
         LoginViewModelModule.class,
+        HabitTrackerViewModelModule.class,
         TaskRepositoryModule.class,
         TaskDaoModule.class,
         LoginRepositoryModule.class,
@@ -64,6 +67,13 @@ public interface ApplicationComponent {
      * @param loginFragment login fragment needing injection
      */
     void inject(LoginFragment loginFragment);
+
+    /**
+     * Tells Dagger that the habit tracker fragment requests injection.
+     *
+     * @param habitTrackerFragment habit tracker fragment needing injection
+     */
+    void inject(HabitTrackerFragment habitTrackerFragment);
 
     /**
      * Creates a new ApplicationComponent instance each time it is called.
