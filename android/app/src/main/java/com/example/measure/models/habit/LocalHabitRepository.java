@@ -1,5 +1,13 @@
 package com.example.measure.models.habit;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
+
+import java.util.List;
+
 import javax.inject.Inject;
 
 /**
@@ -8,4 +16,15 @@ import javax.inject.Inject;
 public class LocalHabitRepository implements HabitRepository {
     @Inject
     public LocalHabitRepository() {}
+
+    @Override
+    public MutableLiveData<List<Habit>> getHabits(User user)
+            throws DBOperationException {
+        return null;
+    }
+
+    @Override
+    public void addHabit(User user, Habit habit) throws DBOperationException {
+
+    }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Habit;
+import com.example.measure.utils.DBOperationException;
 
 import java.util.List;
 
@@ -31,13 +32,15 @@ public interface HabitTrackerViewModel {
      * Retrieve all habits for the user.
      *
      * @return observable list of habits belonging to the user
+     * @throws DBOperationException if the habits could not be fetched
      */
-    LiveData<List<Habit>> getHabits();
+    LiveData<List<Habit>> getHabits() throws DBOperationException;
 
     /**
      * Add a habit for the user.
      *
      * @param habit habit to be added
+     * @throws DBOperationException if the habit could not be added
      */
-    void addHabit(Habit habit);
+    void addHabit(Habit habit) throws DBOperationException;
 }

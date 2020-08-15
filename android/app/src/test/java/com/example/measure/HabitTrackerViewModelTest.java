@@ -8,6 +8,7 @@ import com.example.measure.di.components.DaggerTestHabitTrackerViewModelComponen
 import com.example.measure.di.components.TestHabitTrackerViewModelComponent;
 import com.example.measure.features.habit_tracker.HabitTrackerViewModel;
 import com.example.measure.models.data.Habit;
+import com.example.measure.utils.DBOperationException;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -53,7 +54,7 @@ public class HabitTrackerViewModelTest {
      * Test getting habits when none exist for the user.
      */
     @Test
-    public void testGetEmptyHabits() {
+    public void testGetEmptyHabits() throws DBOperationException {
         List<Habit> expectedHabits = new ArrayList<>();
         List<Habit> getResult = htvm.getHabits().getValue();
         assertThat(getResult, equalTo(expectedHabits));
@@ -63,8 +64,9 @@ public class HabitTrackerViewModelTest {
      * Test adding a single habit.
      */
     @Test
-    public void testAddHabit() {
+    public void testAddHabit() throws DBOperationException {
         Habit habit = new Habit("Meditate", new HashSet<>());
+        habit.setUserId(1);
         List<Habit> expectedHabits = new ArrayList<>();
         expectedHabits.add(habit);
 
@@ -77,13 +79,14 @@ public class HabitTrackerViewModelTest {
      * Test adding multiple habits.
      */
     @Test
-    public void testAddMultHabits() {
+    public void testAddMultHabits() throws DBOperationException {
         List<Habit> expectedHabits = new ArrayList<>();
         int newHabits = 5;
 
         for (int i = 0; i < newHabits; i++) {
             HashSet<LocalDate> completions = new HashSet<>();
             Habit habit = new Habit("Jump " + i + " times", completions);
+            habit.setUserId(1);
 
             if (i % 2 == 0) {
                 completions.add(LocalDate.now());

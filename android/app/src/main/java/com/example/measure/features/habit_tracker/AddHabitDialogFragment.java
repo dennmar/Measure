@@ -12,6 +12,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.measure.R;
 import com.example.measure.models.data.Habit;
+import com.example.measure.utils.DBOperationException;
+
 import java.util.HashSet;
 
 /**
@@ -50,8 +52,16 @@ public class AddHabitDialogFragment extends DialogFragment {
         submitBtn.setOnClickListener(v -> {
             String habitName = nameText.getText().toString();
             Habit newHabit = new Habit(habitName, new HashSet<>());
-            ((HabitTrackerFragment) requireParentFragment()).addHabit(newHabit);
-            dismiss();
+
+            try {
+                ((HabitTrackerFragment) requireParentFragment()).addHabit(newHabit);
+            }
+            catch (DBOperationException dboe) {
+                // TODO: handle exception
+            }
+            finally {
+                dismiss();
+            }
         });
     }
 

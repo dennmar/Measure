@@ -1,6 +1,7 @@
 package com.example.measure.features.habit_tracker;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.measure.R;
 import com.example.measure.di.MeasureApplication;
 import com.example.measure.models.data.Habit;
+import com.example.measure.utils.DBOperationException;
 import com.example.measure.utils.StringConverter;
 
 import org.joda.time.LocalDate;
@@ -117,18 +119,23 @@ public class HabitTrackerFragment extends Fragment {
         TextView noHabitsTextView =
                 view.findViewById(R.id.textview_empty_habits);
 
-        habitTrackerViewModel.getHabits().observe(getViewLifecycleOwner(),
-                habits -> {
-                    if (habits == null || habits.size() == 0) {
-                        noHabitsTextView.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        noHabitsTextView.setVisibility(View.GONE);
-                    }
+        try {
+            habitTrackerViewModel.getHabits().observe(getViewLifecycleOwner(),
+                    habits -> {
+                        if (habits == null || habits.size() == 0) {
+                            noHabitsTextView.setVisibility(View.VISIBLE);
+                        } else {
+                            noHabitsTextView.setVisibility(View.GONE);
+                        }
 
-                    habitAdapter.setHabits(habits);
-                    habitAdapter.notifyDataSetChanged();
-                });
+                        habitAdapter.setHabits(habits);
+                        habitAdapter.notifyDataSetChanged();
+                    });
+        }
+        catch (DBOperationException dboe) {
+            // TODO: handle exception
+            Log.d("HabitTrackerFragment", "ERROR: " + dboe.getMessage());
+        }
     }
 
     /**
@@ -149,8 +156,9 @@ public class HabitTrackerFragment extends Fragment {
      * Add the habit to the habit tracker.
      *
      * @param habit habit to be added
+     * @throws DBOperationException if the habit could not be added
      */
-    public void addHabit(Habit habit) {
+    public void addHabit(Habit habit) throws DBOperationException {
         habitTrackerViewModel.addHabit(habit);
     }
 }

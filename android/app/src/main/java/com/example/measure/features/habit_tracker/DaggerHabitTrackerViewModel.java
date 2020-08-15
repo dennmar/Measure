@@ -1,6 +1,7 @@
 package com.example.measure.features.habit_tracker;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +11,7 @@ import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitRepository;
 import com.example.measure.models.login.LoginRepository;
+import com.example.measure.utils.DBOperationException;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 
@@ -63,22 +65,32 @@ public class DaggerHabitTrackerViewModel extends ViewModel
      * @return the currently logged in user
      */
     private User getCurrentUser() {
-        return null;
+        try {
+            return this.loginRepo.getCurrentUser();
+        }
+        catch (DBOperationException e) {
+            Log.d("DHabitTrackerViewModel", "getCurrUser: " + e.getMessage());
+            return null;
+        }
     }
 
     /**
      * Retrieve all habits for the user.
      *
      * @return observable list of habits belonging to the user
+     * @throws DBOperationException if the habits could not be fetched
      */
-    public LiveData<List<Habit>> getHabits() {
-        return null;
+    public LiveData<List<Habit>> getHabits() throws DBOperationException {
+        return habitRepo.getHabits(currUser);
     }
 
     /**
      * Add a habit for the user.
      *
      * @param habit habit to be added
+     * @throws DBOperationException if the habit could not be added
      */
-    public void addHabit(Habit habit) {}
+    public void addHabit(Habit habit) throws DBOperationException {
+        habitRepo.addHabit(currUser, habit);
+    }
 }
