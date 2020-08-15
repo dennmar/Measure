@@ -28,6 +28,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.measure.CustomMatchers.rowAtPos;
@@ -120,6 +121,8 @@ public class HabitTrackerFragmentTest {
 
         onView(withId(R.id.textview_empty_habits))
                 .check(matches(withText("No habits")));
+        onView(withId(R.id.textview_empty_habits))
+                .check(matches(isDisplayed()));
     }
 
     /**

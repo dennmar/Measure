@@ -114,9 +114,18 @@ public class HabitTrackerFragment extends Fragment {
         habitRecycler.setLayoutManager(layoutManager);
         habitAdapter = new HabitAdapter(new ArrayList<>());
         habitRecycler.setAdapter(habitAdapter);
+        TextView noHabitsTextView =
+                view.findViewById(R.id.textview_empty_habits);
 
         habitTrackerViewModel.getHabits().observe(getViewLifecycleOwner(),
                 habits -> {
+                    if (habits == null || habits.size() == 0) {
+                        noHabitsTextView.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        noHabitsTextView.setVisibility(View.GONE);
+                    }
+
                     habitAdapter.setHabits(habits);
                     habitAdapter.notifyDataSetChanged();
                 });
