@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 
 import java.util.List;
 
@@ -24,9 +25,12 @@ public interface HabitRepository {
     /**
      * Store a habit for the user in the database.
      *
-     * @param user user who will own the habit
+     * @param user  user who will own the habit
      * @param habit habit to store for the user
-     * @throws DBOperationException if the habit could not be added
+     * @throws DBOperationException  if the habit could not be added
+     * @throws InvalidQueryException if the habit to add does not belong to
+     *                               the user
      */
-    void addHabit(User user, Habit habit) throws DBOperationException;
+    void addHabit(User user, Habit habit)
+            throws DBOperationException, InvalidQueryException;
 }

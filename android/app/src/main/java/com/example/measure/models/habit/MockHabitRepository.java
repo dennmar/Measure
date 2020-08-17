@@ -52,7 +52,7 @@ public class MockHabitRepository implements HabitRepository {
     /**
      * Store a habit for the user.
      *
-     * @param user user who will own the habit
+     * @param user  user who will own the habit
      * @param habit habit to store for the user
      */
     @Override
