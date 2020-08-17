@@ -1,5 +1,7 @@
 package com.example.measure;
 
+import com.example.measure.di.components.DaggerTestHabitRepositoryComponent;
+import com.example.measure.di.components.TestHabitRepositoryComponent;
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitRepository;

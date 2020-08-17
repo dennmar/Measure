@@ -6,6 +6,7 @@ import com.example.measure.di.Scopes;
 import com.example.measure.di.modules.prod.AgendaViewModelModule;
 import com.example.measure.di.modules.AssistedInjectModule;
 import com.example.measure.di.modules.ContextModule;
+import com.example.measure.di.modules.prod.HabitDaoModule;
 import com.example.measure.di.modules.prod.HabitRepositoryModule;
 import com.example.measure.di.modules.prod.HabitTrackerViewModelModule;
 import com.example.measure.di.modules.prod.LoginDaoModule;
@@ -38,6 +39,7 @@ import dagger.Component;
         TaskRepositoryModule.class,
         TaskDaoModule.class,
         HabitRepositoryModule.class,
+        HabitDaoModule.class,
         LoginRepositoryModule.class,
         LoginDaoModule.class,
         UserRepositoryModule.class,

@@ -14,8 +14,15 @@ import javax.inject.Inject;
  * A repository using a local database for accessing the habit data.
  */
 public class LocalHabitRepository implements HabitRepository {
+    private HabitDao habitDao;
+
+    /**
+     * Initialize member variables.
+     */
     @Inject
-    public LocalHabitRepository() {}
+    public LocalHabitRepository(HabitDao habitDao) {
+        this.habitDao = habitDao;
+    }
 
     @Override
     public MutableLiveData<List<Habit>> getHabits(User user)
