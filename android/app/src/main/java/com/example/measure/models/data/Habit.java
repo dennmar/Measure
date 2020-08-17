@@ -42,6 +42,13 @@ public class Habit {
         this.completions = completions;
     }
 
+    @Override
+    public String toString() {
+        return "id: " + id
+                + ", userId: " + userId
+                + ", name: " + name
+                + ", completions: " + completions;
+    }
 
     /* Getters and setters */
 

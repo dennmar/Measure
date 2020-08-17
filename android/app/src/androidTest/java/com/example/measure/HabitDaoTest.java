@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.example.measure.LooseHabitsMatch.looseHabitsMatch;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -89,7 +90,7 @@ public class HabitDaoTest {
         habitDao.addHabit(testUser, habit);
 
         List<Habit> getResult = habitDao.getHabits(testUser).getValue();
-        assertThat(getResult, equalTo(expectedHabits));
+        assertThat(getResult, looseHabitsMatch(expectedHabits));
     }
 
     /**
@@ -122,6 +123,6 @@ public class HabitDaoTest {
         }
 
         List<Habit> getResult = habitDao.getHabits(testUser).getValue();
-        assertThat(getResult, equalTo(expectedHabits));
+        assertThat(getResult, looseHabitsMatch(expectedHabits));
     }
 }

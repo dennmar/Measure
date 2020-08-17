@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.example.measure.LooseMatch.looseMatch;
+import static com.example.measure.LooseTasksMatch.looseTasksMatch;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -96,7 +96,7 @@ public class TaskDaoTest {
 
         List<Task> getResult = taskDao.getSortedTasks(taskOwner, startingDate,
                 startingDate.plusDays(addAmt)).getValue();
-        assertThat(getResult, looseMatch(addedTasks));
+        assertThat(getResult, looseTasksMatch(addedTasks));
 
         return getResult;
     }
@@ -114,7 +114,7 @@ public class TaskDaoTest {
         try {
             List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                     endDate).getValue();
-            assertThat(getResult, looseMatch(expectedTasks));
+            assertThat(getResult, looseTasksMatch(expectedTasks));
         }
         catch (DBOperationException e){
             assertThat(false, equalTo(true));
@@ -152,7 +152,7 @@ public class TaskDaoTest {
         List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                 endDate).getValue();
         Collections.sort(expectedGetResult, new SortByDate());
-        assertThat(getResult, looseMatch(expectedGetResult));
+        assertThat(getResult, looseTasksMatch(expectedGetResult));
     }
 
     /**
@@ -172,7 +172,7 @@ public class TaskDaoTest {
         addMultiple(10, 1, testUser, addStartDate);
         List<Task> getResultNoMatch = taskDao.getSortedTasks(testUser,
                 queryStartDate, queryEndDate).getValue();
-        assertThat(getResultNoMatch, looseMatch(expectedGetResult));
+        assertThat(getResultNoMatch, looseTasksMatch(expectedGetResult));
     }
 
     /**
@@ -195,7 +195,7 @@ public class TaskDaoTest {
         taskDao.addTask(testUser, task);
         List<Task> actualGetResult1 = taskDao.getSortedTasks(testUser,
                 startDate, endDate).getValue();
-        assertThat(actualGetResult1, looseMatch(expectedGetResult1));
+        assertThat(actualGetResult1, looseTasksMatch(expectedGetResult1));
 
         long actualTaskId = actualGetResult1.get(0).getId();
         Task editedTask = new Task(actualTaskId, testUser.getId(), "What",
@@ -206,7 +206,7 @@ public class TaskDaoTest {
         taskDao.updateTask(testUser, editedTask);
         List<Task> actualGetResult2 = taskDao.getSortedTasks(testUser,
                 startDate, endDate).getValue();
-        assertThat(actualGetResult2, looseMatch(expectedGetResult2));
+        assertThat(actualGetResult2, looseTasksMatch(expectedGetResult2));
     }
 
     /**
@@ -232,7 +232,7 @@ public class TaskDaoTest {
             expectedGetResult.remove(removeOrder[i]);
             List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                     endDate).getValue();
-            assertThat(getResult, looseMatch(expectedGetResult));
+            assertThat(getResult, looseTasksMatch(expectedGetResult));
         }
     }
 
@@ -311,7 +311,7 @@ public class TaskDaoTest {
 
         List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                 endDate).getValue();
-        assertThat(getResult, looseMatch(expectedGetResult));
+        assertThat(getResult, looseTasksMatch(expectedGetResult));
 
         try {
             taskDao.deleteTask(testUser, task);
@@ -346,6 +346,6 @@ public class TaskDaoTest {
 
         List<Task> getResult = taskDao.getSortedTasks(testUser, startDate,
                 endDate).getValue();
-        assertThat(getResult, looseMatch(expectedGetResult));
+        assertThat(getResult, looseTasksMatch(expectedGetResult));
     }
 }

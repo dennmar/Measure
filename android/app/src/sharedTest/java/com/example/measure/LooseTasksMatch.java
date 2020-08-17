@@ -9,9 +9,10 @@ import org.hamcrest.TypeSafeMatcher;
 import java.util.List;
 
 /**
- * Check if a task loosely matches another task (ignoring their id numbers).
+ * Check if a list of tasks loosely match another list of tasks (ignoring
+ * their id numbers).
  */
-public class LooseMatch extends TypeSafeMatcher<List<Task>> {
+public class LooseTasksMatch extends TypeSafeMatcher<List<Task>> {
     private List<Task> tasks;
 
     /**
@@ -19,7 +20,7 @@ public class LooseMatch extends TypeSafeMatcher<List<Task>> {
      *
      * @param tasks list of tasks to be used for comparison
      */
-    public LooseMatch(List<Task> tasks) {
+    public LooseTasksMatch(List<Task> tasks) {
         this.tasks = tasks;
     }
 
@@ -29,8 +30,8 @@ public class LooseMatch extends TypeSafeMatcher<List<Task>> {
      * @param tasks list of tasks to be used for comparison
      * @return a matcher for task that checks for a loose match
      */
-    public static Matcher<List<Task>> looseMatch(List<Task> tasks) {
-        return new LooseMatch(tasks);
+    public static Matcher<List<Task>> looseTasksMatch(List<Task> tasks) {
+        return new LooseTasksMatch(tasks);
     }
 
     /**
@@ -106,6 +107,6 @@ public class LooseMatch extends TypeSafeMatcher<List<Task>> {
      */
     @Override
     public void describeTo(Description description) {
-        description.appendText("loose match <" + tasks + ">");
+        description.appendText("loose tasks match <" + tasks + ">");
     }
 }
