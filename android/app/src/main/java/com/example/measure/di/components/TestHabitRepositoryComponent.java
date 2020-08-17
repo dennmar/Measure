@@ -7,6 +7,10 @@ import com.example.measure.models.habit.HabitRepository;
 
 import dagger.Component;
 
+/**
+ * A component targeted for habit repository tests that makes Dagger create
+ * a graph of dependencies and exposes objects from the application graph.
+ */
 @Component(modules = {
         AssistedInjectModule.class,
         HabitRepositoryModule.class,
