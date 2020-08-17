@@ -14,7 +14,7 @@ public class Habit {
     private HashSet<LocalDate> completions;
 
     /**
-     * Initialize member variables
+     * Initialize member variables.
      *
      * @param name        name of the habit
      * @param completions dates when the habit has been completed
@@ -25,6 +25,23 @@ public class Habit {
         this.name = name;
         this.completions = completions;
     }
+
+    /**
+     * Initialize member variables.
+     *
+     * @param id          id of the habit
+     * @param userId      id of the user who owns the habit
+     * @param name        name of the habit
+     * @param completions dates when the habit has been completed
+     */
+    public Habit(long id, long userId, String name,
+            HashSet<LocalDate> completions) {
+        this.id = id;
+        this.userId = userId;
+        this.name = name;
+        this.completions = completions;
+    }
+
 
     /* Getters and setters */
 
