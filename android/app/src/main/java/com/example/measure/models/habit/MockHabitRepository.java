@@ -1,5 +1,6 @@
 package com.example.measure.models.habit;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.Habit;
@@ -34,7 +35,7 @@ public class MockHabitRepository implements HabitRepository {
      * @return all the habits belonging to the user
      */
     @Override
-    public MutableLiveData<List<Habit>> getHabits(User user) {
+    public LiveData<List<Habit>> getHabits(User user) {
         List<Habit> matchingHabits = new ArrayList<>();
 
         for (int i = 0; i < allHabits.size(); i++) {

@@ -1,5 +1,6 @@
 package com.example.measure.models.habit;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.Habit;
@@ -25,7 +26,7 @@ public class LocalHabitRepository implements HabitRepository {
     }
 
     @Override
-    public MutableLiveData<List<Habit>> getHabits(User user)
+    public LiveData<List<Habit>> getHabits(User user)
             throws DBOperationException {
         return null;
     }

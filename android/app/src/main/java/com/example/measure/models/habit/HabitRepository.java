@@ -1,6 +1,6 @@
 package com.example.measure.models.habit;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.User;
@@ -19,8 +19,7 @@ public interface HabitRepository {
      * @return all the habits belonging to the user
      * @throws DBOperationException if the habits could not be fetched
      */
-    MutableLiveData<List<Habit>> getHabits(User user)
-            throws DBOperationException;
+    LiveData<List<Habit>> getHabits(User user) throws DBOperationException;
 
     /**
      * Store a habit for the user in the database.
