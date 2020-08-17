@@ -12,6 +12,7 @@ import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitRepository;
 import com.example.measure.models.login.LoginRepository;
 import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 import com.squareup.inject.assisted.Assisted;
 import com.squareup.inject.assisted.AssistedInject;
 
@@ -91,6 +92,11 @@ public class DaggerHabitTrackerViewModel extends ViewModel
      * @throws DBOperationException if the habit could not be added
      */
     public void addHabit(Habit habit) throws DBOperationException {
-        habitRepo.addHabit(currUser, habit);
+        try {
+            habitRepo.addHabit(currUser, habit);
+        }
+        catch (InvalidQueryException iqe) {
+            Log.d("DHabitTrackerViewModel", iqe.getMessage());
+        }
     }
 }

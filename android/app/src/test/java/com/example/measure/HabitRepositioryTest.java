@@ -1,15 +1,20 @@
 package com.example.measure;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import com.example.measure.di.components.DaggerTestHabitRepositoryComponent;
 import com.example.measure.di.components.TestHabitRepositoryComponent;
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitRepository;
 import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +27,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Unit test the habit repository.
  */
 public class HabitRepositioryTest {
+    // Execute background tasks synchronously (to allow LiveData to work).
+    @Rule
+    public TestWatcher rule = new InstantTaskExecutorRule();
+
     HabitRepository habitRepo;
 
     /**
@@ -49,13 +58,16 @@ public class HabitRepositioryTest {
      * Test adding a single habit.
      */
     @Test
-    public void testAddHabit() throws DBOperationException {
+    public void testAddHabit()
+            throws DBOperationException, InvalidQueryException {
         User testUser = new User("test", "test@final.com", "password");
         Habit habit = new Habit("Stretch", new HashSet<>());
         habit.setUserId(testUser.getId());
 
         List<Habit> expectedHabits = new ArrayList<>();
         expectedHabits.add(habit);
+        habitRepo.addHabit(testUser, habit);
+
         List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
         assertThat(getResult, equalTo(expectedHabits));
     }
@@ -64,7 +76,8 @@ public class HabitRepositioryTest {
      * Test adding multiple habits.
      */
     @Test
-    public void testAddMultHabits() throws DBOperationException {
+    public void testAddMultHabits()
+            throws DBOperationException, InvalidQueryException {
         User testUser = new User("test", "test@final.com", "password");
         List<Habit> expectedHabits = new ArrayList<>();
         int newHabits = 5;
@@ -84,6 +97,7 @@ public class HabitRepositioryTest {
 
             Habit habit = new Habit("Karate chop " + i + " times",
                     completions);
+            habit.setUserId(testUser.getId());
             expectedHabits.add(habit);
             habitRepo.addHabit(testUser, habit);
         }

@@ -35,7 +35,7 @@ public class TaskRepositoryTest {
     TaskRepository taskRepo;
 
     /**
-     * Create a new task respository.
+     * Create a new task repository.
      */
     @Before
     public void initTaskRepository() {
