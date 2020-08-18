@@ -9,7 +9,8 @@ import androidx.room.RoomDatabase;
 @Database(entities = {
         RoomTask.class,
         RoomUser.class,
-        RoomHabit.class
+        RoomHabit.class,
+        RoomHabitCompletion.class
 }, version = 1)
 public abstract class MeasureRoomDatabase extends RoomDatabase {
     public abstract RoomTaskDao taskDao();

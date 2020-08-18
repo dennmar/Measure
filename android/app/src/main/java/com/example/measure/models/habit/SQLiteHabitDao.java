@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.db.RoomHabit;
+import com.example.measure.db.RoomHabitWithCompletions;
 import com.example.measure.db.RoomHabitDao;
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.User;
@@ -46,7 +47,7 @@ public class SQLiteHabitDao implements HabitDao {
         try {
             roomHabitDao.getHabits(user.getId()).observeForever(dbHabits -> {
                 List<Habit> convertedHabits = new ArrayList<>();
-                for (RoomHabit rhabit : dbHabits) {
+                for (RoomHabitWithCompletions rhabit : dbHabits) {
                     convertedHabits.add(rhabit.toHabit());
                 }
                 habits.setValue(convertedHabits);

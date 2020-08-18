@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-
-import com.example.measure.models.data.Habit;
+import androidx.room.Transaction;
 
 import java.util.List;
 
@@ -21,8 +20,9 @@ public interface RoomHabitDao {
      * @return observable list of habits from the Room database
      */
     // TODO: fix * to specify columns
+    @Transaction
     @Query("SELECT * FROM habits WHERE user_id == :userId")
-    LiveData<List<RoomHabit>> getHabits(long userId);
+    LiveData<List<RoomHabitWithCompletions>> getHabits(long userId);
 
     /**
      * Insert a habit in the Room database.

@@ -9,6 +9,9 @@ import com.example.measure.models.data.Habit;
 
 import java.util.HashSet;
 
+/**
+ * A habit for the Room database (without the completions info).
+ */
 @Entity(tableName = "habits")
 public class RoomHabit {
     // Should be equal to 0 to allow id to be auto-generated.
@@ -37,16 +40,6 @@ public class RoomHabit {
         id = habit.getId();
         userId = habit.getUserId();
         name = habit.getName();
-    }
-
-    /**
-     * Return the Habit representation of this RoomHabit.
-     *
-     * @return the RoomHabit converted to a Habit
-     */
-    public Habit toHabit() {
-        // TODO: must define relation to get completions
-        return new Habit(id, userId, name, new HashSet<>());
     }
 
     /* Getters and setters */

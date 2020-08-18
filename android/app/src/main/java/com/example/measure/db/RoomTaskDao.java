@@ -16,7 +16,7 @@ import java.util.List;
  * Task data access object interacting with the Room database.
  */
 @Dao
-@TypeConverters({RoomTaskConverters.class})
+@TypeConverters({RoomConverters.class})
 public interface RoomTaskDao {
     /**
      * Find all tasks within a date range in ascending order by date.

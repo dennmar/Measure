@@ -7,9 +7,9 @@ import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 
 /**
- * Type converters for the Room task class.
+ * Type converters for the Room entities.
  */
-public class RoomTaskConverters {
+public class RoomConverters {
     /**
      * Convert a local date to UTC seconds since epoch.
      *
