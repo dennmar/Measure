@@ -71,6 +71,11 @@ public class MockHabitRepository implements HabitRepository {
      */
     public void addHabitCompletion(User user, Habit habit,
             HabitCompletion habitCompletion) throws DBOperationException {
-
+        for (Habit h : allHabits) {
+            if (h.equals(habit)) {
+                h.getCompletions()
+                        .add(habitCompletion.getLocalCompletionDate());
+            }
+        }
     }
 }

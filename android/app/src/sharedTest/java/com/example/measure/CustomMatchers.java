@@ -10,6 +10,8 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
+import java.util.List;
+
 /**
  * Custom Hamcrest matchers for testing.
  */
@@ -84,6 +86,40 @@ public class CustomMatchers {
             @Override
             public void describeTo(Description description) {
                 description.appendText("reflect equals of <" + expectedObj
+                        + ">");
+            }
+        };
+    }
+
+    /**
+     * Create a matcher that matches if all items in the list are equal through
+     * reflection.
+     *
+     * @param expectedObj expected object
+     * @return matcher that uses reflection to check for equality
+     */
+    public static <T> Matcher<List<T>> listReflectEquals(List<T> expectedList) {
+        return new TypeSafeMatcher<List<T>>() {
+            @Override
+            protected boolean matchesSafely(List<T> li) {
+                if (li.size() != expectedList.size()) {
+                    return false;
+                }
+
+                for (int i = 0; i < li.size(); i++) {
+                    boolean currItemMatches = new ReflectionEquals(expectedList
+                            .get(i)).matches(li.get(i));
+                    if (!currItemMatches) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("reflect equals of <" + expectedList
                         + ">");
             }
         };

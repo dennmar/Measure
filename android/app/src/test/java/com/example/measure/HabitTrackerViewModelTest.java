@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.example.measure.CustomMatchers.listReflectEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -112,6 +113,7 @@ public class HabitTrackerViewModelTest {
         assertThat(getResult, equalTo(expectedHabits));
 
         Habit habit2 = new Habit(habit.getName(), new HashSet<>());
+        habit2.setUserId(1);
         habit2.getCompletions().add(LocalDate.now());
         List<Habit> expectedHabits2 = new ArrayList<>();
         expectedHabits2.add(habit2);
@@ -119,7 +121,7 @@ public class HabitTrackerViewModelTest {
         HabitCompletion habitCompletion = new HabitCompletion(habit.getId(),
                 LocalDate.now());
         htvm.addHabitCompletion(habit, habitCompletion);
-        assertThat(getResult, equalTo(expectedHabits2));
+        assertThat(getResult, listReflectEquals(expectedHabits2));
     }
 
     /**
@@ -136,6 +138,7 @@ public class HabitTrackerViewModelTest {
             Habit habit = new Habit("Jump " + i + " times", completions);
             habit.setUserId(1);
             Habit expHabit = new Habit(habit.getName(), new HashSet<>());
+            expHabit.setUserId(1);
 
             htvm.addHabit(habit);
             addedHabits.add(habit);
@@ -166,6 +169,6 @@ public class HabitTrackerViewModelTest {
         }
 
         List<Habit> getResult = htvm.getHabits().getValue();
-        assertThat(getResult, equalTo(expectedHabits));
+        assertThat(getResult, listReflectEquals(expectedHabits));
     }
 }
