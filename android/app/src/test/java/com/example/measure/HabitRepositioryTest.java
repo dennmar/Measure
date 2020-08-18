@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import com.example.measure.di.components.DaggerTestHabitRepositoryComponent;
 import com.example.measure.di.components.TestHabitRepositoryComponent;
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitRepository;
 import com.example.measure.utils.DBOperationException;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.example.measure.CustomMatchers.listReflectEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -63,11 +65,10 @@ public class HabitRepositioryTest {
         User testUser = new User("test", "test@final.com", "password");
         Habit habit = new Habit("Stretch", new HashSet<>());
         habit.setUserId(testUser.getId());
-
         List<Habit> expectedHabits = new ArrayList<>();
         expectedHabits.add(habit);
-        habitRepo.addHabit(testUser, habit);
 
+        habitRepo.addHabit(testUser, habit);
         List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
         assertThat(getResult, equalTo(expectedHabits));
     }
@@ -82,27 +83,96 @@ public class HabitRepositioryTest {
         List<Habit> expectedHabits = new ArrayList<>();
         int newHabits = 5;
 
-        for (int i = 1; i <= newHabits; i++) {
+        for (int i = 0; i < newHabits; i++) {
             HashSet<LocalDate> completions = new HashSet<>();
-
-            if (i % 2 == 0) {
-                completions.add(LocalDate.now());
-            }
-            if (i % 3 == 0) {
-                completions.add(LocalDate.now().minusDays(3));
-            }
-            if (i % 4 == 0) {
-                completions.add(LocalDate.now().minusDays(5));
-            }
-
             Habit habit = new Habit("Karate chop " + i + " times",
                     completions);
             habit.setUserId(testUser.getId());
-            expectedHabits.add(habit);
+
             habitRepo.addHabit(testUser, habit);
+            expectedHabits.add(habit);
         }
 
         List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
         assertThat(getResult, equalTo(expectedHabits));
+    }
+
+    /**
+     * Test adding a habit completion to a single habit.
+     */
+    @Test
+    public void testAddHabitCompletion()
+            throws DBOperationException, InvalidQueryException {
+        User testUser = new User("test", "test@final.com", "password");
+        Habit habit = new Habit("Meditate", new HashSet<>());
+        habit.setUserId(testUser.getId());
+        List<Habit> expectedHabits = new ArrayList<>();
+        expectedHabits.add(habit);
+
+        habitRepo.addHabit(testUser, habit);
+        List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
+        assertThat(getResult, equalTo(expectedHabits));
+
+        Habit habit2 = new Habit(habit.getName(), new HashSet<>());
+        habit2.setUserId(testUser.getId());
+        habit2.getCompletions().add(LocalDate.now());
+        List<Habit> expectedHabits2 = new ArrayList<>();
+        expectedHabits2.add(habit2);
+
+        HabitCompletion habitCompletion = new HabitCompletion(habit.getId(),
+                LocalDate.now());
+        habitRepo.addHabitCompletion(testUser, habit, habitCompletion);
+        assertThat(getResult, listReflectEquals(expectedHabits2));
+    }
+
+    /**
+     * Test adding multiple habit completions.
+     */
+    @Test
+    public void testAddMultHabitCompletions()
+            throws DBOperationException, InvalidQueryException {
+        User testUser = new User("test", "test@final.com", "password");
+        List<Habit> addedHabits = new ArrayList<>();
+        List<Habit> expectedHabits = new ArrayList<>();
+        int newHabits = 5;
+
+        for (int i = 0; i < newHabits; i++) {
+            HashSet<LocalDate> completions = new HashSet<>();
+            Habit habit = new Habit("Spar " + i + " times", completions);
+            habit.setUserId(testUser.getId());
+            Habit expHabit = new Habit(habit.getName(), new HashSet<>());
+            expHabit.setUserId(testUser.getId());
+
+            habitRepo.addHabit(testUser, habit);
+            addedHabits.add(habit);
+            expectedHabits.add(expHabit);
+        }
+
+        for (int i = 0; i < newHabits; i++) {
+            HabitCompletion habitComp = null;
+
+            if (i % 2 == 0) {
+                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
+                        LocalDate.now());
+            }
+            if (i % 3 == 0) {
+                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
+                        LocalDate.now().minusDays(1));
+            }
+            if (i % 4 == 0) {
+                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
+                        LocalDate.now().minusDays(2));
+            }
+
+            if (habitComp != null) {
+                habitRepo.addHabitCompletion(testUser, addedHabits.get(i),
+                        habitComp);
+                expectedHabits.get(i).getCompletions()
+                        .add(habitComp.getLocalCompletionDate());
+            }
+        }
+
+        List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
+        assertThat(getResult, listReflectEquals(expectedHabits));
     }
 }
