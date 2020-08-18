@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 import org.joda.time.LocalDate;
 
 /**
- * An instance when a habit was completed for the Room database.
+ * An occurrence when a habit was completed for the Room database.
  */
 @Entity(tableName = "habit_completions")
 @TypeConverters({RoomConverters.class})
@@ -22,7 +22,7 @@ public class RoomHabitCompletion {
     @NonNull
     private long habitId;
 
-    @ColumnInfo(name = "local_completed_date")
+    @ColumnInfo(name = "local_completion_date")
     @NonNull
     private LocalDate localCompletedDate;
 

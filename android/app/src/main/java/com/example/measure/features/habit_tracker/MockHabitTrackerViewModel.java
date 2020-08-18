@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,5 +62,17 @@ public class MockHabitTrackerViewModel implements HabitTrackerViewModel {
     public void addHabit(Habit habit) {
         habitsList.add(habit);
         habitsLiveData.setValue(habitsList);
+    }
+
+    /**
+     * Add a habit completion.
+     *
+     * @param habit           habit that was completed
+     * @param habitCompletion completion info for the habit
+     */
+    @Override
+    public void addHabitCompletion(Habit habit,
+            HabitCompletion habitCompletion) {
+
     }
 }

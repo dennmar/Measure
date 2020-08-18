@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
@@ -58,5 +59,18 @@ public class MockHabitRepository implements HabitRepository {
     @Override
     public void addHabit(User user, Habit habit) {
         allHabits.add(habit);
+    }
+
+    /**
+     * Store a habit completion in the database.
+     *
+     * @param user            user who owns the habit
+     * @param habit           habit that was completed
+     * @param habitCompletion completion info for the habit
+     * @throws DBOperationException if the habit completion could not be stored
+     */
+    public void addHabitCompletion(User user, Habit habit,
+            HabitCompletion habitCompletion) throws DBOperationException {
+
     }
 }

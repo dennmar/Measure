@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.utils.DBOperationException;
 
 import java.util.List;
@@ -43,4 +44,14 @@ public interface HabitTrackerViewModel {
      * @throws DBOperationException if the habit could not be added
      */
     void addHabit(Habit habit) throws DBOperationException;
+
+    /**
+     * Add a habit completion.
+     *
+     * @param habit           habit that was completed
+     * @param habitCompletion completion info for the habit
+     * @throws DBOperationException if the habit completion could not be added
+     */
+    void addHabitCompletion(Habit habit, HabitCompletion habitCompletion)
+            throws DBOperationException;
 }

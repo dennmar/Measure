@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.features.ViewModel;
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitRepository;
 import com.example.measure.models.login.LoginRepository;
@@ -98,5 +99,18 @@ public class DaggerHabitTrackerViewModel extends ViewModel
         catch (InvalidQueryException iqe) {
             Log.d("DHabitTrackerViewModel", iqe.getMessage());
         }
+    }
+
+    /**
+     * Add a habit completion.
+     *
+     * @param habit           habit that was completed
+     * @param habitCompletion completion info for the habit
+     * @throws DBOperationException if the habit completion could not be added
+     */
+    @Override
+    public void addHabitCompletion(Habit habit,
+            HabitCompletion habitCompletion) throws DBOperationException {
+        habitRepo.addHabitCompletion(currUser, habit, habitCompletion);
     }
 }

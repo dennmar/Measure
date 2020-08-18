@@ -8,6 +8,7 @@ import com.example.measure.di.components.DaggerTestHabitTrackerViewModelComponen
 import com.example.measure.di.components.TestHabitTrackerViewModelComponent;
 import com.example.measure.features.habit_tracker.HabitTrackerViewModel;
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.utils.DBOperationException;
 
 import org.joda.time.LocalDate;
@@ -88,18 +89,80 @@ public class HabitTrackerViewModelTest {
             Habit habit = new Habit("Jump " + i + " times", completions);
             habit.setUserId(1);
 
-            if (i % 2 == 0) {
-                completions.add(LocalDate.now());
-            }
-            if (i % 3 == 0) {
-                completions.add(LocalDate.now().minusDays(1));
-            }
-            if (i % 4 == 0) {
-                completions.add(LocalDate.now().minusDays(2));
-            }
-
             htvm.addHabit(habit);
             expectedHabits.add(habit);
+        }
+
+        List<Habit> getResult = htvm.getHabits().getValue();
+        assertThat(getResult, equalTo(expectedHabits));
+    }
+
+    /**
+     * Test adding a habit completion to a single habit.
+     */
+    @Test
+    public void testAddHabitCompletion() throws DBOperationException {
+        Habit habit = new Habit("Meditate", new HashSet<>());
+        habit.setUserId(1);
+        List<Habit> expectedHabits = new ArrayList<>();
+        expectedHabits.add(habit);
+
+        htvm.addHabit(habit);
+        List<Habit> getResult = htvm.getHabits().getValue();
+        assertThat(getResult, equalTo(expectedHabits));
+
+        Habit habit2 = new Habit(habit.getName(), new HashSet<>());
+        habit2.getCompletions().add(LocalDate.now());
+        List<Habit> expectedHabits2 = new ArrayList<>();
+        expectedHabits2.add(habit2);
+
+        HabitCompletion habitCompletion = new HabitCompletion(habit.getId(),
+                LocalDate.now());
+        htvm.addHabitCompletion(habit, habitCompletion);
+        assertThat(getResult, equalTo(expectedHabits2));
+    }
+
+    /**
+     * Test adding multiple habit completions.
+     */
+    @Test
+    public void testAddMultHabitCompletions() throws DBOperationException {
+        List<Habit> addedHabits = new ArrayList<>();
+        List<Habit> expectedHabits = new ArrayList<>();
+        int newHabits = 5;
+
+        for (int i = 0; i < newHabits; i++) {
+            HashSet<LocalDate> completions = new HashSet<>();
+            Habit habit = new Habit("Jump " + i + " times", completions);
+            habit.setUserId(1);
+            Habit expHabit = new Habit(habit.getName(), new HashSet<>());
+
+            htvm.addHabit(habit);
+            addedHabits.add(habit);
+            expectedHabits.add(expHabit);
+        }
+
+        for (int i = 0; i < newHabits; i++) {
+            HabitCompletion habitComp = null;
+
+            if (i % 2 == 0) {
+                 habitComp = new HabitCompletion(addedHabits.get(i).getId(),
+                         LocalDate.now());
+            }
+            if (i % 3 == 0) {
+                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
+                        LocalDate.now().minusDays(1));
+            }
+            if (i % 4 == 0) {
+                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
+                        LocalDate.now().minusDays(2));
+            }
+
+            if (habitComp != null) {
+                htvm.addHabitCompletion(addedHabits.get(i), habitComp);
+                expectedHabits.get(i).getCompletions()
+                        .add(habitComp.getLocalCompletionDate());
+            }
         }
 
         List<Habit> getResult = htvm.getHabits().getValue();
