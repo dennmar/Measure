@@ -18,14 +18,20 @@ import javax.inject.Inject;
  */
 public class LocalHabitRepository implements HabitRepository {
     private HabitDao habitDao;
+    private HabitCompletionDao habitCompDao;
     private MutableLiveData<List<Habit>> habits;
 
     /**
      * Initialize member variables.
+     *
+     * @param habitDao     database access object for habits
+     * @param habitCompDao database access object for habit completions
      */
     @Inject
-    public LocalHabitRepository(HabitDao habitDao) {
+    public LocalHabitRepository(HabitDao habitDao,
+            HabitCompletionDao habitCompDao) {
         this.habitDao = habitDao;
+        this.habitCompDao = habitCompDao;
         habits = new MutableLiveData<>();
     }
 
