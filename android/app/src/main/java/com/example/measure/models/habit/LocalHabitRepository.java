@@ -83,6 +83,7 @@ public class LocalHabitRepository implements HabitRepository {
     @Override
     public void addHabitCompletion(User user, Habit habit,
             HabitCompletion habitCompletion) throws DBOperationException {
-
+        // TODO: check if habit exists using habit DAO
+        habitCompDao.addHabitCompletion(habitCompletion);
     }
 }

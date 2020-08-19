@@ -146,25 +146,20 @@ public class HabitTrackerViewModelTest {
         }
 
         for (int i = 0; i < newHabits; i++) {
-            HabitCompletion habitComp = null;
+            int mod = 2;
 
-            if (i % 2 == 0) {
-                 habitComp = new HabitCompletion(addedHabits.get(i).getId(),
-                         LocalDate.now());
-            }
-            if (i % 3 == 0) {
-                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
-                        LocalDate.now().minusDays(1));
-            }
-            if (i % 4 == 0) {
-                habitComp = new HabitCompletion(addedHabits.get(i).getId(),
-                        LocalDate.now().minusDays(2));
-            }
-
-            if (habitComp != null) {
-                htvm.addHabitCompletion(addedHabits.get(i), habitComp);
-                expectedHabits.get(i).getCompletions()
-                        .add(habitComp.getLocalCompletionDate());
+            // Add a variety of habit completions based on the index.
+            while (mod <= 4) {
+                if (i % mod == 0) {
+                    HabitCompletion habitComp = new HabitCompletion(
+                            addedHabits.get(i).getId(),
+                            LocalDate.now().minusDays(mod - 2)
+                    );
+                    htvm.addHabitCompletion(addedHabits.get(i), habitComp);
+                    expectedHabits.get(i).getCompletions()
+                            .add(habitComp.getLocalCompletionDate());
+                }
+                mod++;
             }
         }
 

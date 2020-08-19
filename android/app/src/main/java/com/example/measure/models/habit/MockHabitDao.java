@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
+import com.example.measure.utils.DBOperationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,8 +18,11 @@ import javax.inject.Inject;
  * A fake habit database access object.
  */
 public class MockHabitDao implements HabitDao {
-    private HashMap<Long, List<Habit>> userHabitsMap;
+    private static HashMap<Long, List<Habit>> userHabitsMap;
     private MutableLiveData<List<Habit>> habits;
+
+    // Used to aid MockHabitCompletionDao in adding habit completions.
+    public static User lastUser;
 
     /**
      * Initialize member variables.
@@ -26,6 +31,7 @@ public class MockHabitDao implements HabitDao {
     public MockHabitDao() {
         habits = new MutableLiveData<>(new ArrayList<>());
         userHabitsMap = new HashMap<>();
+        lastUser = null;
     }
 
     /**
@@ -59,5 +65,33 @@ public class MockHabitDao implements HabitDao {
         }
 
         userHabitsMap.get(user.getId()).add(habit);
+        lastUser = user;
+    }
+
+    /**
+     * Add a habit completion.
+     *
+     * @param user            user who owns the habit that was completed
+     * @param habitCompletion completion info for the habit
+     * @throws DBOperationException
+     */
+    public static void addHabitCompletion(User user,
+            HabitCompletion habitCompletion) throws DBOperationException {
+        if (user == null || !userHabitsMap.containsKey(user.getId())) {
+            throw new DBOperationException("User (" + user + ") not found");
+        }
+
+        List<Habit> userHabits = userHabitsMap.get(user.getId());
+
+        for (Habit h : userHabits) {
+            if (h.getId() == habitCompletion.getHabitId()) {
+                h.getCompletions()
+                        .add(habitCompletion.getLocalCompletionDate());
+                return;
+            }
+        }
+
+        throw new DBOperationException("Habit with id "
+                + habitCompletion.getHabitId() + " not found");
     }
 }

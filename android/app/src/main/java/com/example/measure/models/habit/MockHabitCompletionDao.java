@@ -9,13 +9,8 @@ import javax.inject.Inject;
  * A fake habit completion database access object.
  */
 public class MockHabitCompletionDao implements HabitCompletionDao {
-    /**
-     * Initialize member variables.
-     */
     @Inject
-    public MockHabitCompletionDao() {
-
-    }
+    public MockHabitCompletionDao() {}
 
     /**
      * Store a habit completion in the database.
@@ -25,6 +20,6 @@ public class MockHabitCompletionDao implements HabitCompletionDao {
     @Override
     public void addHabitCompletion(HabitCompletion habitCompletion)
             throws DBOperationException {
-
+        MockHabitDao.addHabitCompletion(MockHabitDao.lastUser, habitCompletion);
     }
 }
