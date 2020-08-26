@@ -16,4 +16,5 @@ public abstract class MeasureRoomDatabase extends RoomDatabase {
     public abstract RoomTaskDao taskDao();
     public abstract RoomUserDao userDao();
     public abstract RoomHabitDao habitDao();
+    public abstract RoomHabitCompletionDao habitCompletionDao();
 }

@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.example.measure.models.data.HabitCompletion;
+
 import org.joda.time.LocalDate;
 
 /**
@@ -36,12 +38,12 @@ public class RoomHabitCompletion {
     }
 
     /**
-     * Initialize member variables.
+     * Initialize member variables from a HabitCompletion.
      */
-    public RoomHabitCompletion(long habitId, LocalDate localCompletedDate) {
+    public RoomHabitCompletion(HabitCompletion habitCompletion) {
         id = 0;
-        this.habitId = habitId;
-        this.localCompletedDate = localCompletedDate;
+        habitId = habitCompletion.getHabitId();
+        localCompletedDate = habitCompletion.getLocalCompletionDate();
     }
 
     /* Getters and setters */

@@ -1,6 +1,8 @@
 package com.example.measure.models.habit;
 
 import com.example.measure.db.MeasureRoomDatabase;
+import com.example.measure.db.RoomHabitCompletion;
+import com.example.measure.db.RoomHabitCompletionDao;
 import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.utils.DBOperationException;
 
@@ -10,6 +12,8 @@ import javax.inject.Inject;
  * A SQLite habit completion database access object.
  */
 public class SQLiteHabitCompletionDao implements HabitCompletionDao {
+    private RoomHabitCompletionDao roomHabitCompDao;
+
     /**
      * Initialize member variables.
      *
@@ -17,7 +21,7 @@ public class SQLiteHabitCompletionDao implements HabitCompletionDao {
      */
     @Inject
     public SQLiteHabitCompletionDao(MeasureRoomDatabase db) {
-
+        roomHabitCompDao = db.habitCompletionDao();
     }
 
     /**
@@ -29,6 +33,14 @@ public class SQLiteHabitCompletionDao implements HabitCompletionDao {
     @Override
     public void addHabitCompletion(HabitCompletion habitCompletion)
             throws DBOperationException {
+        RoomHabitCompletion rhabitCompletion =
+                new RoomHabitCompletion(habitCompletion);
 
+        try {
+            roomHabitCompDao.insert(rhabitCompletion);
+        }
+        catch (Exception e) {
+            throw new DBOperationException(e.getMessage());
+        }
     }
 }
