@@ -28,7 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Unit test the habit repository.
  */
-public class HabitRepositioryTest {
+public class HabitRepositoryTest {
     // Execute background tasks synchronously (to allow LiveData to work).
     @Rule
     public TestWatcher rule = new InstantTaskExecutorRule();
@@ -172,5 +172,52 @@ public class HabitRepositioryTest {
 
         List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
         assertThat(getResult, listReflectEquals(expectedHabits));
+    }
+
+    /**
+     * Test adding a habit completion to a missing habit.
+     */
+    @Test
+    public void testAddMissingHabitCompletion() {
+        User testUser = new User("test", "test@final.com", "password");
+        Habit habit = new Habit("Say hello", new HashSet<>());
+        habit.setId(5000);
+        HabitCompletion habitComp = new HabitCompletion(habit.getId(), LocalDate.now());
+
+        try {
+            habitRepo.addHabitCompletion(testUser, habit, habitComp);
+            assertThat(false, equalTo(true));
+        }
+        catch (DBOperationException e) {
+            // Expected behavior.
+        }
+    }
+
+    /**
+     * Test adding a habit completion to a habit that the user doesn't own.
+     */
+    @Test
+    public void testUnauthAddMissingHabitCompletion()
+            throws DBOperationException, InvalidQueryException {
+        User testUser = new User("test", "test@final.com", "password");
+        Habit habit = new Habit("Go to doctor", new HashSet<>());
+        habit.setUserId(testUser.getId());
+        List<Habit> expectedHabits = new ArrayList<>();
+        expectedHabits.add(habit);
+
+        habitRepo.addHabit(testUser, habit);
+        List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
+        assertThat(getResult, equalTo(expectedHabits));
+
+        User testUser2 = new User("test2", "test2@final.com", "password");
+        HabitCompletion habitComp = new HabitCompletion(habit.getId(), LocalDate.now());
+
+        try {
+            habitRepo.addHabitCompletion(testUser2, habit, habitComp);
+            assertThat(false, equalTo(true));
+        }
+        catch (DBOperationException e) {
+            // Expected behavior.
+        }
     }
 }

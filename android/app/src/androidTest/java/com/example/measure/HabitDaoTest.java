@@ -95,7 +95,33 @@ public class HabitDaoTest {
     }
 
     /**
-     * Test adding multiple habits.
+     * Test adding a habit completion to a habit.
+     */
+    @Test
+    public void testAddHabitCompletion() throws DBOperationException {
+        User testUser = new User("test", "tester@ertest.com", "password");
+        Habit habit = new Habit("Play hopscotch", new HashSet<>());
+        habit.setId(1);
+        habit.setUserId(testUser.getId());
+
+        List<Habit> expectedHabits = new ArrayList<>();
+        expectedHabits.add(habit);
+        habitDao.addHabit(testUser, habit);
+
+        List<Habit> getResult = habitDao.getHabits(testUser).getValue();
+        assertThat(getResult, looseHabitsMatch(expectedHabits));
+
+        HabitCompletion habitComp = new HabitCompletion(habit.getId(),
+                LocalDate.now());
+        habit.getCompletions().add(habitComp.getLocalCompletionDate());
+        habitDao.addHabitCompletion(habitComp);
+
+        List<Habit> getResult2 = habitDao.getHabits(testUser).getValue();
+        assertThat(getResult2, looseHabitsMatch(expectedHabits));
+    }
+
+    /**
+     * Test adding multiple habits with different habit completions.
      */
     @Test
     public void testAddMultHabits() throws DBOperationException {
