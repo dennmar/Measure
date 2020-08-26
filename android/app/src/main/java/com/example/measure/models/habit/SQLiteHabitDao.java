@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.measure.db.MeasureRoomDatabase;
 import com.example.measure.db.RoomHabit;
+import com.example.measure.db.RoomHabitCompletion;
+import com.example.measure.db.RoomHabitCompletionDao;
 import com.example.measure.db.RoomHabitWithCompletions;
 import com.example.measure.db.RoomHabitDao;
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
@@ -21,6 +24,7 @@ import javax.inject.Inject;
  */
 public class SQLiteHabitDao implements HabitDao {
     private RoomHabitDao roomHabitDao;
+    private RoomHabitCompletionDao roomHabitCompDao;
     private MutableLiveData<List<Habit>> habits;
 
     /**
@@ -31,6 +35,7 @@ public class SQLiteHabitDao implements HabitDao {
     @Inject
     public SQLiteHabitDao(MeasureRoomDatabase db) {
         roomHabitDao = db.habitDao();
+        roomHabitCompDao = db.habitCompletionDao();
         habits = new MutableLiveData<>(new ArrayList<>());
     }
 
@@ -73,6 +78,26 @@ public class SQLiteHabitDao implements HabitDao {
 
         try {
             roomHabitDao.insert(rhabit);
+        }
+        catch (Exception e) {
+            throw new DBOperationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Store a habit completion in the database.
+     *
+     * @param habitCompletion completion info for the habit
+     * @throws DBOperationException if the habit completion could not be stored
+     */
+    @Override
+    public void addHabitCompletion(HabitCompletion habitCompletion)
+            throws DBOperationException {
+        RoomHabitCompletion rhabitCompletion =
+                new RoomHabitCompletion(habitCompletion);
+
+        try {
+            roomHabitCompDao.insert(rhabitCompletion);
         }
         catch (Exception e) {
             throw new DBOperationException(e.getMessage());

@@ -3,6 +3,7 @@ package com.example.measure.models.habit;
 import androidx.lifecycle.LiveData;
 
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
 import com.example.measure.utils.DBOperationException;
 
@@ -29,4 +30,13 @@ public interface HabitDao {
      * @throws DBOperationException if the habit could not be stored
      */
     void addHabit(User user, Habit habit) throws DBOperationException;
+
+    /**
+     * Store a habit completion in the database.
+     *
+     * @param habitCompletion completion info for the habit
+     * @throws DBOperationException if the habit completion could not be stored
+     */
+    void addHabitCompletion(HabitCompletion habitCompletion)
+            throws DBOperationException;
 }

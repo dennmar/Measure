@@ -18,20 +18,16 @@ import javax.inject.Inject;
  */
 public class LocalHabitRepository implements HabitRepository {
     private HabitDao habitDao;
-    private HabitCompletionDao habitCompDao;
     private MutableLiveData<List<Habit>> habits;
 
     /**
      * Initialize member variables.
      *
      * @param habitDao     database access object for habits
-     * @param habitCompDao database access object for habit completions
      */
     @Inject
-    public LocalHabitRepository(HabitDao habitDao,
-            HabitCompletionDao habitCompDao) {
+    public LocalHabitRepository(HabitDao habitDao) {
         this.habitDao = habitDao;
-        this.habitCompDao = habitCompDao;
         habits = new MutableLiveData<>();
     }
 
@@ -84,6 +80,6 @@ public class LocalHabitRepository implements HabitRepository {
     public void addHabitCompletion(User user, Habit habit,
             HabitCompletion habitCompletion) throws DBOperationException {
         // TODO: check if habit exists using habit DAO
-        habitCompDao.addHabitCompletion(habitCompletion);
+        habitDao.addHabitCompletion(habitCompletion);
     }
 }

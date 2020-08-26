@@ -9,6 +9,7 @@ import com.example.measure.di.MeasureApplication;
 import com.example.measure.di.components.DaggerTestHabitDaoComponent;
 import com.example.measure.di.components.TestHabitDaoComponent;
 import com.example.measure.models.data.Habit;
+import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
 import com.example.measure.models.habit.HabitDao;
 import com.example.measure.utils.DBOperationException;
@@ -30,7 +31,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Run instrumented integration tests on the habit DAO (and the Room database).
+ * Run instrumented integration tests on the habit DAO and habit completion DAO
+ * (and the Room database).
  */
 @RunWith(AndroidJUnit4.class)
 public class HabitDaoTest {
@@ -103,22 +105,23 @@ public class HabitDaoTest {
 
         for (int i = 1; i <= newHabits; i++) {
             HashSet<LocalDate> completions = new HashSet<>();
-
-            if (i % 2 == 0) {
-                completions.add(LocalDate.now());
-            }
-            if (i % 3 == 0) {
-                completions.add(LocalDate.now().minusDays(3));
-            }
-            if (i % 4 == 0) {
-                completions.add(LocalDate.now().minusDays(5));
-            }
-
             Habit habit = new Habit("Chop " + i + " onions",
                     completions);
+            habit.setId(i);
             habit.setUserId(testUser.getId());
-            expectedHabits.add(habit);
             habitDao.addHabit(testUser, habit);
+
+            // Add a variety of completions to the habit.
+            for (int j = 2; j < 5; j++) {
+                if (i % j == 0) {
+                    LocalDate compDate = LocalDate.now().minusDays(j);
+                    habit.getCompletions().add(compDate);
+                    habitDao.addHabitCompletion(new HabitCompletion(habit.getId(),
+                            compDate));
+                }
+            }
+
+            expectedHabits.add(habit);
         }
 
         List<Habit> getResult = habitDao.getHabits(testUser).getValue();

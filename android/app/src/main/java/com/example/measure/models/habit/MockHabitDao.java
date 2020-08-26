@@ -3,6 +3,7 @@ package com.example.measure.models.habit;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.measure.db.RoomHabitCompletion;
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.models.data.User;
@@ -11,6 +12,7 @@ import com.example.measure.utils.DBOperationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -93,5 +95,22 @@ public class MockHabitDao implements HabitDao {
 
         throw new DBOperationException("Habit with id "
                 + habitCompletion.getHabitId() + " not found");
+    }
+
+    /**
+     * Store a habit completion.
+     *
+     * @param habitCompletion completion info for the habit
+     */
+    @Override
+    public void addHabitCompletion(HabitCompletion habitCompletion) {
+        for (Map.Entry<Long, List<Habit>> entry : userHabitsMap.entrySet()) {
+            for (Habit h : entry.getValue()) {
+                if (h.getId() == habitCompletion.getHabitId()) {
+                    h.getCompletions()
+                            .add(habitCompletion.getLocalCompletionDate());
+                }
+            }
+        }
     }
 }
