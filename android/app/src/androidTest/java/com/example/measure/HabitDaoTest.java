@@ -30,8 +30,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * A component targeted for habit DAO tests that makes Dagger create a graph of
- * dependencies and exposes objects from the application graph.
+ * Run instrumented integration tests on the habit DAO (and the Room database).
  */
 @RunWith(AndroidJUnit4.class)
 public class HabitDaoTest {

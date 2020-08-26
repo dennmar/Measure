@@ -1,7 +1,11 @@
 package com.example.measure.models.habit;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.utils.DBOperationException;
+
+import java.util.List;
 
 /**
  * A habit completion database access object.
