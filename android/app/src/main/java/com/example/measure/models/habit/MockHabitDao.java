@@ -37,6 +37,32 @@ public class MockHabitDao implements HabitDao {
     }
 
     /**
+     * Fetch the habit for the user.
+     *
+     * @param user  user who owns the habit
+     * @param habit info about the habit to fetch
+     * @return matching habit from the database
+     * @throws DBOperationException if the habit could not be fetched
+     */
+    @Override
+    public Habit getHabit(User user, Habit habit) throws DBOperationException {
+        if (user == null || !userHabitsMap.containsKey(user.getId())) {
+            throw new DBOperationException("User (" + user + ") not found");
+        }
+
+        List<Habit> userHabits = userHabitsMap.get(user.getId());
+
+        for (Habit h : userHabits) {
+            if (h.getId() == habit.getId()) {
+                return h;
+            }
+        }
+
+        throw new DBOperationException("Habit with id " + habit.getId()
+                + " not found");
+    }
+
+    /**
      * Retrieve all habits for the user.
      *
      * @param user user to fetch habits for

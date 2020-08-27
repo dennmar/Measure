@@ -14,6 +14,16 @@ import java.util.List;
  */
 public interface HabitDao {
     /**
+     * Fetch the habit for the user from the database.
+     *
+     * @param user  user who owns the habit
+     * @param habit info about the habit to fetch
+     * @return matching habit from the database
+     * @throws DBOperationException if the habit could not be fetched
+     */
+    Habit getHabit(User user, Habit habit) throws DBOperationException;
+
+    /**
      * Retrieve all habits for the user from the database.
      *
      * @param user user to fetch habits for
