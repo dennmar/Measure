@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.example.measure.CustomMatchers.reflectEquals;
 import static com.example.measure.LooseHabitsMatch.looseHabitsMatch;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -70,7 +71,7 @@ public class HabitDaoTest {
      * Test retrieving habits when none exist for a user.
      */
     @Test
-    public void testGetEmptyHabits() throws DBOperationException  {
+    public void testGetEmptyHabits() throws DBOperationException {
         User testUser = new User("test", "tester@ertest.com", "password");
         List<Habit> expectedHabits = new ArrayList<>();
         List<Habit> getResult = habitDao.getHabits(testUser).getValue();
@@ -92,6 +93,35 @@ public class HabitDaoTest {
 
         List<Habit> getResult = habitDao.getHabits(testUser).getValue();
         assertThat(getResult, looseHabitsMatch(expectedHabits));
+    }
+
+    /**
+     * Test retrieving a habit for the user.
+     */
+    @Test
+    public void testGetHabit() throws DBOperationException {
+        User testUser = new User("test", "tester@ertest.com", "password");
+        Habit habit = new Habit("Juggle", new HashSet<>());
+        habit.setUserId(testUser.getId());
+        habit.setId(1);
+
+        habitDao.addHabit(testUser, habit);
+        Habit getResult = habitDao.getHabit(testUser, habit);
+        assertThat(getResult, reflectEquals(habit));
+    }
+
+    /**
+     * Test retrieving a habit that doesn't exist for the user.
+     */
+    @Test
+    public void testGetMissingHabit() throws DBOperationException {
+        User testUser = new User("test", "tester@ertest.com", "password");
+        Habit habit = new Habit("Sprint", new HashSet<>());
+        habit.setUserId(testUser.getId());
+        habit.setId(1);
+
+        Habit getResult = habitDao.getHabit(testUser, habit);
+        assertThat(getResult, equalTo(null));
     }
 
     /**
