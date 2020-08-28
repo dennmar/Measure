@@ -178,10 +178,11 @@ public class HabitRepositoryTest {
      * Test adding a habit completion to a missing habit.
      */
     @Test
-    public void testAddMissingHabitCompletion() {
+    public void testAddMissingHabitCompletion() throws InvalidQueryException {
         User testUser = new User("test", "test@final.com", "password");
         Habit habit = new Habit("Say hello", new HashSet<>());
         habit.setId(5000);
+        habit.setUserId(testUser.getId());
         HabitCompletion habitComp = new HabitCompletion(habit.getId(), LocalDate.now());
 
         try {
@@ -201,22 +202,24 @@ public class HabitRepositoryTest {
             throws DBOperationException, InvalidQueryException {
         User testUser = new User("test", "test@final.com", "password");
         Habit habit = new Habit("Go to doctor", new HashSet<>());
+        testUser.setId(1);
         habit.setUserId(testUser.getId());
+
         List<Habit> expectedHabits = new ArrayList<>();
         expectedHabits.add(habit);
-
         habitRepo.addHabit(testUser, habit);
         List<Habit> getResult = habitRepo.getHabits(testUser).getValue();
         assertThat(getResult, equalTo(expectedHabits));
 
         User testUser2 = new User("test2", "test2@final.com", "password");
+        testUser2.setId(2);
         HabitCompletion habitComp = new HabitCompletion(habit.getId(), LocalDate.now());
 
         try {
             habitRepo.addHabitCompletion(testUser2, habit, habitComp);
             assertThat(false, equalTo(true));
         }
-        catch (DBOperationException e) {
+        catch (InvalidQueryException e) {
             // Expected behavior.
         }
     }

@@ -41,8 +41,12 @@ public interface HabitRepository {
      * @param user            user who owns the habit
      * @param habit           habit that was completed
      * @param habitCompletion completion info for the habit
-     * @throws DBOperationException if the habit completion could not be stored
+     * @throws DBOperationException  if the habit completion could not be
+     *                               stored
+     * @throws InvalidQueryException if the habit to add the completion to
+     *                               does not belong to the user
      */
     void addHabitCompletion(User user, Habit habit,
-            HabitCompletion habitCompletion) throws DBOperationException;
+            HabitCompletion habitCompletion)
+            throws DBOperationException, InvalidQueryException;
 }

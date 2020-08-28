@@ -74,12 +74,27 @@ public class LocalHabitRepository implements HabitRepository {
      * @param user            user who owns the habit
      * @param habit           habit that was completed
      * @param habitCompletion completion info for the habit
-     * @throws DBOperationException if the habit completion could not be stored
+     * @throws DBOperationException  if the habit completion could not be
+     *                               stored
+     * @throws InvalidQueryException if the habit to add the completion to
+     *                               does not belong to the user
      */
     @Override
     public void addHabitCompletion(User user, Habit habit,
-            HabitCompletion habitCompletion) throws DBOperationException {
-        // TODO: check if habit exists using habit DAO
+            HabitCompletion habitCompletion)
+            throws DBOperationException, InvalidQueryException {
+        if (user.getId() != habit.getUserId()) {
+            throw new InvalidQueryException("Habit completion to be added "
+                    + "to (" + habit + ") does not match user ID of user ("
+                    + user + ")");
+        }
+
+        Habit dbHabit = habitDao.getHabit(user, habit);
+        if (dbHabit == null) {
+            throw new DBOperationException("Habit (" + habit + ") belonging " +
+                    "to user (" + user + ") does not exist");
+        }
+
         habitDao.addHabitCompletion(habitCompletion);
     }
 }

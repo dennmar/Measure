@@ -10,6 +10,7 @@ import com.example.measure.features.habit_tracker.HabitTrackerViewModel;
 import com.example.measure.models.data.Habit;
 import com.example.measure.models.data.HabitCompletion;
 import com.example.measure.utils.DBOperationException;
+import com.example.measure.utils.InvalidQueryException;
 
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -102,7 +103,8 @@ public class HabitTrackerViewModelTest {
      * Test adding a habit completion to a single habit.
      */
     @Test
-    public void testAddHabitCompletion() throws DBOperationException {
+    public void testAddHabitCompletion()
+            throws DBOperationException, InvalidQueryException {
         Habit habit = new Habit("Meditate", new HashSet<>());
         habit.setUserId(1);
         List<Habit> expectedHabits = new ArrayList<>();
@@ -128,7 +130,8 @@ public class HabitTrackerViewModelTest {
      * Test adding multiple habit completions.
      */
     @Test
-    public void testAddMultHabitCompletions() throws DBOperationException {
+    public void testAddMultHabitCompletions()
+            throws DBOperationException, InvalidQueryException {
         List<Habit> addedHabits = new ArrayList<>();
         List<Habit> expectedHabits = new ArrayList<>();
         int newHabits = 5;

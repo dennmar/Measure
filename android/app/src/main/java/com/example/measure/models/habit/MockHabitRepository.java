@@ -67,10 +67,9 @@ public class MockHabitRepository implements HabitRepository {
      * @param user            user who owns the habit
      * @param habit           habit that was completed
      * @param habitCompletion completion info for the habit
-     * @throws DBOperationException if the habit completion could not be stored
      */
     public void addHabitCompletion(User user, Habit habit,
-            HabitCompletion habitCompletion) throws DBOperationException {
+            HabitCompletion habitCompletion) {
         for (Habit h : allHabits) {
             if (h.equals(habit)) {
                 h.getCompletions()

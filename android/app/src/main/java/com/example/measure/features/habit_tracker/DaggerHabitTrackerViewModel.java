@@ -107,10 +107,12 @@ public class DaggerHabitTrackerViewModel extends ViewModel
      * @param habit           habit that was completed
      * @param habitCompletion completion info for the habit
      * @throws DBOperationException if the habit completion could not be added
+     * @throws DBOperationException if the habit completion request is invalid
      */
     @Override
     public void addHabitCompletion(Habit habit,
-            HabitCompletion habitCompletion) throws DBOperationException {
+            HabitCompletion habitCompletion)
+            throws DBOperationException, InvalidQueryException {
         habitRepo.addHabitCompletion(currUser, habit, habitCompletion);
     }
 }
